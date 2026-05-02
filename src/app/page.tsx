@@ -11,6 +11,7 @@ import { ReviewsBand } from "@/components/landing/ReviewsBand";
 import { FAQBand } from "@/components/landing/FAQBand";
 import { CareerBanner } from "@/components/landing/CareerBanner";
 import { Footer } from "@/components/landing/Footer";
+import { CTAForm } from "@/components/cta/CTAForm";
 
 export default function HomePage() {
   return (
@@ -28,6 +29,7 @@ export default function HomePage() {
         <ReviewsBand />
         <FAQBand />
         <CareerBanner />
+        <CTAForm className="bg-gradient-to-b from-white to-[#f6f8ff]" />
         <Footer />
       </main>
     </>

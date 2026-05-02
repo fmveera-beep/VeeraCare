@@ -1,0 +1,109 @@
+import nodemailer from "nodemailer";
+import type { CTARequestInput } from "@/lib/validations/cta";
+
+function env(name: string) {
+  return process.env[name]?.trim();
+}
+
+function isEmailConfigured() {
+  return Boolean(
+    env("SMTP_HOST") &&
+      env("SMTP_PORT") &&
+      env("SMTP_USER") &&
+      env("SMTP_PASS") &&
+      env("SMTP_FROM") &&
+      env("CTA_NOTIFY_TO")
+  );
+}
+
+export async function sendCtaRequestEmail({
+  request,
+  requestId,
+  sourcePath,
+}: {
+  request: CTARequestInput;
+  requestId: string;
+  sourcePath?: string | null;
+}) {
+  if (!isEmailConfigured()) return { sent: false as const, skipped: true as const };
+
+  const host = env("SMTP_HOST")!;
+  const port = Number(env("SMTP_PORT")!);
+  const user = env("SMTP_USER")!;
+  const pass = env("SMTP_PASS")!;
+  const from = env("SMTP_FROM")!;
+  const to = env("CTA_NOTIFY_TO")!;
+
+  const transporter = nodemailer.createTransport({
+    host,
+    port,
+    secure: port === 465,
+    auth: { user, pass },
+  });
+
+  const subject = `New staff request: ${request.serviceNeeded} — ${request.name}`;
+  const lines = [
+    `Request ID: ${requestId}`,
+    sourcePath ? `Source: ${sourcePath}` : null,
+    "",
+    `Name: ${request.name}`,
+    `Phone: ${request.phone}`,
+    `Email: ${request.email}`,
+    `Service Needed: ${request.serviceNeeded}`,
+    "",
+    "Message:",
+    request.message,
+  ].filter(Boolean) as string[];
+
+  const text = lines.join("\n");
+
+  const html = `
+    <div style="font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; line-height:1.5">
+      <h2 style="margin:0 0 12px">New VeeraCare Staff Request</h2>
+      <p style="margin:0 0 12px"><strong>Request ID:</strong> ${escapeHtml(requestId)}${
+        sourcePath
+          ? `<br/><strong>Source:</strong> ${escapeHtml(sourcePath)}`
+          : ""
+      }</p>
+      <table cellpadding="6" cellspacing="0" style="border-collapse:collapse; width:100%; max-width:680px">
+        <tr><td style="border:1px solid #e5e7eb"><strong>Name</strong></td><td style="border:1px solid #e5e7eb">${escapeHtml(
+          request.name
+        )}</td></tr>
+        <tr><td style="border:1px solid #e5e7eb"><strong>Phone</strong></td><td style="border:1px solid #e5e7eb">${escapeHtml(
+          request.phone
+        )}</td></tr>
+        <tr><td style="border:1px solid #e5e7eb"><strong>Email</strong></td><td style="border:1px solid #e5e7eb">${escapeHtml(
+          request.email
+        )}</td></tr>
+        <tr><td style="border:1px solid #e5e7eb"><strong>Service Needed</strong></td><td style="border:1px solid #e5e7eb">${escapeHtml(
+          request.serviceNeeded
+        )}</td></tr>
+      </table>
+      <p style="margin:14px 0 6px"><strong>Message</strong></p>
+      <div style="white-space:pre-wrap; border:1px solid #e5e7eb; padding:10px; border-radius:8px">${escapeHtml(
+        request.message
+      )}</div>
+    </div>
+  `;
+
+  await transporter.sendMail({
+    from,
+    to,
+    subject,
+    text,
+    html,
+    replyTo: request.email,
+  });
+
+  return { sent: true as const, skipped: false as const };
+}
+
+function escapeHtml(input: string) {
+  return input
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+

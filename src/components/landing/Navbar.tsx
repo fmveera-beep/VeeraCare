@@ -9,16 +9,16 @@ import { GetAccessSolid } from "@/components/landing/PromoCtas";
 import { cn } from "@/lib/utils";
 
 const leftLinks = [
-  { href: "#top", label: "Home" },
-  { href: "#about", label: "About Us" },
-  { href: "#services", label: "Services" },
-  { href: "#industries", label: "Industries" },
-  { href: "#faq", label: "FAQs" },
+  { href: "/", label: "Home" },
+  { href: "/#about", label: "About Us" },
+  { href: "/services", label: "Services" },
+  { href: "/#industries", label: "Industries" },
+  { href: "/#faq", label: "FAQs" },
 ];
 
 const rightLinks = [
-  { href: "#reviews", label: "Reviews" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#reviews", label: "Reviews" },
+  { href: "/contact", label: "Contact" },
 ];
 
 const desktopNavLink =
@@ -49,7 +49,7 @@ export function Navbar() {
     >
       <nav className="relative flex h-[72px] w-full items-center gap-4 pl-3 pr-4 md:h-20 md:gap-6 md:pl-5 md:pr-8 lg:pl-6">
         <Link
-          href="#top"
+          href="/"
           className="flex shrink-0 items-center py-1 transition-all duration-300 hover:opacity-90 motion-safe:hover:scale-[1.02] motion-safe:active:scale-[0.99]"
           aria-label="Veera Care — home"
         >

@@ -12,6 +12,15 @@ enum Role {
   ADMIN
 }
 
+enum ServiceNeeded {
+  HOUSEMAID
+  HOUSE_CLEANER
+  TECHNICIAN
+  CONSTRUCTION
+  EVENT
+  SECURITY_PERSONNEL
+}
+
 model User {
   id           String   @id @default(cuid())
   email        String   @unique
@@ -20,4 +29,19 @@ model User {
   role         Role     @default(CLIENT)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+}
+
+model StaffRequest {
+  id            String        @id @default(cuid())
+  name          String
+  phone         String
+  email         String
+  serviceNeeded ServiceNeeded
+  message       String
+  sourcePath    String?
+  createdAt     DateTime      @default(now())
+
+  @@index([createdAt])
+  @@index([serviceNeeded])
+  @@index([email])
 }
