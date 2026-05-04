@@ -1,4 +1,4 @@
-/** Inbox for job applications from the site (mailto “Apply” buttons). */
+/** Public careers inbox (mailto links, site copy). */
 export const careersEmail =
   process.env.NEXT_PUBLIC_CAREERS_EMAIL ?? "hello@veeracare.com";
 

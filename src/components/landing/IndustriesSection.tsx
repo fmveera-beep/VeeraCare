@@ -1,5 +1,6 @@
 "use client";
 
+import type { MouseEvent } from "react";
 import { useState } from "react";
 import Link from "next/link";
 import {
@@ -17,14 +18,10 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Reveal } from "@/components/motion/Reveal";
-import { careersEmail } from "@/config/site";
+import { smoothScrollToHash } from "@/components/landing/PromoCtas";
 
-function applyMailtoHref(industryTitle: string) {
-  const subject = encodeURIComponent(`Job application – ${industryTitle}`);
-  const body = encodeURIComponent(
-    `Hello VeeraCare,\r\n\r\nI would like to apply for opportunities in ${industryTitle}.\r\n\r\nPlease find my CV attached to this email.\r\n\r\nThank you,\r\n`
-  );
-  return `mailto:${careersEmail}?subject=${subject}&body=${body}`;
+function scrollToContact(e: MouseEvent<HTMLAnchorElement>) {
+  smoothScrollToHash("#contact", e);
 }
 
 const industries = [
@@ -200,7 +197,9 @@ function IndustryDeckCard({ item }: { item: Industry }) {
         </ul>
       </div>
       <a
-        href={applyMailtoHref(item.title)}
+        href="#contact"
+        onClick={scrollToContact}
+        aria-label={`Apply for ${item.title} — go to contact form`}
         className="mt-3 inline-flex w-full shrink-0 items-center justify-center rounded-md bg-white px-4 py-3 text-sm font-bold uppercase tracking-wide text-brand shadow-sm transition-all duration-200 hover:bg-white/95 hover:shadow-md motion-safe:active:scale-[0.99]"
       >
         Apply
@@ -241,7 +240,9 @@ function IndustryMobileCard({ item }: { item: Industry }) {
         </ul>
       </div>
       <a
-        href={applyMailtoHref(item.title)}
+        href="#contact"
+        onClick={scrollToContact}
+        aria-label={`Apply for ${item.title} — go to contact form`}
         className="mt-auto inline-flex w-full shrink-0 items-center justify-center rounded-md bg-white px-4 py-3 pt-6 text-sm font-bold uppercase tracking-wide text-brand shadow-sm transition-all duration-200 hover:bg-white/95 hover:shadow-md motion-safe:active:scale-[0.99]"
       >
         Apply

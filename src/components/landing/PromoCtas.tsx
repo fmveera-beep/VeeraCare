@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-function smoothScrollToHash(href: string, e: MouseEvent<HTMLAnchorElement>) {
+export function smoothScrollToHash(href: string, e: MouseEvent<HTMLAnchorElement>) {
   if (!href.startsWith("#")) return;
   const id = href.slice(1);
   if (!id) return;

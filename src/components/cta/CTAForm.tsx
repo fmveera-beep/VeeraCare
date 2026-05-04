@@ -45,7 +45,7 @@ const controlBase =
 
 export function CTAForm({
   className,
-  id = "request-staff",
+  id = "contact",
   title = "Contact VeeraCare",
   subtitle = "Need dependable staff—or are you a worker looking for work with us? Choose who you are below and fill in your details. We’ll route your inquiry to the right team.",
   imageSrc = "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1400&q=82",
@@ -96,7 +96,13 @@ export function CTAForm({
   }
 
   return (
-    <section id={id} className={cn("relative z-[3] bg-white", className)}>
+    <section
+      id={id}
+      className={cn(
+        "relative z-[3] scroll-mt-24 bg-white md:scroll-mt-28",
+        className
+      )}
+    >
       <div className="mx-auto max-w-[1320px] px-4 py-14 md:px-8 md:py-20">
         <Reveal blur>
           <div className="mx-auto max-w-3xl text-center">

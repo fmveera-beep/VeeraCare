@@ -66,7 +66,7 @@ export function Footer() {
   }, []);
 
   return (
-    <footer id="contact" className="relative z-[3] -mt-[52px] bg-black pb-10 pt-[4.5rem] text-white md:-mt-[60px] md:pt-[5rem]">
+    <footer id="footer" className="relative z-[3] -mt-[52px] bg-black pb-10 pt-[4.5rem] text-white md:-mt-[60px] md:pt-[5rem]">
       <div className="mx-auto max-w-[1320px] px-4 py-14 md:px-8 md:py-20">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,2fr)] lg:gap-16">
           <motion.div
