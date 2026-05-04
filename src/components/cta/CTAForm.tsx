@@ -14,14 +14,10 @@ import {
 
 type CTAFormProps = {
   className?: string;
-  /** Optional heading override */
   title?: string;
-  /** Optional supporting text override */
   subtitle?: string;
-  /** Role-relevant visual (remote URLs supported) */
   imageSrc?: string;
   imageAlt?: string;
-  /** In-page anchor id for linking */
   id?: string;
 };
 
@@ -50,17 +46,19 @@ const controlBase =
 export function CTAForm({
   className,
   id = "request-staff",
-  title = "Request Reliable Staff Today",
-  subtitle = "Tell us what role you need. We’ll respond quickly with vetted, managed staff options that match your facility or home.",
+  title = "Contact VeeraCare",
+  subtitle = "Need dependable staff—or are you a worker looking for work with us? Choose who you are below and fill in your details. We’ll route your inquiry to the right team.",
   imageSrc = "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1400&q=82",
-  imageAlt = "VeeraCare staffing team in a professional meeting",
+  imageAlt = "VeeraCare staffing coordination and teamwork",
 }: CTAFormProps) {
   const initial = useMemo<CTARequestInput>(
     () => ({
+      inquiryType: "HIRING",
       name: "",
       phone: "",
       email: "",
       serviceNeeded: "Housemaid",
+      availability: "",
       message: "",
     }),
     []
@@ -71,6 +69,8 @@ export function CTAForm({
     "idle" | "submitting" | "success" | "error"
   >("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  const hiring = data.inquiryType === "HIRING";
 
   async function submit() {
     setStatus("submitting");
@@ -124,11 +124,11 @@ export function CTAForm({
                 <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
                   <div className="max-w-md rounded-2xl border border-white/15 bg-white/10 p-5 text-white backdrop-blur-md">
                     <p className="text-sm font-semibold uppercase tracking-[0.18em] text-white/85">
-                      Managed staffing for real work
+                      Employers &amp; workers welcome
                     </p>
                     <p className="mt-2 text-base leading-relaxed text-white/90">
-                      We recruit, verify, and manage reliable workers—creating
-                      meaningful jobs while keeping your operations covered.
+                      Facilities and homes rely on us for managed staffing. Workers rely on us for
+                      fair placements and steady roles—tell us which side you&apos;re on in the form.
                     </p>
                   </div>
                 </div>
@@ -142,15 +142,70 @@ export function CTAForm({
                 }}
               >
                 <div className="grid gap-5">
+                  <div className="space-y-3">
+                    <FieldLabel htmlFor="cta-inquiry-type">You are</FieldLabel>
+                    <p className="text-xs leading-relaxed text-neutral-600">
+                      So we ask for the right details: hiring managed staff, or looking for work with
+                      VeeraCare.
+                    </p>
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setData((d) => ({
+                            ...d,
+                            inquiryType: "HIRING",
+                            availability: "",
+                          }))
+                        }
+                        className={cn(
+                          "rounded-2xl border-2 px-4 py-4 text-left transition-all duration-200",
+                          hiring
+                            ? "border-brand bg-brand/[0.06] shadow-md shadow-brand/15"
+                            : "border-neutral-200 hover:border-brand/40"
+                        )}
+                      >
+                        <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-900">
+                          I need staff
+                        </span>
+                        <span className="mt-2 block text-sm leading-snug text-neutral-600">
+                          Request house, facility, event, or site coverage.
+                        </span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setData((d) => ({
+                            ...d,
+                            inquiryType: "WORKER",
+                          }))
+                        }
+                        className={cn(
+                          "rounded-2xl border-2 px-4 py-4 text-left transition-all duration-200",
+                          !hiring
+                            ? "border-brand bg-brand/[0.06] shadow-md shadow-brand/15"
+                            : "border-neutral-200 hover:border-brand/40"
+                        )}
+                      >
+                        <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-900">
+                          I&apos;m a worker
+                        </span>
+                        <span className="mt-2 block text-sm leading-snug text-neutral-600">
+                          Share your trade and when you&apos;re available—we&apos;ll follow up.
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+
                   <div className="grid gap-2">
-                    <FieldLabel htmlFor="cta-name">Name</FieldLabel>
+                    <FieldLabel htmlFor="cta-name">Full name</FieldLabel>
                     <Input
                       id="cta-name"
                       value={data.name}
                       onChange={(e) =>
                         setData((d) => ({ ...d, name: e.target.value }))
                       }
-                      placeholder="Your full name"
+                      placeholder={hiring ? "Contact or hiring manager name" : "Your name"}
                       autoComplete="name"
                       required
                     />
@@ -158,7 +213,7 @@ export function CTAForm({
 
                   <div className="grid gap-2 md:grid-cols-2">
                     <div className="grid gap-2">
-                      <FieldLabel htmlFor="cta-phone">Phone Number</FieldLabel>
+                      <FieldLabel htmlFor="cta-phone">Phone</FieldLabel>
                       <Input
                         id="cta-phone"
                         value={data.phone}
@@ -179,7 +234,7 @@ export function CTAForm({
                         onChange={(e) =>
                           setData((d) => ({ ...d, email: e.target.value }))
                         }
-                        placeholder="you@company.com"
+                        placeholder={hiring ? "work@company.com" : "you@email.com"}
                         autoComplete="email"
                         required
                       />
@@ -187,7 +242,9 @@ export function CTAForm({
                   </div>
 
                   <div className="grid gap-2">
-                    <FieldLabel htmlFor="cta-service">Service Needed</FieldLabel>
+                    <FieldLabel htmlFor="cta-service">
+                      {hiring ? "Service / role needed" : "Role you’re interested in"}
+                    </FieldLabel>
                     <select
                       id="cta-service"
                       className={cn(controlBase, "pr-9")}
@@ -207,8 +264,29 @@ export function CTAForm({
                     </select>
                   </div>
 
+                  {!hiring && (
+                    <div className="grid gap-2">
+                      <FieldLabel htmlFor="cta-availability">Availability</FieldLabel>
+                      <Input
+                        id="cta-availability"
+                        value={data.availability ?? ""}
+                        onChange={(e) =>
+                          setData((d) => ({ ...d, availability: e.target.value }))
+                        }
+                        placeholder="e.g. Full-time from June · Mon–Sat day shift · Hyderabad"
+                        autoComplete="off"
+                        required
+                      />
+                      <p className="text-xs text-neutral-500">
+                        Days, shifts, location, or when you can start—helps us match you faster.
+                      </p>
+                    </div>
+                  )}
+
                   <div className="grid gap-2">
-                    <FieldLabel htmlFor="cta-message">Message</FieldLabel>
+                    <FieldLabel htmlFor="cta-message">
+                      {hiring ? "Requirements & details" : "Experience & notes"}
+                    </FieldLabel>
                     <textarea
                       id="cta-message"
                       className={cn(controlBase, "h-28 resize-none py-2")}
@@ -216,7 +294,11 @@ export function CTAForm({
                       onChange={(e) =>
                         setData((d) => ({ ...d, message: e.target.value }))
                       }
-                      placeholder="Share the role details, location, shift timing, and how many people you need."
+                      placeholder={
+                        hiring
+                          ? "Headcount, location, shift times, start date, and any compliance or uniform needs."
+                          : "Years of experience, certifications, languages, and anything else we should know."
+                      }
                       required
                     />
                   </div>
@@ -228,7 +310,7 @@ export function CTAForm({
                       disabled={status === "submitting"}
                       className="h-12 w-full text-[11px] font-bold uppercase tracking-[0.2em]"
                     >
-                      {status === "submitting" ? "Sending..." : "Request Staff Now"}
+                      {status === "submitting" ? "Sending…" : "Send inquiry"}
                     </Button>
 
                     <motion.div
@@ -243,7 +325,7 @@ export function CTAForm({
                     >
                       {status === "success" && (
                         <span className="font-semibold text-green-700">
-                          Request received. We’ll reach out shortly.
+                          Thanks — we received your inquiry and’ll be in touch shortly.
                         </span>
                       )}
                       {status === "error" && (
@@ -262,4 +344,3 @@ export function CTAForm({
     </section>
   );
 }
-

@@ -1,8 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, UserRound } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import {
   IconFacebook,
   IconInstagram,
@@ -39,9 +39,8 @@ const columns = [
     title: "Resources",
     links: [
       { href: "#faq", label: "Insights & FAQ" },
-      { href: "#contact", label: "Talk to sales" },
+      { href: "/contact", label: "Contact us" },
       { href: "#membership", label: "Join our workforce" },
-      { href: "/login", label: "Platform login" },
     ],
   },
 ];
@@ -53,40 +52,8 @@ const footerSocial = [
   ["LinkedIn", IconLinkedin, socialUrls.linkedin],
 ] as const;
 
-type MeUser = {
-  id: string;
-  email: string;
-  name: string | null;
-  role: string;
-};
-
 export function Footer() {
   const [newsletterThanks, setNewsletterThanks] = useState(false);
-  const [me, setMe] = useState<MeUser | null | undefined>(undefined);
-
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const res = await fetch("/api/auth/me", { credentials: "include" });
-        const data = (await res.json()) as { user?: MeUser | null };
-        if (!cancelled) setMe(data.user ?? null);
-      } catch {
-        if (!cancelled) setMe(null);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  const logout = useCallback(async () => {
-    try {
-      await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
-    } finally {
-      setMe(null);
-    }
-  }, []);
 
   const scrollToNewsletter = useCallback(() => {
     document.getElementById("newsletter")?.scrollIntoView({
@@ -241,39 +208,12 @@ export function Footer() {
             >
               Subscribe
             </Button>
-            <div className="inline-flex max-w-full flex-wrap items-center gap-2 font-semibold text-white">
-              {me === undefined ? (
-                <span className="text-white/50">…</span>
-              ) : me ? (
-                <>
-                  <span
-                    className="max-w-[200px] truncate text-white/90 sm:max-w-[280px]"
-                    title={me.email}
-                  >
-                    {me.name?.trim() || me.email}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={logout}
-                    className="transition-colors duration-200 hover:text-brand"
-                  >
-                    Log out
-                  </button>
-                  <UserRound className="h-4 w-4 shrink-0 text-white/80" aria-hidden />
-                </>
-              ) : (
-                <>
-                  <Link href="/login" className="transition-colors duration-200 hover:text-brand">
-                    Log in
-                  </Link>
-                  <span className="text-white/35">/</span>
-                  <Link href="/signup" className="transition-colors duration-200 hover:text-brand">
-                    Register
-                  </Link>
-                  <UserRound className="h-4 w-4 text-white/80" aria-hidden />
-                </>
-              )}
-            </div>
+            <Link
+              href="/contact"
+              className="font-semibold text-white transition-colors duration-200 hover:text-brand"
+            >
+              Contact us
+            </Link>
           </div>
         </div>
 

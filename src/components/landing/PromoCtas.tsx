@@ -20,9 +20,9 @@ function smoothScrollToHash(href: string, e: MouseEvent<HTMLAnchorElement>) {
   window.history.pushState(null, "", href);
 }
 
-/** Navbar / hero — primary brand button, white label, arrow in bordered tile */
+/** Navbar / hero — primary CTA to the contact / request flow */
 export function GetAccessSolid({
-  href = "#contact",
+  href = "/contact",
   className,
 }: {
   href?: string;
@@ -36,7 +36,7 @@ export function GetAccessSolid({
         className
       )}
     >
-      Get Access
+      Contact
       <span className="flex h-8 w-8 items-center justify-center border border-white/35 bg-white/15 transition-all duration-300 group-hover:border-white/55 group-hover:bg-white/25">
         <ArrowUpRight
           className="h-4 w-4 text-white transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"

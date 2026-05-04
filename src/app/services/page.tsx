@@ -3,6 +3,7 @@ import { PreHeader } from "@/components/landing/PreHeader";
 import { Navbar } from "@/components/landing/Navbar";
 import { Footer } from "@/components/landing/Footer";
 import { CTAForm } from "@/components/cta/CTAForm";
+import { SecurityPoints } from "@/components/landing/SecurityPoints";
 import { Reveal } from "@/components/motion/Reveal";
 import { RemoteImage } from "@/components/media/RemoteImage";
 import { cn } from "@/lib/utils";
@@ -94,6 +95,8 @@ export default function ServicesPage() {
             </Reveal>
           </div>
         </section>
+
+        <SecurityPoints />
 
         <section className="bg-white py-14 md:py-20">
           <div className="mx-auto max-w-[1320px] px-4 md:px-8">

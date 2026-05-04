@@ -17,19 +17,15 @@ export default function ContactPage() {
                 Contact VeeraCare
               </h1>
               <p className="mx-auto mt-5 max-w-3xl text-center text-base leading-relaxed text-neutral-700 md:text-lg">
-                Whether you manage a facility, run a site team, or need reliable support at home,
-                we’ll help you secure vetted staff and manage the employment details—so you can
-                focus on your day-to-day operations.
+                Hiring managed staff for your home or facility—or looking for work with VeeraCare?
+                Use the form below to tell us who you are and what you need; we&apos;ll route your
+                inquiry to the right team.
               </p>
             </Reveal>
           </div>
         </section>
 
-        <CTAForm
-          className="bg-white"
-          title="Request Reliable Staff Today"
-          subtitle="Share your requirements and we’ll connect you with dependable workers—supported by our hiring, verification, and ongoing management."
-        />
+        <CTAForm className="bg-white" />
 
         <Footer />
       </main>

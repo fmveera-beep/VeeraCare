@@ -38,10 +38,15 @@ export async function POST(req: Request) {
 
     const created = await prisma.staffRequest.create({
       data: {
+        inquiryType: parsed.data.inquiryType,
         name: parsed.data.name,
         phone: parsed.data.phone,
         email: parsed.data.email.toLowerCase(),
         serviceNeeded: toDbServiceNeeded(parsed.data.serviceNeeded),
+        availability:
+          parsed.data.inquiryType === "WORKER"
+            ? (parsed.data.availability?.trim() ?? null)
+            : null,
         message: parsed.data.message,
         sourcePath,
       },
@@ -53,7 +58,14 @@ export async function POST(req: Request) {
       sourcePath,
     });
 
-    return NextResponse.json({ ok: true, id: created.id, emailSent: mail.sent });
+    return NextResponse.json({
+      ok: true,
+      id: created.id,
+      saved: true,
+      emailSent: mail.status === "sent",
+      emailSkipped: mail.status === "skipped",
+      ...(mail.status === "failed" ? { emailError: mail.error } : {}),
+    });
   } catch (err) {
     console.error("[cta-request]", err);
     return NextResponse.json({ error: "Something went wrong." }, { status: 500 });

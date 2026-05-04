@@ -12,6 +12,11 @@ enum Role {
   ADMIN
 }
 
+enum PortalAccountType {
+  WORKER
+  EMPLOYER
+}
+
 enum ServiceNeeded {
   HOUSEMAID
   HOUSE_CLEANER
@@ -21,27 +26,37 @@ enum ServiceNeeded {
   SECURITY_PERSONNEL
 }
 
+enum CtaInquiryType {
+  HIRING
+  WORKER
+}
+
 model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  passwordHash String
-  name         String?
-  role         Role     @default(CLIENT)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id                 String            @id @default(cuid())
+  email              String            @unique
+  passwordHash       String
+  name               String?
+  phone              String?
+  portalAccountType  PortalAccountType @default(EMPLOYER)
+  role               Role              @default(CLIENT)
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
 }
 
 model StaffRequest {
-  id            String        @id @default(cuid())
-  name          String
-  phone         String
-  email         String
-  serviceNeeded ServiceNeeded
-  message       String
-  sourcePath    String?
-  createdAt     DateTime      @default(now())
+  id             String          @id @default(cuid())
+  inquiryType    CtaInquiryType  @default(HIRING)
+  name           String
+  phone          String
+  email          String
+  serviceNeeded  ServiceNeeded
+  availability   String?
+  message        String
+  sourcePath     String?
+  createdAt      DateTime        @default(now())
 
   @@index([createdAt])
   @@index([serviceNeeded])
   @@index([email])
+  @@index([inquiryType])
 }

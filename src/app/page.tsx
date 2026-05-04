@@ -1,6 +1,7 @@
 import { PreHeader } from "@/components/landing/PreHeader";
 import { Navbar } from "@/components/landing/Navbar";
 import { Hero } from "@/components/landing/Hero";
+import { SecurityPoints } from "@/components/landing/SecurityPoints";
 import { FeaturedServicesSection } from "@/components/landing/FeaturedServicesSection";
 import { IndustriesSection } from "@/components/landing/IndustriesSection";
 import { AboutSection } from "@/components/landing/AboutSection";
@@ -20,6 +21,7 @@ export default function HomePage() {
       <Navbar />
       <main>
         <Hero />
+        <SecurityPoints />
         <FeaturedServicesSection />
         <IndustriesSection />
         <AboutSection />
