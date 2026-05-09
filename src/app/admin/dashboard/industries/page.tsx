@@ -97,9 +97,12 @@ function ModalShell({
   );
 }
 
+const adminFetch: RequestInit = { credentials: "include", cache: "no-store" };
+
 export default function AdminManageIndustriesPage() {
   const [industries, setIndustries] = useState<CmsIndustry[]>([]);
   const [ready, setReady] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -127,13 +130,31 @@ export default function AdminManageIndustriesPage() {
 
   useEffect(() => {
     (async () => {
-      const res = await fetch("/api/admin/industries", { cache: "no-store" });
-      if (!res.ok) throw new Error("Failed to load industries");
-      const data = (await res.json()) as { items: CmsIndustry[] };
-      setIndustries(data.items);
+      setLoadError(null);
+      const res = await fetch("/api/admin/industries", adminFetch);
+      if (!res.ok) {
+        if (res.status === 401) {
+          setLoadError(
+            "Not authorized (401). Log out and sign in again, or confirm JWT_SECRET on Vercel."
+          );
+        } else {
+          const text = await res.text().catch(() => "");
+          setLoadError(
+            `Could not load industries (${res.status}). ${text.slice(0, 200)} Check DATABASE_URL and logs.`
+          );
+        }
+        setIndustries([]);
+        setReady(true);
+        return;
+      }
+      const data = (await res.json()) as { items?: CmsIndustry[] };
+      setIndustries(Array.isArray(data.items) ? data.items : []);
       setReady(true);
-    })().catch(() => {
+    })().catch((e) => {
       setIndustries([]);
+      setLoadError(
+        e instanceof Error ? e.message : "Network error loading industries."
+      );
       setReady(true);
     });
   }, []);
@@ -175,6 +196,7 @@ export default function AdminManageIndustriesPage() {
   function remove(id: string) {
     (async () => {
       const res = await fetch(`/api/admin/industries?id=${encodeURIComponent(id)}`, {
+        ...adminFetch,
         method: "DELETE",
       });
       if (!res.ok) throw new Error("Delete failed");
@@ -200,6 +222,7 @@ export default function AdminManageIndustriesPage() {
     (async () => {
       if (editingId) {
         const res = await fetch("/api/admin/industries", {
+          ...adminFetch,
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -215,6 +238,7 @@ export default function AdminManageIndustriesPage() {
         if (!res.ok) throw new Error("Update failed");
       } else {
         const res = await fetch("/api/admin/industries", {
+          ...adminFetch,
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -228,7 +252,7 @@ export default function AdminManageIndustriesPage() {
         });
         if (!res.ok) throw new Error("Create failed");
       }
-      const refreshed = await fetch("/api/admin/industries", { cache: "no-store" });
+      const refreshed = await fetch("/api/admin/industries", adminFetch);
       const data = (await refreshed.json()) as { items: CmsIndustry[] };
       setIndustries(data.items);
       setModalOpen(false);
@@ -241,6 +265,12 @@ export default function AdminManageIndustriesPage() {
 
   return (
     <div className="space-y-6">
+      {loadError ? (
+        <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
+          <p className="font-semibold text-amber-50">Could not load industries</p>
+          <p className="mt-1 text-amber-100/90">{loadError}</p>
+        </div>
+      ) : null}
       <div className="rounded-3xl border border-white/10 bg-white/5 p-6 md:p-7">
         <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
           <div>
@@ -264,8 +294,8 @@ export default function AdminManageIndustriesPage() {
               onClick={() => {
                 (async () => {
                   const res = await fetch("/api/admin/industries?reset=1", {
+                    ...adminFetch,
                     method: "POST",
-                    cache: "no-store",
                   });
                   if (!res.ok) throw new Error("Reset failed");
                   const data = (await res.json()) as { items: CmsIndustry[] };

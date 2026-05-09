@@ -22,9 +22,17 @@ async function ensureSeeded() {
 
 export async function GET(req: NextRequest) {
   if (!assertAdmin(req)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  await ensureSeeded();
-  const items = await prisma.cmsService.findMany({ orderBy: [{ order: "asc" }, { title: "asc" }] });
-  return NextResponse.json({ items });
+  try {
+    await ensureSeeded();
+    const items = await prisma.cmsService.findMany({
+      orderBy: [{ order: "asc" }, { title: "asc" }],
+    });
+    return NextResponse.json({ items });
+  } catch (e) {
+    console.error("[admin/services GET]", e);
+    const msg = e instanceof Error ? e.message : "Database error";
+    return NextResponse.json({ error: msg }, { status: 503 });
+  }
 }
 
 export async function POST(req: NextRequest) {

@@ -12,7 +12,10 @@ export function AdminLogoutButton() {
       variant="outline"
       className="rounded-2xl border-white/15 bg-transparent text-neutral-100 hover:border-white/25 hover:bg-white/5 hover:text-white"
       onClick={() => {
-        fetch("/api/admin/logout", { method: "POST" })
+        fetch("/api/admin/logout", {
+          method: "POST",
+          credentials: "include",
+        })
           .catch(() => {})
           .finally(() => {
             router.replace("/admin/login");

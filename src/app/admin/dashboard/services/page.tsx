@@ -109,9 +109,12 @@ function ModalShell({
   );
 }
 
+const adminFetch: RequestInit = { credentials: "include", cache: "no-store" };
+
 export default function AdminManageServicesPage() {
   const [services, setServices] = useState<CmsService[]>([]);
   const [ready, setReady] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -135,13 +138,31 @@ export default function AdminManageServicesPage() {
 
   useEffect(() => {
     (async () => {
-      const res = await fetch("/api/admin/services", { cache: "no-store" });
-      if (!res.ok) throw new Error("Failed to load services");
-      const data = (await res.json()) as { items: CmsService[] };
-      setServices(data.items);
+      setLoadError(null);
+      const res = await fetch("/api/admin/services", adminFetch);
+      if (!res.ok) {
+        if (res.status === 401) {
+          setLoadError(
+            "Not authorized (401). Log out and sign in again, or confirm JWT_SECRET matches on Vercel."
+          );
+        } else {
+          const text = await res.text().catch(() => "");
+          setLoadError(
+            `Could not load services (${res.status}). ${text.slice(0, 200)} Check DATABASE_URL and Vercel logs.`
+          );
+        }
+        setServices([]);
+        setReady(true);
+        return;
+      }
+      const data = (await res.json()) as { items?: CmsService[] };
+      setServices(Array.isArray(data.items) ? data.items : []);
       setReady(true);
-    })().catch(() => {
+    })().catch((e) => {
       setServices([]);
+      setLoadError(
+        e instanceof Error ? e.message : "Network error loading services."
+      );
       setReady(true);
     });
   }, []);
@@ -186,6 +207,7 @@ export default function AdminManageServicesPage() {
     (async () => {
       if (editingId) {
         const res = await fetch("/api/admin/services", {
+          ...adminFetch,
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -199,6 +221,7 @@ export default function AdminManageServicesPage() {
         if (!res.ok) throw new Error("Update failed");
       } else {
         const res = await fetch("/api/admin/services", {
+          ...adminFetch,
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -210,7 +233,7 @@ export default function AdminManageServicesPage() {
         });
         if (!res.ok) throw new Error("Create failed");
       }
-      const refreshed = await fetch("/api/admin/services", { cache: "no-store" });
+      const refreshed = await fetch("/api/admin/services", adminFetch);
       const data = (await refreshed.json()) as { items: CmsService[] };
       setServices(data.items);
       setModalOpen(false);
@@ -220,6 +243,7 @@ export default function AdminManageServicesPage() {
   function remove(id: string) {
     (async () => {
       const res = await fetch(`/api/admin/services?id=${encodeURIComponent(id)}`, {
+        ...adminFetch,
         method: "DELETE",
       });
       if (!res.ok) throw new Error("Delete failed");
@@ -238,6 +262,18 @@ export default function AdminManageServicesPage() {
 
   return (
     <div className="space-y-6">
+      {loadError ? (
+        <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
+          <p className="font-semibold text-amber-50">Could not load catalog</p>
+          <p className="mt-1 text-amber-100/90">{loadError}</p>
+          <p className="mt-2 text-xs text-amber-200/80">
+            Empty catalog after login usually means the API returned 401 (add{" "}
+            <code className="rounded bg-black/30 px-1">JWT_SECRET</code> on Vercel and redeploy) or the DB
+            is unreachable (check <code className="rounded bg-black/30 px-1">DATABASE_URL</code>). After
+            fixing env vars, use &quot;Reset to defaults&quot; to seed rows.
+          </p>
+        </div>
+      ) : null}
       <div className="rounded-3xl border border-white/10 bg-white/5 p-6 md:p-7">
         <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
           <div>
@@ -261,8 +297,8 @@ export default function AdminManageServicesPage() {
               onClick={() => {
                 (async () => {
                   const res = await fetch("/api/admin/services?reset=1", {
+                    ...adminFetch,
                     method: "POST",
-                    cache: "no-store",
                   });
                   if (!res.ok) throw new Error("Reset failed");
                   const data = (await res.json()) as { items: CmsService[] };

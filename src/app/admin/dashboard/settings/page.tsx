@@ -52,8 +52,8 @@ export default function AdminSettingsPage() {
 
     (async () => {
       const [sRes, iRes] = await Promise.all([
-        fetch("/api/admin/services", { cache: "no-store" }),
-        fetch("/api/admin/industries", { cache: "no-store" }),
+        fetch("/api/admin/services", { credentials: "include", cache: "no-store" }),
+        fetch("/api/admin/industries", { credentials: "include", cache: "no-store" }),
       ]);
       if (sRes.ok) {
         const data = (await sRes.json()) as { items: unknown[] };
@@ -91,8 +91,8 @@ export default function AdminSettingsPage() {
   function refreshCounts() {
     (async () => {
       const [sRes, iRes] = await Promise.all([
-        fetch("/api/admin/services", { cache: "no-store" }),
-        fetch("/api/admin/industries", { cache: "no-store" }),
+        fetch("/api/admin/services", { credentials: "include", cache: "no-store" }),
+        fetch("/api/admin/industries", { credentials: "include", cache: "no-store" }),
       ]);
       if (sRes.ok) {
         const data = (await sRes.json()) as { items: unknown[] };
@@ -111,8 +111,14 @@ export default function AdminSettingsPage() {
   function clearCmsData() {
     (async () => {
       await Promise.all([
-        fetch("/api/admin/services?all=1", { method: "DELETE" }),
-        fetch("/api/admin/industries?all=1", { method: "DELETE" }),
+        fetch("/api/admin/services?all=1", {
+          method: "DELETE",
+          credentials: "include",
+        }),
+        fetch("/api/admin/industries?all=1", {
+          method: "DELETE",
+          credentials: "include",
+        }),
       ]);
       localStorage.removeItem(SETTINGS_KEY);
       setSettings({
@@ -261,7 +267,10 @@ export default function AdminSettingsPage() {
                     "hover:border-white/25 hover:bg-white/5 hover:text-white"
                   )}
                   onClick={() => {
-                    fetch("/api/admin/logout", { method: "POST" })
+                    fetch("/api/admin/logout", {
+                      method: "POST",
+                      credentials: "include",
+                    })
                       .catch(() => {})
                       .finally(() => {
                         window.location.href = "/admin/login";
