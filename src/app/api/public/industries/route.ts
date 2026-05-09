@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { seedIndustries } from "@/lib/cms/seed";
 
+export const dynamic = "force-dynamic";
+
 async function ensureSeeded() {
   const count = await prisma.cmsIndustry.count();
   if (count > 0) return;

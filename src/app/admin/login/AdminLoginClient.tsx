@@ -28,6 +28,7 @@ export function AdminLoginClient() {
       const res = await fetch("/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
         body: JSON.stringify({
           email: email.trim().toLowerCase(),
           password,
@@ -38,7 +39,9 @@ export function AdminLoginClient() {
         setError("Invalid credentials. Please try again.");
         return;
       }
+      setIsSubmitting(false);
       router.replace(nextPath);
+      router.refresh();
     } catch {
       setIsSubmitting(false);
       setError("Login failed. Please try again.");

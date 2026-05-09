@@ -11,6 +11,9 @@ import { ServiceCard, type ServiceCardDetails } from "@/components/services/Serv
 import { prisma } from "@/lib/prisma";
 import { seedServices, toServiceCardDetails } from "@/lib/cms/seed";
 
+/** DB-backed page — must not run Prisma at build time (e.g. Vercel without DATABASE_URL during `next build`). */
+export const dynamic = "force-dynamic";
+
 /** Stable CDN URLs — avoid source.unsplash.com (frequent 5xx). */
 const roleDetails: Record<
   ServiceNeeded,

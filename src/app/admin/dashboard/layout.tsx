@@ -5,16 +5,21 @@ import { redirect } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { AdminLogoutButton } from "@/components/admin/AdminLogoutButton";
 import { AdminSidebarNav } from "@/components/admin/AdminSidebarNav";
-
-const ADMIN_COOKIE = "veeracare_admin";
+import {
+  ADMIN_SESSION_COOKIE,
+  verifyAdminSession,
+} from "@/lib/admin/sessionNode";
 
 export default function AdminDashboardLayout({
   children,
 }: {
   children: ReactNode;
 }) {
-  const isAuthed = cookies().get(ADMIN_COOKIE)?.value === "1";
-  if (!isAuthed) redirect("/admin/login");
+  const secret = process.env.JWT_SECRET;
+  const token = cookies().get(ADMIN_SESSION_COOKIE)?.value;
+  const session =
+    secret && token ? verifyAdminSession(token, secret) : null;
+  if (!session) redirect("/admin/login");
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-neutral-950 text-neutral-100">
