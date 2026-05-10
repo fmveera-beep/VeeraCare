@@ -3,6 +3,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { neonAuthClient } from "@/lib/neon-auth/client";
 import { cn } from "@/lib/utils";
 
 const SETTINGS_KEY = "veeracare_cms_settings_v1";
@@ -256,7 +257,7 @@ export default function AdminSettingsPage() {
             <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
               <p className="text-sm font-semibold text-white">Session</p>
               <p className="mt-1 text-xs text-neutral-400">
-                Signed in via an httpOnly session cookie (use Logout to end).
+                Neon Auth session (use Logout to end).
               </p>
               <div className="mt-3">
                 <Button
@@ -267,10 +268,8 @@ export default function AdminSettingsPage() {
                     "hover:border-white/25 hover:bg-white/5 hover:text-white"
                   )}
                   onClick={() => {
-                    fetch("/api/admin/logout", {
-                      method: "POST",
-                      credentials: "include",
-                    })
+                    neonAuthClient
+                      .signOut()
                       .catch(() => {})
                       .finally(() => {
                         window.location.href = "/admin/login";

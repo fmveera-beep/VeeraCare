@@ -1,26 +1,17 @@
-import nodemailer from "nodemailer";
 import type { CTARequestInput } from "@/lib/validations/cta";
-
-function env(name: string) {
-  return process.env[name]?.trim();
-}
+import {
+  createSmtpTransporter,
+  envTrim,
+  getSmtpFrom,
+  isSmtpConfigured,
+} from "@/lib/email/smtp";
 
 /** Company owner / ops inbox: all CTA leads (hiring + worker) go here. */
 function getOwnerInbox() {
   return (
-    env("OWNER_NOTIFY_EMAIL") ||
-    env("CTA_NOTIFY_TO") ||
-    env("NEXT_PUBLIC_CAREERS_EMAIL")
-  );
-}
-
-function isSmtpConfigured() {
-  return Boolean(
-    env("SMTP_HOST") &&
-      env("SMTP_PORT") &&
-      env("SMTP_USER") &&
-      env("SMTP_PASS") &&
-      env("SMTP_FROM")
+    envTrim("OWNER_NOTIFY_EMAIL") ||
+    envTrim("CTA_NOTIFY_TO") ||
+    envTrim("NEXT_PUBLIC_CAREERS_EMAIL")
   );
 }
 
@@ -46,19 +37,10 @@ export async function sendCtaRequestEmail({
     return { status: "skipped", reason: "not_configured" };
   }
 
-  const host = env("SMTP_HOST")!;
-  const port = Number(env("SMTP_PORT")!);
-  const user = env("SMTP_USER")!;
-  const pass = env("SMTP_PASS")!;
-  const from = env("SMTP_FROM")!;
+  const from = getSmtpFrom();
   const to = getOwnerInbox()!;
 
-  const transporter = nodemailer.createTransport({
-    host,
-    port,
-    secure: port === 465,
-    auth: { user, pass },
-  });
+  const transporter = createSmtpTransporter();
 
   const isWorker = request.inquiryType === "WORKER";
   const inquiryLabel = isWorker ? "Worker — available for work" : "Employer — needs staff";

@@ -1,51 +1,195 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { VeeraLogo } from "@/components/brand/VeeraLogo";
+import type { AdminMeReason } from "@/lib/neon-auth/adminMeReason";
+import { neonAuthClient } from "@/lib/neon-auth/client";
+import { describeEmailOtpSendFailure } from "@/lib/neon-auth/otpClientHelpers";
+
+type Step = "email" | "otp";
+
+const ADMIN_HINT_LIST =
+  process.env.NEXT_PUBLIC_ADMIN_EMAIL?.split(",").map((s) =>
+    s.trim().toLowerCase()
+  ).filter(Boolean) ?? [];
 
 export function AdminLoginClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const nextPath = searchParams.get("next") || "/admin/dashboard";
 
+  const [step, setStep] = useState<Step>("email");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [otp, setOtp] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isResending, setIsResending] = useState(false);
 
-  const canSubmit = useMemo(
-    () => email.trim().length > 0 && password.length > 0 && !isSubmitting,
-    [email, password, isSubmitting]
+  useEffect(() => {
+    const code = searchParams.get("error");
+    if (code === "auth_config") {
+      setError(
+        "Neon Auth is not configured on the server (missing NEON_AUTH_BASE_URL / NEON_AUTH_COOKIE_SECRET)."
+      );
+    } else if (code === "forbidden") {
+      setError("That account is not allowed to access the CMS.");
+    }
+  }, [searchParams]);
+
+  const normalizedEmail = useMemo(
+    () => email.trim().toLowerCase(),
+    [email]
   );
 
-  async function onSubmit(e: React.FormEvent) {
+  const canSendCode = useMemo(
+    () => normalizedEmail.length > 3 && normalizedEmail.includes("@") && !isSubmitting,
+    [normalizedEmail, isSubmitting]
+  );
+
+  const canVerify = useMemo(
+    () =>
+      otp.replace(/\s+/g, "").length >= 6 &&
+      normalizedEmail.length > 0 &&
+      !isSubmitting,
+    [otp, normalizedEmail, isSubmitting]
+  );
+
+  async function onSendCode(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+
+    if (
+      ADMIN_HINT_LIST.length > 0 &&
+      !ADMIN_HINT_LIST.includes(normalizedEmail)
+    ) {
+      setError(
+        `Use one of the CMS admin emails (${ADMIN_HINT_LIST.join(", ")}). Update NEXT_PUBLIC_ADMIN_EMAIL if this list is wrong.`
+      );
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const sendRes = await neonAuthClient.emailOtp.sendVerificationOtp({
+        email: normalizedEmail,
+        type: "sign-in",
+      });
+
+      const failMsg = describeEmailOtpSendFailure(sendRes);
+      if (failMsg || sendRes.error) {
+        setIsSubmitting(false);
+        setError(
+          failMsg ??
+            sendRes.error?.message ??
+            "Could not send verification code."
+        );
+        return;
+      }
+
+      setStep("otp");
+      setOtp("");
+      setIsSubmitting(false);
+    } catch (e) {
+      console.error("[admin login] send OTP", e);
+      setIsSubmitting(false);
+      setError(
+        e instanceof Error ? e.message : "Could not send verification code."
+      );
+    }
+  }
+
+  async function onVerify(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
     setIsSubmitting(true);
 
     try {
-      const res = await fetch("/api/admin/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "same-origin",
-        body: JSON.stringify({
-          email: email.trim().toLowerCase(),
-          password,
-        }),
+      const { error: signErr } = await neonAuthClient.signIn.emailOtp({
+        email: normalizedEmail,
+        otp: otp.replace(/\s+/g, ""),
       });
-      if (!res.ok) {
+
+      if (signErr) {
         setIsSubmitting(false);
-        setError("Invalid credentials. Please try again.");
+        setError(signErr.message ?? "Invalid or expired code.");
         return;
       }
+
+      await neonAuthClient.getSession().catch(() => {});
+
+      let me: Response | undefined;
+      for (let attempt = 0; attempt < 8; attempt++) {
+        me = await fetch("/api/admin/me", {
+          credentials: "include",
+          cache: "no-store",
+        });
+        if (me.ok) break;
+
+        if (me.status === 403) break;
+
+        await new Promise((r) => setTimeout(r, 80 + attempt * 60));
+      }
+
+      if (!me!.ok) {
+        await neonAuthClient.signOut().catch(() => {});
+        setIsSubmitting(false);
+
+        const body = (await me!.json().catch(() => ({}))) as {
+          reason?: AdminMeReason;
+        };
+
+        const msg =
+          body.reason === "not_allowlisted"
+            ? "Your Neon account signed in, but this email is not in the CMS allowlist. Edit SOURCE_ADMIN_EMAILS in adminEmails.ts (and optionally ADMIN_EMAIL in .env), using the exact address Neon shows for your user."
+            : body.reason === "auth_config"
+              ? "Neon Auth is not configured on the server."
+              : body.reason === "no_session" || me!.status === 401
+                ? "Sign-in succeeded but the session was not visible yet. Refresh the page and try logging in once more, or wait a moment and submit the code again."
+                : "Could not verify CMS access after sign-in. Try again.";
+
+        setError(msg);
+        setStep("email");
+        setOtp("");
+        return;
+      }
+
       setIsSubmitting(false);
       router.replace(nextPath);
       router.refresh();
     } catch {
       setIsSubmitting(false);
-      setError("Login failed. Please try again.");
+      setError("Verification failed. Try again.");
     }
+  }
+
+  async function onResend() {
+    if (isResending || !normalizedEmail) return;
+    setError(null);
+    setIsResending(true);
+    try {
+      const sendRes = await neonAuthClient.emailOtp.sendVerificationOtp({
+        email: normalizedEmail,
+        type: "sign-in",
+      });
+      const failMsg = describeEmailOtpSendFailure(sendRes);
+      if (failMsg || sendRes.error) {
+        setError(
+          failMsg ?? sendRes.error?.message ?? "Could not resend code."
+        );
+      }
+    } catch (e) {
+      console.error("[admin login] resend OTP", e);
+      setError(e instanceof Error ? e.message : "Could not resend code.");
+    } finally {
+      setIsResending(false);
+    }
+  }
+
+  function onUseDifferentEmail() {
+    setStep("email");
+    setOtp("");
+    setError(null);
   }
 
   return (
@@ -65,10 +209,12 @@ export function AdminLoginClient() {
                 VeeraCare CMS
               </p>
               <h1 className="mt-2 text-3xl font-bold tracking-tight">
-                Admin login
+                {step === "email" ? "Admin sign-in" : "Enter login code"}
               </h1>
               <p className="mt-2 text-sm text-neutral-300">
-                Sign in to manage services and industries.
+                {step === "email"
+                  ? "Managed Neon Auth: we email you a one-time code each time you sign in."
+                  : `Check ${normalizedEmail} for your verification code.`}
               </p>
             </div>
             <div className="hidden h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-b from-white/15 to-white/0 md:flex">
@@ -76,62 +222,124 @@ export function AdminLoginClient() {
             </div>
           </div>
 
-          <form onSubmit={onSubmit} className="mt-7 space-y-4">
-            <label className="block">
-              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400">
-                Admin Email
-              </span>
-              <input
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                type="email"
-                autoComplete="email"
-                className="mt-2 w-full rounded-2xl border border-white/10 bg-neutral-950/55 px-4 py-3 text-sm text-neutral-100 outline-none ring-0 transition focus:border-white/20 focus:bg-neutral-950/80"
-                placeholder="admin@veeracare.com"
-                required
-              />
-            </label>
+          {step === "email" ? (
+            <form onSubmit={onSendCode} className="mt-7 space-y-4">
+              <label className="block">
+                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400">
+                  Email
+                </span>
+                <input
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  type="email"
+                  autoComplete="email"
+                  className="mt-2 w-full rounded-2xl border border-white/10 bg-neutral-950/55 px-4 py-3 text-sm text-neutral-100 outline-none ring-0 transition focus:border-white/20 focus:bg-neutral-950/80"
+                  placeholder={
+                    ADMIN_HINT_LIST[0]
+                      ? ADMIN_HINT_LIST.join(", ")
+                      : "admin@your-domain.com"
+                  }
+                  required
+                />
+              </label>
 
-            <label className="block">
-              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400">
-                Password
-              </span>
-              <input
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                type="password"
-                autoComplete="current-password"
-                className="mt-2 w-full rounded-2xl border border-white/10 bg-neutral-950/55 px-4 py-3 text-sm text-neutral-100 outline-none ring-0 transition focus:border-white/20 focus:bg-neutral-950/80"
-                placeholder="••••••••"
-                required
-              />
-            </label>
+              {error ? (
+                <div className="rounded-2xl border border-red-500/25 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+                  {error}
+                </div>
+              ) : null}
 
-            {error ? (
-              <div className="rounded-2xl border border-red-500/25 bg-red-500/10 px-4 py-3 text-sm text-red-200">
-                {error}
-              </div>
-            ) : null}
+              <button
+                type="submit"
+                disabled={!canSendCode}
+                className="inline-flex w-full items-center justify-center rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-neutral-950 shadow-lg shadow-black/30 transition hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {isSubmitting ? "Sending code…" : "Email me a code"}
+              </button>
 
-            <button
-              type="submit"
-              disabled={!canSubmit}
-              className="inline-flex w-full items-center justify-center rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-neutral-950 shadow-lg shadow-black/30 transition hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {isSubmitting ? "Signing in..." : "Login to CMS"}
-            </button>
-
-            <div className="pt-3">
               <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-xs text-neutral-300">
                 <p className="text-neutral-400">
-                  Use your admin credentials. If you need access, contact the site owner.
+                  OTP emails are sent by{" "}
+                  <strong className="text-neutral-200">Neon Auth</strong>, not by
+                  your VeeraCare <code className="text-neutral-200">SMTP_*</code>{" "}
+                  settings. In Neon Console → Auth, enable email sign-in + Email OTP.
+                  If mail is missing, check spam (sender often{" "}
+                  <code className="text-neutral-200">auth@mail.myneon.app</code>) or
+                  configure{" "}
+                  <strong className="text-neutral-200">Custom SMTP</strong> under
+                  Neon Auth.
+                </p>
+                <p className="mt-2 text-neutral-400">
+                  Allowlist: <code className="text-neutral-200">SOURCE_ADMIN_EMAILS</code>{" "}
+                  in <code className="text-neutral-200">adminEmails.ts</code>, plus optional{" "}
+                  <code className="text-neutral-200">ADMIN_EMAIL</code> in{" "}
+                  <code className="text-neutral-200">.env</code>.
                 </p>
               </div>
-            </div>
-          </form>
+            </form>
+          ) : (
+            <form onSubmit={onVerify} className="mt-7 space-y-4">
+              <label className="block">
+                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400">
+                  Verification code
+                </span>
+                <input
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  className="mt-2 w-full rounded-2xl border border-white/10 bg-neutral-950/55 px-4 py-3 text-center font-mono text-lg tracking-[0.35em] text-neutral-100 outline-none ring-0 transition focus:border-white/20 focus:bg-neutral-950/80"
+                  placeholder="000000"
+                  maxLength={16}
+                  required
+                />
+              </label>
+
+              {error ? (
+                <div className="rounded-2xl border border-red-500/25 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+                  {error}
+                </div>
+              ) : null}
+
+              <div className="rounded-2xl border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-xs text-amber-100/95">
+                <p className="font-medium text-amber-50">No email?</p>
+                <p className="mt-1 text-amber-100/90">
+                  Wait a minute, search spam/promotions, then try Resend. For reliable
+                  delivery, open Neon → Auth → Email provider → Custom SMTP (same
+                  Gmail app password you use elsewhere is fine).
+                </p>
+              </div>
+
+              <button
+                type="submit"
+                disabled={!canVerify}
+                className="inline-flex w-full items-center justify-center rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-neutral-950 shadow-lg shadow-black/30 transition hover:bg-neutral-100 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {isSubmitting ? "Signing in…" : "Verify & continue"}
+              </button>
+
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <button
+                  type="button"
+                  onClick={onResend}
+                  disabled={isResending}
+                  className="text-sm font-medium text-neutral-300 underline-offset-4 hover:text-white hover:underline disabled:opacity-50"
+                >
+                  {isResending ? "Sending…" : "Resend code"}
+                </button>
+                <button
+                  type="button"
+                  onClick={onUseDifferentEmail}
+                  className="text-sm font-medium text-neutral-400 underline-offset-4 hover:text-neutral-200 hover:underline"
+                >
+                  Use a different email
+                </button>
+              </div>
+            </form>
+          )}
         </div>
       </div>
     </main>
   );
 }
-

@@ -21,7 +21,8 @@ async function ensureSeeded() {
 }
 
 export async function GET(req: NextRequest) {
-  if (!assertAdmin(req)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!(await assertAdmin()))
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   try {
     await ensureSeeded();
     const items = await prisma.cmsService.findMany({
@@ -36,7 +37,8 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  if (!assertAdmin(req)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!(await assertAdmin()))
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const { searchParams } = new URL(req.url);
   if (searchParams.get("reset") === "1") {
     await prisma.cmsService.deleteMany();
@@ -81,7 +83,8 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PUT(req: NextRequest) {
-  if (!assertAdmin(req)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!(await assertAdmin()))
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const body = (await req.json()) as {
     id: string;
     title: string;
@@ -108,7 +111,8 @@ export async function PUT(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  if (!assertAdmin(req)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!(await assertAdmin()))
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const { searchParams } = new URL(req.url);
   if (searchParams.get("all") === "1") {
     await prisma.cmsService.deleteMany();

@@ -1,25 +1,31 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { AdminLogoutButton } from "@/components/admin/AdminLogoutButton";
 import { AdminSidebarNav } from "@/components/admin/AdminSidebarNav";
-import {
-  ADMIN_SESSION_COOKIE,
-  verifyAdminSession,
-} from "@/lib/admin/sessionNode";
+import { isAllowedAdminEmail } from "@/lib/neon-auth/adminEmails";
+import { getNeonSessionEmail } from "@/lib/neon-auth/readNeonSessionEmail";
+import { tryGetNeonAuth } from "@/lib/neon-auth/server";
 
-export default function AdminDashboardLayout({
+export const dynamic = "force-dynamic";
+
+export default async function AdminDashboardLayout({
   children,
 }: {
   children: ReactNode;
 }) {
-  const secret = process.env.JWT_SECRET;
-  const token = cookies().get(ADMIN_SESSION_COOKIE)?.value;
-  const session =
-    secret && token ? verifyAdminSession(token, secret) : null;
-  if (!session) redirect("/admin/login");
+  const auth = tryGetNeonAuth();
+  if (!auth) redirect("/admin/login?error=auth_config");
+
+  const { email, error } = await getNeonSessionEmail(auth);
+
+  if (error || !email) redirect("/admin/login");
+
+  if (!isAllowedAdminEmail(email)) {
+    await auth.signOut();
+    redirect("/admin/login?error=forbidden");
+  }
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-neutral-950 text-neutral-100">
@@ -43,7 +49,7 @@ export default function AdminDashboardLayout({
               CMS Dashboard
             </p>
             <p className="mt-1 text-xs text-neutral-300">
-              Secure admin workspace
+              Neon Auth • Email OTP
             </p>
           </Link>
 
@@ -57,7 +63,7 @@ export default function AdminDashboardLayout({
                 Session
               </p>
               <p className="mt-1 text-sm text-neutral-200">
-                Signed admin session (httpOnly cookie).
+                Signed in with managed Neon Auth (session cookies).
               </p>
             </div>
           </div>
@@ -97,4 +103,3 @@ export default function AdminDashboardLayout({
     </div>
   );
 }
-

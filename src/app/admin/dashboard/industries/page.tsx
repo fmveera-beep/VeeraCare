@@ -135,7 +135,7 @@ export default function AdminManageIndustriesPage() {
       if (!res.ok) {
         if (res.status === 401) {
           setLoadError(
-            "Not authorized (401). Log out and sign in again, or confirm JWT_SECRET on Vercel."
+            "Not authorized (401). Sign out and sign in again, or confirm Neon Auth env vars and the CMS allowlist (SOURCE_ADMIN_EMAILS / ADMIN_EMAIL)."
           );
         } else {
           const text = await res.text().catch(() => "");

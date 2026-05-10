@@ -23,6 +23,8 @@ Install deps:
 npm install
 ```
 
+Note: this repo pins **`legacy-peer-deps`** (via `.npmrc`) because `@neondatabase/auth` currently declares a Next.js peer range newer than Next 14; the integration still builds and runs on Next 14.
+
 Create a local env file:
 
 - Create `.env` in the project root.
@@ -42,7 +44,19 @@ Open `http://localhost:3000`.
 ### Required (core app)
 
 - **`DATABASE_URL`**: Postgres connection string used by Prisma.
-- **`JWT_SECRET`**: Secret used for auth-related helpers (keep it private; use 16+ chars).
+
+### CMS admin (Neon Auth)
+
+Neon Console → your branch → **Auth**: enable sign-in with email and Email OTP (see [Neon Auth docs](https://neon.com/docs/auth/guides/plugins/email-otp)).
+
+- **`NEON_AUTH_BASE_URL`**: Auth URL from Neon Auth configuration.
+- **`NEON_AUTH_COOKIE_SECRET`**: Random string **32+ characters** used to sign session cache cookies (`openssl rand -base64 32`).
+- **`SOURCE_ADMIN_EMAILS`** (in `src/lib/neon-auth/adminEmails.ts`): Comma-separated allowlist checked into the repo.
+- **`ADMIN_EMAIL`** (optional env): Comma-separated **additional** admins merged with `SOURCE_ADMIN_EMAILS` (useful on Vercel without redeploying).
+
+Optional:
+
+- **`NEXT_PUBLIC_ADMIN_EMAIL`**: Comma-separated hint list for the login UI (optional pre-check before OTP).
 
 ### Email (SMTP) — optional but recommended
 

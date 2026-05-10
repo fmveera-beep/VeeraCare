@@ -143,7 +143,7 @@ export default function AdminManageServicesPage() {
       if (!res.ok) {
         if (res.status === 401) {
           setLoadError(
-            "Not authorized (401). Log out and sign in again, or confirm JWT_SECRET matches on Vercel."
+            "Not authorized (401). Sign out and sign in again, or confirm Neon Auth env vars and the CMS allowlist (SOURCE_ADMIN_EMAILS / ADMIN_EMAIL)."
           );
         } else {
           const text = await res.text().catch(() => "");
@@ -267,9 +267,11 @@ export default function AdminManageServicesPage() {
           <p className="font-semibold text-amber-50">Could not load catalog</p>
           <p className="mt-1 text-amber-100/90">{loadError}</p>
           <p className="mt-2 text-xs text-amber-200/80">
-            Empty catalog after login usually means the API returned 401 (add{" "}
-            <code className="rounded bg-black/30 px-1">JWT_SECRET</code> on Vercel and redeploy) or the DB
-            is unreachable (check <code className="rounded bg-black/30 px-1">DATABASE_URL</code>). After
+            Empty catalog after login usually means the API returned 401 (check{" "}
+            <code className="rounded bg-black/30 px-1">NEON_AUTH_*</code>,{" "}
+            <code className="rounded bg-black/30 px-1">SOURCE_ADMIN_EMAILS</code> /{" "}
+            <code className="rounded bg-black/30 px-1">ADMIN_EMAIL</code>) or the DB is unreachable (check{" "}
+            <code className="rounded bg-black/30 px-1">DATABASE_URL</code>). After
             fixing env vars, use &quot;Reset to defaults&quot; to seed rows.
           </p>
         </div>
