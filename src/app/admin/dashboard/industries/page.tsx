@@ -3,6 +3,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { industryCardBackgroundImage } from "@/lib/cms/industryCardBackground";
 import { cn } from "@/lib/utils";
 
 type CmsIndustry = {
@@ -315,11 +316,10 @@ export default function AdminManageIndustriesPage() {
           {industries.slice(0, 4).map((ind) => (
             <div
               key={ind.id}
-              className={cn(
-                "rounded-2xl border border-white/10 p-4 text-white",
-                "bg-gradient-to-br",
-                ind.gradient
-              )}
+              className={cn("rounded-2xl border border-white/10 p-4 text-white")}
+              style={{
+                backgroundImage: industryCardBackgroundImage(ind.gradient),
+              }}
             >
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/80">
                 Preview

@@ -15,6 +15,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { Reveal } from "@/components/motion/Reveal";
 import { smoothScrollToHash } from "@/components/landing/PromoCtas";
+import { industryCardBackgroundImage } from "@/lib/cms/industryCardBackground";
 import { useEffect } from "react";
 
 function scrollToContact(e: MouseEvent<HTMLAnchorElement>) {
@@ -96,8 +97,8 @@ type Industry = {
 
 const DESKTOP_PAGE_SIZE = 4;
 
-const industryCardShell =
-  "flex h-[26rem] max-h-[85vh] flex-col overflow-hidden rounded-2xl bg-gradient-to-br p-6 text-white shadow-md lg:h-[26rem] lg:max-h-none";
+const industryCardLayout =
+  "flex h-[26rem] max-h-[85vh] flex-col overflow-hidden rounded-2xl p-6 text-white shadow-md lg:h-[26rem] lg:max-h-none";
 
 const industryScrollRegion =
   "mt-3 min-h-0 flex-1 overflow-y-auto overscroll-y-contain pr-1 touch-pan-y [scrollbar-color:rgba(255,255,255,0.35)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/35";
@@ -105,17 +106,15 @@ const industryScrollRegion =
 const industryCardHover =
   "motion-safe:transition-[transform,box-shadow] motion-safe:duration-300 motion-safe:ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:hover:-translate-y-2 motion-safe:hover:shadow-[0_24px_60px_-12px_rgba(0,31,97,0.45)] motion-safe:hover:ring-2 motion-safe:hover:ring-white/25 motion-reduce:hover:translate-y-0";
 
-function industryShellClasses(gradient: string) {
-  return `${industryCardShell} ${gradient}`;
-}
-
 function IndustryDeckCard({ item }: { item: Industry }) {
+  const Icon = item.icon;
   return (
     <article
-      className={`group/industry ${industryShellClasses(item.gradient)} ${industryCardHover}`}
+      className={`group/industry ${industryCardLayout} ${industryCardHover}`}
+      style={{ backgroundImage: industryCardBackgroundImage(item.gradient) }}
     >
       <div className="flex shrink-0 items-start justify-between gap-3">
-        <item.icon
+        <Icon
           className="h-7 w-7 shrink-0 transition-transform duration-200 group-hover/industry:scale-110"
           strokeWidth={1.35}
         />
@@ -157,7 +156,8 @@ function IndustryMobileCard({ item }: { item: Industry }) {
   const Icon = item.icon;
   return (
     <article
-      className={`group/ind-m ${industryShellClasses(item.gradient)} ${industryCardHover}`}
+      className={`group/ind-m ${industryCardLayout} ${industryCardHover}`}
+      style={{ backgroundImage: industryCardBackgroundImage(item.gradient) }}
     >
       <div className="flex shrink-0 items-start justify-between gap-3">
         <Icon
@@ -237,7 +237,7 @@ export function IndustriesSection() {
           title: String(it.title),
           gradient: String(it.gradient),
           iconName: String(it.iconName ?? "Building2"),
-          icon: iconMap[String(it.iconName)] ?? Building2,
+          icon: iconMap[String(it.iconName ?? "Building2").trim()] ?? Building2,
           body: String(it.body),
           jobs: Array.isArray(it.jobs)
             ? it.jobs.map((x: unknown) => String(x))
@@ -267,7 +267,7 @@ export function IndustriesSection() {
 
         <div className="relative mt-10 md:mt-14">
           <div className="relative hidden min-h-[26rem] overflow-hidden py-3 lg:block">
-            <AnimatePresence initial={false} mode="wait">
+            <AnimatePresence initial={false}>
               <motion.div
                 key={carouselIndex}
                 role="group"
@@ -288,7 +288,7 @@ export function IndustriesSection() {
           </div>
 
           <div className="lg:hidden">
-            <AnimatePresence mode="wait" initial={false}>
+            <AnimatePresence initial={false}>
               <motion.div
                 key={activeIndustry.key}
                 initial={{ opacity: 0, x: 24 }}
