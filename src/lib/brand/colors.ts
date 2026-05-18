@@ -1,13 +1,13 @@
 /**
- * Veera logo palette (sampled from src/assets/veera-logo-primary.png).
- * Use Tailwind `brand-*` tokens in UI; these constants are for scripts/email if needed.
+ * Brand blues (aligned with Tailwind `brand-*` and globals.css).
+ * Use Tailwind in UI; these constants are for scripts/email if needed.
  */
 export const brandColors = {
-  primary: "#4A5CA8",
-  navy: "#32448E",
-  mid: "#5F6FB5",
-  light: "#8A9BC4",
-  pale: "#D6DCF0",
-  tint: "#ECF0F7",
+  primary: "#4058B0",
+  navy: "#2A4394",
+  mid: "#5569B8",
+  light: "#7F93C6",
+  pale: "#CED6EE",
+  tint: "#E6EAF8",
   foreground: "#FFFFFF",
 } as const;

@@ -45,7 +45,7 @@ export function SecurityPoints({ className }: SecurityPointsProps) {
       )}
       aria-labelledby="trust-safety-heading"
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_60%_at_50%_-10%,rgba(74,92,168,0.08),transparent)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_60%_at_50%_-10%,rgba(64,88,176,0.08),transparent)]" />
 
       <div className="relative mx-auto max-w-[1320px] px-4 py-12 md:px-8 md:py-16 lg:py-20">
         <Reveal blur>

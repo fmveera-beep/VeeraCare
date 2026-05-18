@@ -148,7 +148,7 @@ export function Footer() {
         <div className="mt-16 grid gap-10 border-t border-white/10 pt-10 md:grid-cols-[auto_1fr_auto] md:items-center">
           <Link
             href="#top"
-            className="inline-flex w-fit items-center rounded-md border border-white/80 px-4 py-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand hover:shadow-[0_0_28px_-4px_rgba(74,92,168,0.45)] motion-reduce:hover:translate-y-0"
+            className="inline-flex w-fit items-center rounded-md border border-white/80 px-4 py-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand hover:shadow-[0_0_28px_-4px_rgba(64,88,176,0.45)] motion-reduce:hover:translate-y-0"
             aria-label="Veera Care — home"
           >
             <VeeraLogo variant="nav" tone="light" />

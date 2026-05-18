@@ -104,7 +104,7 @@ const industryScrollRegion =
   "mt-3 min-h-0 flex-1 overflow-y-auto overscroll-y-contain pr-1 touch-pan-y [scrollbar-color:rgba(255,255,255,0.35)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/35";
 
 const industryCardHover =
-  "motion-safe:transition-[transform,box-shadow] motion-safe:duration-300 motion-safe:ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:hover:-translate-y-2 motion-safe:hover:shadow-[0_24px_60px_-12px_rgba(0,31,97,0.45)] motion-safe:hover:ring-2 motion-safe:hover:ring-white/25 motion-reduce:hover:translate-y-0";
+  "motion-safe:transition-[transform,box-shadow] motion-safe:duration-300 motion-safe:ease-[cubic-bezier(0.22,1,0.36,1)] motion-safe:hover:-translate-y-2 motion-safe:hover:shadow-[0_24px_60px_-12px_rgba(26,52,120,0.45)] motion-safe:hover:ring-2 motion-safe:hover:ring-white/25 motion-reduce:hover:translate-y-0";
 
 function IndustryDeckCard({ item }: { item: Industry }) {
   const Icon = item.icon;
