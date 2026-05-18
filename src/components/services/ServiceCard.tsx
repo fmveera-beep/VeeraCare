@@ -16,9 +16,12 @@ export type ServiceCardDetails = {
 export function ServiceCard({
   title,
   details,
+  id,
 }: {
   title: string;
   details: ServiceCardDetails;
+  /** Anchor target for `/services#…` links from the footer. */
+  id?: string;
 }) {
   const [src, setSrc] = useState(details.image);
 
@@ -41,8 +44,9 @@ export function ServiceCard({
 
   return (
     <article
+      id={id}
       className={cn(
-        "group relative overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-lg transition-all duration-300",
+        "group relative scroll-mt-28 overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-lg transition-all duration-300 md:scroll-mt-32",
         "hover:border-brand/35 hover:shadow-2xl hover:shadow-brand/15 motion-safe:hover:-translate-y-1"
       )}
     >

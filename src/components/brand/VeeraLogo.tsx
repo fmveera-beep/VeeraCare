@@ -8,7 +8,7 @@ type VeeraLogoProps = {
   className?: string;
   /** Navbar / compact header */
   variant?: "nav" | "lockup" | "compact";
-  /** Reserved for future light-on-dark asset variants */
+  /** `light` = white mark for dark backgrounds (e.g. footer). */
   tone?: "dark" | "light";
 };
 
@@ -26,6 +26,7 @@ const compactSize =
 export function VeeraLogo({
   className,
   variant = "nav",
+  tone = "dark",
 }: VeeraLogoProps) {
   const showLockup = variant === "lockup";
   const showCompact = variant === "compact";
@@ -35,6 +36,8 @@ export function VeeraLogo({
     : showCompact
       ? compactSize
       : navSize;
+
+  const lightOnDark = tone === "light";
 
   return (
     <span
@@ -50,7 +53,10 @@ export function VeeraLogo({
         alt="Veera Care Facilities Management LLC"
         fill
         priority={showLockup}
-        className="object-contain object-left"
+        className={cn(
+          "object-contain object-left",
+          lightOnDark && "brightness-0 invert"
+        )}
         sizes={
           showLockup
             ? "(max-width: 768px) 90vw, 440px"

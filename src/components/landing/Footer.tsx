@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import {
@@ -14,8 +14,12 @@ import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { contactPhoneDisplay, contactPhoneE164, socialUrls } from "@/config/site";
+import { seedServices } from "@/lib/cms/seed";
+import { serviceDetailHref } from "@/lib/cms/serviceSectionAnchors";
 
-const columns = [
+type FooterLink = { href: string; label: string };
+
+const staticColumns: { title: string; links: FooterLink[] }[] = [
   {
     title: "Quick links",
     links: [
@@ -24,15 +28,6 @@ const columns = [
       { href: "#services", label: "Solutions overview" },
       { href: "#reviews", label: "Customer reviews" },
       { href: "#faq", label: "FAQ" },
-    ],
-  },
-  {
-    title: "Services",
-    links: [
-      { href: "#services", label: "Contract staffing" },
-      { href: "#services", label: "Direct hire" },
-      { href: "#services", label: "Employer of record" },
-      { href: "#services", label: "Facilities & janitorial staffing" },
     ],
   },
   {
@@ -45,6 +40,11 @@ const columns = [
   },
 ];
 
+const fallbackServiceLinks: FooterLink[] = seedServices.map((s) => ({
+  label: s.title,
+  href: serviceDetailHref(s.title),
+}));
+
 const footerSocial = [
   ["Facebook", IconFacebook, socialUrls.facebook],
   ["Instagram", IconInstagram, socialUrls.instagram],
@@ -54,6 +54,31 @@ const footerSocial = [
 
 export function Footer() {
   const [newsletterThanks, setNewsletterThanks] = useState(false);
+  const [serviceLinks, setServiceLinks] = useState<FooterLink[]>(fallbackServiceLinks);
+
+  useEffect(() => {
+    fetch("/api/public/services", { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((data: { items?: { title: string; category: string }[] }) => {
+        if (!Array.isArray(data.items) || data.items.length === 0) return;
+        setServiceLinks(
+          data.items.map((s) => ({
+            label: String(s.title),
+            href: serviceDetailHref(String(s.title)),
+          }))
+        );
+      })
+      .catch(() => {});
+  }, []);
+
+  const footerColumns = useMemo(
+    () => [
+      staticColumns[0],
+      { title: "Services", links: serviceLinks },
+      staticColumns[1],
+    ],
+    [serviceLinks]
+  );
 
   const scrollToNewsletter = useCallback(() => {
     document.getElementById("newsletter")?.scrollIntoView({
@@ -73,7 +98,7 @@ export function Footer() {
             id="newsletter"
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.4 }}
             className="scroll-mt-28"
           >
@@ -125,14 +150,28 @@ export function Footer() {
           </motion.div>
 
           <div className="grid gap-10 sm:grid-cols-3">
-            {columns.map((col) => (
-              <div key={col.title}>
+            {footerColumns.map((col) => (
+              <motion.div
+                key={col.title}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.35 }}
+                className={col.title === "Services" ? "min-w-0" : undefined}
+              >
                 <p className="text-sm font-bold uppercase tracking-wide">{col.title}</p>
-                <ul className="mt-4 space-y-3 text-sm text-white/75">
+                <ul
+                  className={
+                    col.title === "Services"
+                      ? "mt-4 max-h-[min(70vh,28rem)] space-y-2.5 overflow-y-auto pr-2 text-sm text-white/75 [scrollbar-color:rgba(255,255,255,0.35)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/35"
+                      : "mt-4 space-y-3 text-sm text-white/75"
+                  }
+                >
                   {col.links.map((l) => (
-                    <li key={l.label}>
+                    <li key={`${l.href}-${l.label}`}>
                       <Link
                         href={l.href}
+                        scroll={l.href.startsWith("/services")}
                         className="inline-block transition-all duration-200 hover:translate-x-1.5 hover:text-brand motion-reduce:hover:translate-x-0"
                       >
                         {l.label}
@@ -140,7 +179,7 @@ export function Footer() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>

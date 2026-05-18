@@ -8,8 +8,10 @@ import { Reveal } from "@/components/motion/Reveal";
 import { cn } from "@/lib/utils";
 import { serviceNeededGroups, type ServiceNeeded } from "@/lib/validations/cta";
 import { ServiceCard, type ServiceCardDetails } from "@/components/services/ServiceCard";
+import { ServicesPageHashScroll } from "@/components/services/ServicesPageHashScroll";
 import { prisma } from "@/lib/prisma";
 import { seedServices, toServiceCardDetails } from "@/lib/cms/seed";
+import { serviceSlug } from "@/lib/cms/serviceSectionAnchors";
 
 /** DB-backed page — must not run Prisma at build time (e.g. Vercel without DATABASE_URL during `next build`). */
 export const dynamic = "force-dynamic";
@@ -342,6 +344,7 @@ export default async function ServicesPage() {
       <PreHeader />
       <Navbar />
       <main>
+        <ServicesPageHashScroll />
         <section className="relative overflow-hidden border-b border-neutral-200 bg-gradient-to-b from-peach via-white to-[#f6f8ff] py-14 md:py-20">
           <div
             className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(64,88,176,0.16),transparent)]"
@@ -460,7 +463,11 @@ export default async function ServicesPage() {
                     <div className="relative grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
                       {cards.map((card, i) => (
                         <Reveal key={card.title} delay={i * 0.04} y={16}>
-                          <ServiceCard title={card.title} details={card.details} />
+                          <ServiceCard
+                            title={card.title}
+                            details={card.details}
+                            id={serviceSlug(card.title)}
+                          />
                         </Reveal>
                       ))}
                     </div>
