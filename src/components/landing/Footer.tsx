@@ -13,7 +13,7 @@ import { VeeraLogo } from "@/components/brand/VeeraLogo";
 import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { socialUrls } from "@/config/site";
+import { contactPhoneDisplay, contactPhoneE164, socialUrls } from "@/config/site";
 
 const columns = [
   {
@@ -148,16 +148,23 @@ export function Footer() {
         <div className="mt-16 grid gap-10 border-t border-white/10 pt-10 md:grid-cols-[auto_1fr_auto] md:items-center">
           <Link
             href="#top"
-            className="inline-flex w-fit items-center rounded-md border border-white/80 px-4 py-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand hover:shadow-[0_0_28px_-4px_rgba(74,105,255,0.5)] motion-reduce:hover:translate-y-0"
+            className="inline-flex w-fit items-center rounded-md border border-white/80 px-4 py-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand hover:shadow-[0_0_28px_-4px_rgba(74,92,168,0.45)] motion-reduce:hover:translate-y-0"
             aria-label="Veera Care — home"
           >
-            <VeeraLogo variant="nav" tone="light" className="h-9 md:h-10" />
+            <VeeraLogo variant="nav" tone="light" />
           </Link>
 
           <div className="grid gap-8 text-sm md:grid-cols-3 md:gap-6">
             <div>
               <p className="font-semibold uppercase tracking-wide text-white/55">Call us</p>
-              <p className="mt-2 font-medium">+971 4288 9597</p>
+              <p className="mt-2 font-medium">
+                <a
+                  href={`tel:+${contactPhoneE164}`}
+                  className="transition-colors duration-200 hover:text-brand"
+                >
+                  {contactPhoneDisplay}
+                </a>
+              </p>
             </div>
             <div>
               <p className="font-semibold uppercase tracking-wide text-white/55">Email us</p>

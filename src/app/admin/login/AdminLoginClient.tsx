@@ -202,24 +202,23 @@ export function AdminLoginClient() {
       </div>
 
       <div className="relative mx-auto flex min-h-screen max-w-md items-center px-6 py-14">
-        <div className="w-full rounded-3xl border border-white/10 bg-neutral-900/40 p-6 shadow-2xl shadow-black/50 backdrop-blur-xl md:p-8">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <p className="mt-5 text-xs font-semibold uppercase tracking-[0.22em] text-neutral-400">
-                VeeraCare CMS
-              </p>
-              <h1 className="mt-2 text-3xl font-bold tracking-tight">
-                {step === "email" ? "Admin sign-in" : "Enter login code"}
-              </h1>
-              <p className="mt-2 text-sm text-neutral-300">
-                {step === "email"
-                  ? "Managed Neon Auth: we email you a one-time code each time you sign in."
-                  : `Check ${normalizedEmail} for your verification code.`}
-              </p>
-            </div>
-            <div className="hidden h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-b from-white/15 to-white/0 md:flex">
-              <VeeraLogo className="h-8 w-8 opacity-95" />
-            </div>
+        <div className="w-full overflow-hidden rounded-3xl border border-white/10 bg-neutral-900/40 p-6 shadow-2xl shadow-black/50 backdrop-blur-xl md:p-8">
+          <div className="mb-5 flex justify-center sm:justify-start">
+            <VeeraLogo variant="compact" className="opacity-95" />
+          </div>
+
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-neutral-400">
+              VeeraCare CMS
+            </p>
+            <h1 className="mt-2 text-3xl font-bold tracking-tight">
+              {step === "email" ? "Admin sign-in" : "Enter login code"}
+            </h1>
+            <p className="mt-2 text-sm text-neutral-300">
+              {step === "email"
+                ? "Managed Neon Auth: we email you a one-time code each time you sign in."
+                : `Check ${normalizedEmail} for your verification code.`}
+            </p>
           </div>
 
           {step === "email" ? (
@@ -256,26 +255,6 @@ export function AdminLoginClient() {
               >
                 {isSubmitting ? "Sending code…" : "Email me a code"}
               </button>
-
-              <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-xs text-neutral-300">
-                <p className="text-neutral-400">
-                  OTP emails are sent by{" "}
-                  <strong className="text-neutral-200">Neon Auth</strong>, not by
-                  your VeeraCare <code className="text-neutral-200">SMTP_*</code>{" "}
-                  settings. In Neon Console → Auth, enable email sign-in + Email OTP.
-                  If mail is missing, check spam (sender often{" "}
-                  <code className="text-neutral-200">auth@mail.myneon.app</code>) or
-                  configure{" "}
-                  <strong className="text-neutral-200">Custom SMTP</strong> under
-                  Neon Auth.
-                </p>
-                <p className="mt-2 text-neutral-400">
-                  Allowlist: <code className="text-neutral-200">SOURCE_ADMIN_EMAILS</code>{" "}
-                  in <code className="text-neutral-200">adminEmails.ts</code>, plus optional{" "}
-                  <code className="text-neutral-200">ADMIN_EMAIL</code> in{" "}
-                  <code className="text-neutral-200">.env</code>.
-                </p>
-              </div>
             </form>
           ) : (
             <form onSubmit={onVerify} className="mt-7 space-y-4">
@@ -301,15 +280,6 @@ export function AdminLoginClient() {
                   {error}
                 </div>
               ) : null}
-
-              <div className="rounded-2xl border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-xs text-amber-100/95">
-                <p className="font-medium text-amber-50">No email?</p>
-                <p className="mt-1 text-amber-100/90">
-                  Wait a minute, search spam/promotions, then try Resend. For reliable
-                  delivery, open Neon → Auth → Email provider → Custom SMTP (same
-                  Gmail app password you use elsewhere is fine).
-                </p>
-              </div>
 
               <button
                 type="submit"

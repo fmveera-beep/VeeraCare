@@ -7,7 +7,7 @@ import {
   IconLinkedin,
   IconYoutube,
 } from "@/components/icons/SocialIcons";
-import { socialUrls } from "@/config/site";
+import { careersEmail, socialUrls } from "@/config/site";
 
 const social = [
   ["Facebook", IconFacebook, socialUrls.facebook],
@@ -24,10 +24,10 @@ export function PreHeader() {
           <span className="text-white">Work with Veera Care</span>
           <span className="mx-2 text-white/35">·</span>
           <a
-            href="mailto:hello@veeracare.com"
+            href={`mailto:${careersEmail}`}
             className="text-white/90 underline-offset-4 transition-colors hover:text-brand hover:underline"
           >
-            hello@veeracare.com
+            {careersEmail}
           </a>
         </p>
         <div className="flex items-center gap-1">

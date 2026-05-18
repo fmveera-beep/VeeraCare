@@ -122,7 +122,7 @@ export default function AdminManageIndustriesPage() {
   }>({
     key: "",
     title: "",
-    gradient: "from-brand via-[#5f7cff] to-[#d6deff]",
+    gradient: "from-brand via-brand-mid to-brand-pale",
     iconName: "Building2",
     body: "",
     jobsText: "",
@@ -168,7 +168,7 @@ export default function AdminManageIndustriesPage() {
     setForm({
       key: "",
       title: "",
-      gradient: "from-brand via-[#5f7cff] to-[#d6deff]",
+      gradient: "from-brand via-brand-mid to-brand-pale",
       iconName: "Building2",
       body: "",
       jobsText: "",
@@ -482,7 +482,7 @@ export default function AdminManageIndustriesPage() {
                 setForm((f) => ({ ...f, gradient: e.target.value }))
               }
               className="mt-2 w-full rounded-2xl border border-white/10 bg-neutral-950/55 px-4 py-3 text-sm text-neutral-100 outline-none transition focus:border-white/20 focus:bg-neutral-950/80"
-              placeholder="from-brand via-[#5f7cff] to-[#d6deff]"
+              placeholder="from-brand via-brand-mid to-brand-pale"
             />
           </label>
 

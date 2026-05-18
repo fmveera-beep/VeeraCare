@@ -47,13 +47,13 @@ export function Navbar() {
           : "border-neutral-200 bg-white"
       )}
     >
-      <nav className="relative flex h-[72px] w-full items-center gap-4 pl-3 pr-4 md:h-20 md:gap-6 md:pl-5 md:pr-8 lg:pl-6">
+      <nav className="relative flex min-h-[88px] w-full items-center gap-3 py-2 pl-3 pr-3 sm:gap-4 sm:pl-4 sm:pr-4 md:min-h-[100px] md:gap-6 md:pl-5 md:pr-8 lg:pl-6">
         <Link
           href="/"
           className="flex shrink-0 items-center py-1 transition-all duration-300 hover:opacity-90 motion-safe:hover:scale-[1.02] motion-safe:active:scale-[0.99]"
           aria-label="Veera Care — home"
         >
-          <VeeraLogo variant="nav" tone="dark" className="h-[34px] md:h-10" />
+          <VeeraLogo variant="nav" tone="dark" />
         </Link>
 
         <div className="hidden flex-1 items-center justify-center gap-6 xl:gap-7 lg:flex">

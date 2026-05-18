@@ -5,8 +5,13 @@
 :root {
   --background: #ffffff;
   --foreground: #0a0a0a;
-  --brand: #4a69ff;
-  --brand-navy: #001f61;
+  /* Sampled from veera primary logo */
+  --brand: #4a5ca8;
+  --brand-navy: #32448e;
+  --brand-mid: #5f6fb5;
+  --brand-light: #8a9bc4;
+  --brand-pale: #d6dcf0;
+  --brand-tint: #ecf0f7;
 }
 
 /* In-page anchors (Learn More, nav links): smooth scroll + room below sticky navbar */
@@ -32,5 +37,5 @@ body {
 }
 
 ::selection {
-  background: rgba(74, 105, 255, 0.22);
+  background: rgba(74, 92, 168, 0.25);
 }

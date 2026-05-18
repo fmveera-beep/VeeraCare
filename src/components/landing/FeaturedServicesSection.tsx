@@ -74,10 +74,10 @@ export function FeaturedServicesSection() {
   return (
     <section
       id="featured-services"
-      className="relative overflow-hidden border-b border-brand/15 bg-gradient-to-b from-peach via-white to-[#f6f8ff] py-14 md:py-20"
+      className="relative overflow-hidden border-b border-brand/15 bg-gradient-to-b from-peach via-white to-brand-tint py-14 md:py-20"
     >
       <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(74,105,255,0.14),transparent)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(74,92,168,0.14),transparent)]"
         aria-hidden
       />
       <div className="relative mx-auto max-w-[1320px] px-4 md:px-8">

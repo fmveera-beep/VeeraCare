@@ -25,7 +25,7 @@ const fallbackIndustries = [
   {
     key: "healthcare",
     title: "Healthcare Facilities",
-    gradient: "from-brand via-[#5f7cff] to-[#a9bcff]",
+    gradient: "from-brand-navy via-brand to-brand-light",
     icon: HeartPulse,
     body:
       "Clinical support, environmental services (EVS), infection prevention aides, and facility maintenance with audit ready workflows.",
@@ -40,7 +40,7 @@ const fallbackIndustries = [
   {
     key: "construction",
     title: "Construction & Manpower",
-    gradient: "from-[#1a3a8f] via-brand to-[#9eb6ff]",
+    gradient: "from-brand-navy via-brand-mid to-brand-light",
     icon: HardHat,
     body:
       "Skilled trades support, site helpers, heavy machinery operators, and safety certified labor for building and infrastructure projects.",
@@ -55,7 +55,7 @@ const fallbackIndustries = [
   {
     key: "manufacturing",
     title: "Domestic & Residential Care",
-    gradient: "from-brand-navy via-brand to-[#d6deff]",
+    gradient: "from-brand-navy via-brand to-brand-pale",
     icon: Home,
     body:
       "Managed domestic staffing for homes—trusted housemaids and professional cleaners with consistent schedules and quality oversight.",
@@ -70,7 +70,7 @@ const fallbackIndustries = [
   {
     key: "facilities",
     title: "Facilities & Workplaces",
-    gradient: "from-brand via-[#5f7cff] to-[#d6deff]",
+    gradient: "from-brand via-brand-mid to-brand-pale",
     icon: Building2,
     body:
       "Janitorial, day porters, grounds maintenance, and event setup for commercial and corporate spaces.",
