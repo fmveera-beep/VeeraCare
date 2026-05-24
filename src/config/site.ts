@@ -4,11 +4,11 @@ export const careersEmail =
 
 /** Footer / contact — display format */
 export const contactPhoneDisplay =
-  process.env.NEXT_PUBLIC_CONTACT_PHONE_DISPLAY ?? "+971 4288 9597";
+  process.env.NEXT_PUBLIC_CONTACT_PHONE_DISPLAY ?? "+971 55 572 2868";
 
 /** Digits only for tel: / WhatsApp (no +, spaces, or dashes) */
 export const contactPhoneE164 =
-  process.env.NEXT_PUBLIC_CONTACT_PHONE_E164 ?? "97142889597";
+  process.env.NEXT_PUBLIC_CONTACT_PHONE_E164 ?? "971555722868";
 
 export function whatsAppChatUrl(prefillMessage?: string) {
   const digits = contactPhoneE164.replace(/\D/g, "");

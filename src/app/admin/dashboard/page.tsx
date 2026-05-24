@@ -11,12 +11,22 @@ export default function AdminDashboardHomePage() {
           Welcome to VeeraCare CMS
         </h1>
         <p className="mt-2 max-w-2xl text-sm text-neutral-300">
-          Use the sidebar to manage Services and Industries. Content is saved to
-          your database and reflected on the public site.
+          Use the sidebar to review form leads and manage Services and Industries.
+          Content is saved to your database and reflected on the public site.
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <Link
+          href="/admin/dashboard/leads"
+          className="rounded-2xl border border-white/10 bg-neutral-900/40 p-6 transition hover:bg-neutral-900/60"
+        >
+          <h2 className="text-lg font-bold tracking-tight">Leads</h2>
+          <p className="mt-2 text-sm text-neutral-300">
+            View hiring and worker inquiries from the contact form.
+          </p>
+        </Link>
+
         <Link
           href="/admin/dashboard/services"
           className="rounded-2xl border border-white/10 bg-neutral-900/40 p-6 transition hover:bg-neutral-900/60"

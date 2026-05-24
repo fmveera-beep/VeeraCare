@@ -74,10 +74,13 @@ Each address must be a user you can sign in as via Neon Auth (OTP to that inbox)
 
 Used when someone submits the hiring/worker CTA form (`POST /api/cta-request`), not for CMS login codes.
 
+**Send vs deliver:** `SMTP_*` controls which account *sends* mail (Gmail or Outlook both work). **`OWNER_NOTIFY_EMAIL`** controls which inbox *receives* leads—set this to the client’s **Outlook** address even if sending still uses Gmail.
+
 | Variable | Purpose |
 |----------|---------|
-| **`OWNER_NOTIFY_EMAIL`** | Inbox for CTA notifications |
-| **`SMTP_HOST`**, **`SMTP_PORT`**, **`SMTP_USER`**, **`SMTP_PASS`**, **`SMTP_FROM`** | Nodemailer transport |
+| **`OWNER_NOTIFY_EMAIL`** | **To:** client Outlook inbox for every CTA lead (required for delivery) |
+| **`SMTP_HOST`**, **`SMTP_PORT`**, **`SMTP_USER`**, **`SMTP_PASS`**, **`SMTP_FROM`** | **From:** Nodemailer transport (Gmail `smtp.gmail.com` or M365 `smtp.office365.com`) |
+| **`CTA_NOTIFY_TO`** | Optional override; same role as `OWNER_NOTIFY_EMAIL` if set |
 
 ### Images (optional)
 
@@ -97,6 +100,7 @@ Used when someone submits the hiring/worker CTA form (`POST /api/cta-request`), 
 |------|-------------|
 | **`/admin/login`** | Email OTP sign-in (Neon Auth client) |
 | **`/admin/dashboard`** | Protected shell (Neon session + allowlist) |
+| **`/admin/dashboard/leads`** | CTA / contact form submissions (`StaffRequest` table) |
 | **`/admin/dashboard/services`** | CRUD CMS services |
 | **`/admin/dashboard/industries`** | CRUD CMS industries |
 | **`/admin/dashboard/settings`** | Local preferences + destructive CMS actions |
