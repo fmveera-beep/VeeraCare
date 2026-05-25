@@ -42,9 +42,7 @@ export function AdminLoginClient({
         "Neon Auth is not configured on the server (missing NEON_AUTH_BASE_URL / NEON_AUTH_COOKIE_SECRET)."
       );
     } else if (code === "forbidden") {
-      setError(
-        `That account is not allowed to access the CMS. Use: ${allowedEmails.join(", ")}`
-      );
+      setError("That account is not allowed to access the CMS.");
     }
   }, [searchParams, authConfigured, allowedEmails]);
 
@@ -78,9 +76,7 @@ export function AdminLoginClient({
       allowedEmails.length > 0 &&
       !allowedEmails.includes(normalizedEmail)
     ) {
-      setError(
-        `Use one of the CMS admin emails: ${allowedEmails.join(", ")}`
-      );
+      setError("This email is not authorized for CMS access.");
       return;
     }
 
@@ -243,16 +239,19 @@ export function AdminLoginClient({
                   Email
                 </span>
                 <input
+                  id="veeracare-admin-email"
+                  name="veeracare-admin-email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   type="email"
-                  autoComplete="email"
+                  inputMode="email"
+                  autoComplete="off"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  data-lpignore="true"
+                  data-1p-ignore="true"
                   className="mt-2 w-full rounded-2xl border border-white/10 bg-neutral-950/55 px-4 py-3 text-sm text-neutral-100 outline-none ring-0 transition focus:border-white/20 focus:bg-neutral-950/80"
-                  placeholder={
-                    allowedEmails[0]
-                      ? allowedEmails.join(", ")
-                      : "admin@your-domain.com"
-                  }
+                  placeholder="Enter your email address"
                   required
                 />
               </label>
