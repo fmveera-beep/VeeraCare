@@ -9,12 +9,15 @@ import { describeEmailOtpSendFailure } from "@/lib/neon-auth/otpClientHelpers";
 
 type Step = "email" | "otp";
 
-const ADMIN_HINT_LIST =
-  process.env.NEXT_PUBLIC_ADMIN_EMAIL?.split(",").map((s) =>
-    s.trim().toLowerCase()
-  ).filter(Boolean) ?? [];
+type AdminLoginClientProps = {
+  allowedEmails: string[];
+  authConfigured: boolean;
+};
 
-export function AdminLoginClient() {
+export function AdminLoginClient({
+  allowedEmails,
+  authConfigured,
+}: AdminLoginClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const nextPath = searchParams.get("next") || "/admin/dashboard";
@@ -27,15 +30,23 @@ export function AdminLoginClient() {
   const [isResending, setIsResending] = useState(false);
 
   useEffect(() => {
+    if (!authConfigured) {
+      setError(
+        "Neon Auth is not configured on the server. Set NEON_AUTH_BASE_URL and NEON_AUTH_COOKIE_SECRET (32+ characters) in .env, then restart npm run dev."
+      );
+      return;
+    }
     const code = searchParams.get("error");
     if (code === "auth_config") {
       setError(
         "Neon Auth is not configured on the server (missing NEON_AUTH_BASE_URL / NEON_AUTH_COOKIE_SECRET)."
       );
     } else if (code === "forbidden") {
-      setError("That account is not allowed to access the CMS.");
+      setError(
+        `That account is not allowed to access the CMS. Use: ${allowedEmails.join(", ")}`
+      );
     }
-  }, [searchParams]);
+  }, [searchParams, authConfigured, allowedEmails]);
 
   const normalizedEmail = useMemo(
     () => email.trim().toLowerCase(),
@@ -43,8 +54,12 @@ export function AdminLoginClient() {
   );
 
   const canSendCode = useMemo(
-    () => normalizedEmail.length > 3 && normalizedEmail.includes("@") && !isSubmitting,
-    [normalizedEmail, isSubmitting]
+    () =>
+      authConfigured &&
+      normalizedEmail.length > 3 &&
+      normalizedEmail.includes("@") &&
+      !isSubmitting,
+    [authConfigured, normalizedEmail, isSubmitting]
   );
 
   const canVerify = useMemo(
@@ -60,11 +75,11 @@ export function AdminLoginClient() {
     setError(null);
 
     if (
-      ADMIN_HINT_LIST.length > 0 &&
-      !ADMIN_HINT_LIST.includes(normalizedEmail)
+      allowedEmails.length > 0 &&
+      !allowedEmails.includes(normalizedEmail)
     ) {
       setError(
-        `Use one of the CMS admin emails (${ADMIN_HINT_LIST.join(", ")}). Update NEXT_PUBLIC_ADMIN_EMAIL if this list is wrong.`
+        `Use one of the CMS admin emails: ${allowedEmails.join(", ")}`
       );
       return;
     }
@@ -234,8 +249,8 @@ export function AdminLoginClient() {
                   autoComplete="email"
                   className="mt-2 w-full rounded-2xl border border-white/10 bg-neutral-950/55 px-4 py-3 text-sm text-neutral-100 outline-none ring-0 transition focus:border-white/20 focus:bg-neutral-950/80"
                   placeholder={
-                    ADMIN_HINT_LIST[0]
-                      ? ADMIN_HINT_LIST.join(", ")
+                    allowedEmails[0]
+                      ? allowedEmails.join(", ")
                       : "admin@your-domain.com"
                   }
                   required

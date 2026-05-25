@@ -29,7 +29,6 @@ export const socialUrls = {
     "https://www.linkedin.com/company/veeracarefm",
   youtube:
     process.env.NEXT_PUBLIC_SOCIAL_YOUTUBE ?? "https://www.youtube.com/",
-  x: process.env.NEXT_PUBLIC_SOCIAL_X ?? "https://twitter.com/",
 } as const;
 
 export const introVideoEmbedUrl =

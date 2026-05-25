@@ -4,7 +4,16 @@ export function describeEmailOtpSendFailure(res: {
   data?: unknown;
 }): string | null {
   const errMsg = res.error?.message?.trim();
-  if (errMsg) return errMsg;
+  if (errMsg) {
+    if (/invalid origin/i.test(errMsg)) {
+      return (
+        "Invalid origin: add your site URL in Neon Console → Project → Branch → Auth → Domains " +
+        "(e.g. https://veera-care-alpha.vercel.app — no trailing slash). " +
+        "Redeploy on Vercel after saving. Localhost is separate (Allow localhost for dev)."
+      );
+    }
+    return errMsg;
+  }
 
   const d = res.data as { success?: boolean } | null | undefined;
   if (d && typeof d.success === "boolean" && d.success === false) {

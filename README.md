@@ -147,8 +147,77 @@ If SMTP fails, the row is still stored; the API returns success with `emailSent`
 | `npm run db:push` | Push Prisma schema to the database |
 | `npm run db:migrate` | Migrations (if using migrate workflow) |
 
+## Deploy to Vercel
+
+The app builds with the default Next.js settings on Vercel (`npm run build` → `prisma generate && next build`). `.npmrc` enables `legacy-peer-deps` for `@neondatabase/auth`.
+
+### 1. Push code to GitHub
+
+Repo: [fmveera-beep/VeeraCare](https://github.com/fmveera-beep/VeeraCare.git)
+
+```bash
+git add .
+git commit -m "Prepare for Vercel deployment"
+git push -u origin main
+```
+
+(Sign in as **fmveera-beep** with a [personal access token](https://github.com/settings/tokens) if push returns 403.)
+
+### 2. Import on Vercel
+
+1. Go to [vercel.com/new](https://vercel.com/new) and sign in.
+2. **Import** `fmveera-beep/VeeraCare`.
+3. Framework: **Next.js** (auto-detected).
+4. **Environment variables** — add everything from your local `.env` (see table below). Use Neon’s **pooled** connection string for `DATABASE_URL` on Vercel (host contains `-pooler`).
+5. Click **Deploy**.
+
+### 3. Vercel environment variables (minimum)
+
+| Variable | Notes |
+|----------|--------|
+| `DATABASE_URL` | Neon **pooled** Postgres URL |
+| `NEON_AUTH_BASE_URL` | From Neon → Auth → Configuration |
+| `NEON_AUTH_COOKIE_SECRET` | Same 32+ char secret as local (or generate new) |
+| `ADMIN_EMAIL` | Comma-separated CMS admin emails |
+| `NEXT_PUBLIC_ADMIN_EMAIL` | Same list (login hints) |
+| `OWNER_NOTIFY_EMAIL` | Inbox for CTA leads |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` | Contact form email |
+| `NEXT_PUBLIC_CONTACT_PHONE_DISPLAY` | Optional public phone |
+| `NEXT_PUBLIC_CONTACT_PHONE_E164` | Optional WhatsApp / `tel:` digits |
+
+Apply to **Production**, **Preview**, and **Development** unless you use different Neon branches per environment.
+
+### 4. Neon Auth after deploy
+
+In Neon Console → **Auth** → **Domains**:
+
+- Add your Vercel URL, e.g. `https://veeracare.vercel.app` or your custom domain.
+- Keep **Allow localhost** only for local dev.
+
+Redeploy on Vercel after changing env vars (**Deployments → … → Redeploy**).
+
+### 5. Smoke test
+
+| URL | Expect |
+|-----|--------|
+| `https://your-app.vercel.app` | Homepage loads |
+| `https://your-app.vercel.app/admin/login` | OTP login |
+| `https://your-app.vercel.app/admin/dashboard/leads` | Leads (after sign-in) |
+
+Admin CMS: **`/admin/login`** → email OTP → **`/admin/dashboard`**.
+
+### CLI (optional)
+
+```bash
+npx vercel login
+npx vercel link
+npx vercel env pull .env.local
+# Add secrets in Vercel dashboard, then:
+npx vercel --prod
+```
+
 ## Notes
 
 - **Do not commit `.env`** (secrets).
 - On Windows dev, `next.config.mjs` uses an in-memory webpack cache for stability.
-- Set the same **`NEON_AUTH_*`**, **`DATABASE_URL`**, **`ADMIN_EMAIL`**, and allowlist-related env on **Vercel** (or your host) as in local `.env`.
+- Set the same **`NEON_AUTH_*`**, **`DATABASE_URL`**, **`ADMIN_EMAIL`**, and allowlist-related env on **Vercel** as in local `.env`.

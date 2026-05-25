@@ -2,16 +2,16 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { tryGetNeonAuth } from "@/lib/neon-auth/server";
 
-const neonAuth = tryGetNeonAuth();
-const dashboardGuard =
-  neonAuth?.middleware({ loginUrl: "/admin/login" }) ?? null;
-
 export default function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   if (!pathname.startsWith("/admin/dashboard")) {
     return NextResponse.next();
   }
+
+  const neonAuth = tryGetNeonAuth();
+  const dashboardGuard =
+    neonAuth?.middleware({ loginUrl: "/admin/login" }) ?? null;
 
   if (!dashboardGuard) {
     const url = req.nextUrl.clone();

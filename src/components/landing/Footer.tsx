@@ -7,7 +7,6 @@ import {
   IconFacebook,
   IconInstagram,
   IconLinkedin,
-  IconX,
 } from "@/components/icons/SocialIcons";
 import { VeeraLogo } from "@/components/brand/VeeraLogo";
 import { motion } from "framer-motion";
@@ -72,7 +71,6 @@ const fallbackServiceLinks: FooterLink[] = seedServices.map((s) => ({
 const footerSocial = [
   ["Facebook", IconFacebook, socialUrls.facebook],
   ["Instagram", IconInstagram, socialUrls.instagram],
-  ["X", IconX, socialUrls.x],
   ["LinkedIn", IconLinkedin, socialUrls.linkedin],
 ] as const;
 
