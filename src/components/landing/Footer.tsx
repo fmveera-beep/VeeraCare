@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { contactPhoneDisplay, contactPhoneE164, socialUrls } from "@/config/site";
 import { seedServices } from "@/lib/cms/seed";
 import { serviceDetailHref } from "@/lib/cms/serviceSectionAnchors";
+import { smoothScrollToHash } from "@/components/landing/PromoCtas";
 
 type FooterLink = { href: string; label: string };
 
@@ -23,22 +24,45 @@ const staticColumns: { title: string; links: FooterLink[] }[] = [
   {
     title: "Quick links",
     links: [
-      { href: "#about", label: "About VeeraCare" },
-      { href: "#industries", label: "Industries" },
-      { href: "#services", label: "Solutions overview" },
-      { href: "#reviews", label: "Customer reviews" },
-      { href: "#faq", label: "FAQ" },
+      { href: "/#about", label: "About VeeraCare" },
+      { href: "/#industries", label: "Industries" },
+      { href: "/#services", label: "Solutions overview" },
+      { href: "/#reviews", label: "Customer reviews" },
+      { href: "/#faq", label: "FAQ" },
     ],
   },
   {
     title: "Resources",
     links: [
-      { href: "#faq", label: "Insights & FAQ" },
+      { href: "/#faq", label: "Insights & FAQ" },
       { href: "/contact", label: "Contact us" },
-      { href: "#membership", label: "Join our workforce" },
+      { href: "/#membership", label: "Join our workforce" },
     ],
   },
 ];
+
+function FooterNavLink({ href, label }: FooterLink) {
+  const homeHash = href.startsWith("/#");
+
+  return (
+    <Link
+      href={href}
+      scroll={href.startsWith("/services")}
+      onClick={
+        homeHash
+          ? (e) => {
+              if (window.location.pathname === "/") {
+                smoothScrollToHash(href.slice(1), e);
+              }
+            }
+          : undefined
+      }
+      className="inline-block transition-all duration-200 hover:translate-x-1.5 hover:text-brand motion-reduce:hover:translate-x-0"
+    >
+      {label}
+    </Link>
+  );
+}
 
 const fallbackServiceLinks: FooterLink[] = seedServices.map((s) => ({
   label: s.title,
@@ -169,13 +193,7 @@ export function Footer() {
                 >
                   {col.links.map((l) => (
                     <li key={`${l.href}-${l.label}`}>
-                      <Link
-                        href={l.href}
-                        scroll={l.href.startsWith("/services")}
-                        className="inline-block transition-all duration-200 hover:translate-x-1.5 hover:text-brand motion-reduce:hover:translate-x-0"
-                      >
-                        {l.label}
-                      </Link>
+                      <FooterNavLink href={l.href} label={l.label} />
                     </li>
                   ))}
                 </ul>
@@ -186,7 +204,7 @@ export function Footer() {
 
         <div className="mt-16 grid gap-10 border-t border-white/10 pt-10 md:grid-cols-[auto_1fr_auto] md:items-center">
           <Link
-            href="#top"
+            href="/"
             className="inline-flex w-fit items-center rounded-md border border-white/80 px-4 py-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand hover:shadow-[0_0_28px_-4px_rgba(64,88,176,0.45)] motion-reduce:hover:translate-y-0"
             aria-label="Veera Care — home"
           >

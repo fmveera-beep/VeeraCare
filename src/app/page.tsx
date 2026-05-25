@@ -13,6 +13,7 @@ import { ReviewsBand } from "@/components/landing/ReviewsBand";
 import { FAQBand } from "@/components/landing/FAQBand";
 import { CareerBanner } from "@/components/landing/CareerBanner";
 import { Footer } from "@/components/landing/Footer";
+import { HomeHashScroll } from "@/components/landing/HomeHashScroll";
 import { CTAForm } from "@/components/cta/CTAForm";
 
 export const metadata: Metadata = {
@@ -42,6 +43,7 @@ export default function HomePage() {
       <PreHeader />
       <Navbar />
       <main>
+        <HomeHashScroll />
         <Hero />
         <SecurityPoints />
         <FeaturedServicesSection />
