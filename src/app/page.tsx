@@ -9,6 +9,7 @@ import { AboutSection } from "@/components/landing/AboutSection";
 import { WhatWeDo } from "@/components/landing/WhatWeDo";
 import { ByTheNumbers } from "@/components/landing/ByTheNumbers";
 import { DEISection } from "@/components/landing/DEISection";
+import { InsightsHomeSection } from "@/components/landing/InsightsHomeSection";
 import { ReviewsBand } from "@/components/landing/ReviewsBand";
 import { FAQBand } from "@/components/landing/FAQBand";
 import { CareerBanner } from "@/components/landing/CareerBanner";
@@ -52,6 +53,7 @@ export default function HomePage() {
         <WhatWeDo />
         <ByTheNumbers />
         <DEISection />
+        <InsightsHomeSection />
         <ReviewsBand />
         <FAQBand />
         <CareerBanner />

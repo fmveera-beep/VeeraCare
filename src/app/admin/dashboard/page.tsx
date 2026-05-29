@@ -46,6 +46,16 @@ export default function AdminDashboardHomePage() {
             Update industry categories used across the homepage.
           </p>
         </Link>
+
+        <Link
+          href="/admin/dashboard/insights"
+          className="rounded-2xl border border-white/10 bg-neutral-900/40 p-6 transition hover:bg-neutral-900/60"
+        >
+          <h2 className="text-lg font-bold tracking-tight">Manage Insights</h2>
+          <p className="mt-2 text-sm text-neutral-300">
+            Publish and edit blog articles on /insights and the homepage preview.
+          </p>
+        </Link>
       </div>
     </div>
   );

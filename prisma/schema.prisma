@@ -115,3 +115,26 @@ model CmsIndustry {
   @@index([order])
   @@index([title])
 }
+
+model CmsInsight {
+  id              String   @id @default(cuid())
+  slug            String   @unique
+  title           String
+  excerpt         String
+  metaDescription String
+  publishedAt     DateTime
+  readTimeMinutes Int      @default(5)
+  category        String
+  heroImage       String
+  heroImageAlt    String?
+  author          String   @default("VeeraCare Insights")
+  sections        Json
+  published       Boolean  @default(true)
+  order           Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([published])
+  @@index([publishedAt])
+  @@index([order])
+}

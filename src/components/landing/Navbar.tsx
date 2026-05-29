@@ -12,6 +12,7 @@ const leftLinks = [
   { href: "/", label: "Home" },
   { href: "/#about", label: "About Us" },
   { href: "/services", label: "Services" },
+  { href: "/insights", label: "Insights" },
   { href: "/#industries", label: "Industries" },
   { href: "/#faq", label: "FAQs" },
 ];

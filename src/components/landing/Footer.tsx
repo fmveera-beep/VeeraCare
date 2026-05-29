@@ -33,7 +33,8 @@ const staticColumns: { title: string; links: FooterLink[] }[] = [
   {
     title: "Resources",
     links: [
-      { href: "/#faq", label: "Insights & FAQ" },
+      { href: "/insights", label: "Insights" },
+      { href: "/#faq", label: "FAQ" },
       { href: "/contact", label: "Contact us" },
       { href: "/#membership", label: "Join our workforce" },
     ],
