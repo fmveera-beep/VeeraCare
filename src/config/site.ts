@@ -1,6 +1,6 @@
 /** Public careers inbox (mailto links, site copy). */
 export const careersEmail =
-  process.env.NEXT_PUBLIC_CAREERS_EMAIL ?? "admin@veeracare.com";
+  process.env.NEXT_PUBLIC_CAREERS_EMAIL ?? "admin@veerafm.com";
 
 /** Footer / contact — display format */
 export const contactPhoneDisplay =

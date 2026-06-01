@@ -16,7 +16,7 @@ function splitEmails(csv: string): string[] {
  * Edit this string when you want repo-controlled allowlist changes.
  */
 export const SOURCE_ADMIN_EMAILS =
-  "admin@veeracare.com, razeev2727@gmail.com";
+  "admin@veerafm.com, razeev2727@gmail.com";
 
 const FALLBACK_WHEN_ALL_EMPTY = "razeev2727@gmail.com";
 

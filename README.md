@@ -88,6 +88,30 @@ Used when someone submits the hiring/worker CTA form (`POST /api/cta-request`), 
 |----------|---------|
 | **`DISABLE_IMAGE_OPTIMIZATION`** | Set to `true` to disable Next image optimization (`next.config.mjs`) |
 
+## SEO / Google indexing
+
+The app serves:
+
+- **`/sitemap.xml`** — all public pages + published Insights articles (`src/app/sitemap.ts`)
+- **`/robots.txt`** — allows crawling; blocks `/admin/` and `/api/` (`src/app/robots.ts`)
+
+### Environment (production)
+
+| Variable | Purpose |
+|----------|---------|
+| **`NEXT_PUBLIC_SITE_URL`** | Canonical live URL: `https://www.veerafm.com` (used in sitemap + metadata) |
+| **`GOOGLE_SITE_VERIFICATION`** | Optional HTML tag verification code from Search Console |
+
+### Google Search Console (client / your handoff)
+
+1. Open [Google Search Console](https://search.google.com/search-console).
+2. **Add property** → URL prefix → `https://www.veerafm.com` (match `www` — same as `NEXT_PUBLIC_SITE_URL`).
+3. **Verify ownership** (HTML tag: paste the code into `GOOGLE_SITE_VERIFICATION` on Vercel, redeploy, then confirm in Search Console).
+4. **Sitemaps** → submit: `https://www.veerafm.com/sitemap.xml`
+5. Use **URL inspection** on the homepage → **Request indexing** once after launch.
+
+Indexing is not instant; allow several days after sitemap submission.
+
 ## Neon Auth checklist (production)
 
 - [Configure trusted domains](https://neon.com/docs/auth/guides/configure-domains) for your production URL.
@@ -182,6 +206,9 @@ git push -u origin main
 | `NEXT_PUBLIC_ADMIN_EMAIL` | Same list (login hints) |
 | `OWNER_NOTIFY_EMAIL` | Inbox for CTA leads |
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` | Contact form email |
+| `NEXT_PUBLIC_SITE_URL` | `https://www.veerafm.com` — sitemap + canonical SEO |
+| `NEXT_PUBLIC_CAREERS_EMAIL` | `admin@veerafm.com` — top bar mailto |
+| `GOOGLE_SITE_VERIFICATION` | Optional Search Console HTML tag code |
 | `NEXT_PUBLIC_CONTACT_PHONE_DISPLAY` | Optional public phone |
 | `NEXT_PUBLIC_CONTACT_PHONE_E164` | Optional WhatsApp / `tel:` digits |
 
@@ -191,7 +218,7 @@ Apply to **Production**, **Preview**, and **Development** unless you use differe
 
 In Neon Console → **Auth** → **Domains**:
 
-- Add your Vercel URL, e.g. `https://veeracare.vercel.app` or your custom domain.
+- Add `https://www.veerafm.com` (and any Vercel preview URL if needed).
 - Keep **Allow localhost** only for local dev.
 
 Redeploy on Vercel after changing env vars (**Deployments → … → Redeploy**).
