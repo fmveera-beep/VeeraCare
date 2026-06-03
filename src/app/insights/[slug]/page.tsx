@@ -12,6 +12,7 @@ import {
   loadAllPublishedInsightSlugs,
   loadInsightPostBySlug,
 } from "@/lib/insights/cms";
+import { SEO_SITE_NAME, seoPageTitle } from "@/lib/seo/brand";
 
 type PageProps = {
   params: { slug: string };
@@ -29,19 +30,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const post = await loadInsightPostBySlug(slug);
   if (!post) {
     return {
-      title: "Article not found | VeeraCare Insights",
-      description: "The requested VeeraCare Insights article could not be found.",
+      title: seoPageTitle("Article not found"),
+      description: "The requested VeeraFM Insights article could not be found.",
     };
   }
 
   return {
-    title: `${post.title} | VeeraCare Insights`,
+    title: seoPageTitle(post.title),
     description: post.metaDescription,
     openGraph: {
       title: post.title,
       description: post.metaDescription,
       type: "article",
-      siteName: "VeeraCare",
+      siteName: SEO_SITE_NAME,
       publishedTime: post.publishedAt,
       images: [
         {

@@ -8,7 +8,7 @@ import { landingImages } from "@/config/media";
 const reviews = [
   {
     quote:
-      "VeeraCare tightened our facilities program and stabilized onsite coverage finally one accountable partner.",
+      "VeeraFM tightened our facilities program and stabilized onsite coverage finally one accountable partner.",
     name: "Dir. Operations",
     org: "National retailer",
     avatar: landingImages.reviews[0],
@@ -43,7 +43,7 @@ export function ReviewsBand() {
           What leaders say
         </h2>
         <p className="mx-auto mt-3 max-w-2xl text-center text-sm text-neutral-600 md:text-base">
-          Facilities, HR, and operations teams partner with VeeraCare for unified staffing and
+          Facilities, HR, and operations teams partner with VeeraFM for unified staffing and
           onsite programs.
         </p>
 

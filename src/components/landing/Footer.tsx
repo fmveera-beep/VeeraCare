@@ -281,7 +281,7 @@ export function Footer() {
         </div>
 
         <p className="mt-8 text-center text-[12px] text-white/45 md:text-left">
-          © {new Date().getFullYear()} VeeraCare. All rights reserved.
+          © {new Date().getFullYear()} VeeraFM. All rights reserved.
         </p>
       </div>
     </footer>

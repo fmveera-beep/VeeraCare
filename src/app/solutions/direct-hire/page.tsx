@@ -7,15 +7,15 @@ import { Reveal } from "@/components/motion/Reveal";
 import { RemoteImage } from "@/components/media/RemoteImage";
 
 export const metadata: Metadata = {
-  title: "Direct Hire | Skilled Onsite Talent Recruitment | VeeraCare",
+  title: "Direct Hire | Skilled Onsite Talent Recruitment | VeeraFM",
   description:
-    "VeeraCare direct hire delivers structured screening and reliable matching for skilled onsite roles—technicians, maintenance, janitorial teams, porters, and construction manpower—so hospitals, clinics, startups, and worksites can hire with confidence and reduce churn.",
+    "VeeraFM direct hire delivers structured screening and reliable matching for skilled onsite roles—technicians, maintenance, janitorial teams, porters, and construction manpower—so hospitals, clinics, startups, and worksites can hire with confidence and reduce churn.",
   openGraph: {
     title: "Direct Hire — Skilled Onsite Talent Recruitment",
     description:
       "Structured screening and matching for skilled onsite hires across facilities, care settings, and active worksites.",
     type: "website",
-    siteName: "VeeraCare",
+    siteName: "VeeraFM",
     images: [
       {
         url: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=1200&q=80",
@@ -107,7 +107,7 @@ export default function DirectHirePage() {
                   </h2>
                   <p className="mt-3 text-base leading-relaxed text-neutral-700">
                     Our work connects unemployed individuals to stable jobs. When organizations hire
-                    through VeeraCare, they gain reliable onsite workers—and the community gains
+                    through VeeraFM, they gain reliable onsite workers—and the community gains
                     meaningful employment opportunities.
                   </p>
                 </div>

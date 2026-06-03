@@ -56,11 +56,11 @@ export function AboutSection() {
               Facilities · staffing · nationwide
             </p>
             <h2 className="mt-6 text-3xl font-bold uppercase leading-tight tracking-tight md:text-[2.25rem]">
-              About VeeraCare
+              About VeeraFM
             </h2>
             <div className="mt-6 space-y-5 text-base leading-relaxed text-white/80 md:text-lg">
               <p>
-                VeeraCare delivers facilities management support and staffing for employers who need
+                VeeraFM delivers facilities management support and staffing for employers who need
                 dependable onsite teams: skilled technicians, construction and manpower crews,
                 janitors, porters, and maintenance staff.
               </p>

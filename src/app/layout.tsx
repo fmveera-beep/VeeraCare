@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { WhatsAppFloatingButton } from "@/components/contact/WhatsAppFloatingButton";
 import { getSiteUrl } from "@/lib/seo/siteUrl";
+import { SEO_DEFAULT_DESCRIPTION, SEO_SITE_NAME } from "@/lib/seo/brand";
 import "./globals.css";
 
 const inter = Inter({
@@ -12,9 +13,16 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
-  title: "Veera Care | Facilities management & staffing",
-  description:
-    "Veera Care provides facilities management and staffing for employers nationwide connecting skilled onsite technicians, construction and manpower crews, janitorial teams, porters, and maintenance staff.",
+  applicationName: SEO_SITE_NAME,
+  title: {
+    default: `${SEO_SITE_NAME} | Facilities management & staffing`,
+    template: `%s | ${SEO_SITE_NAME}`,
+  },
+  description: SEO_DEFAULT_DESCRIPTION,
+  openGraph: {
+    siteName: SEO_SITE_NAME,
+    type: "website",
+  },
   robots: {
     index: true,
     follow: true,

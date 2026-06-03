@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const faqs = [
   {
     q: "Can you staff both skilled onsite roles and facilities teams?",
-    a: "Yes. VeeraCare supports skilled technicians and onsite trades alongside janitors, porters, grounds staff, and maintenance crews often under one coordinated staffing model so coverage stays predictable.",
+    a: "Yes. VeeraFM supports skilled technicians and onsite trades alongside janitors, porters, grounds staff, and maintenance crews often under one coordinated staffing model so coverage stays predictable.",
   },
   {
     q: "How quickly can we fill urgent facilities or cleaning shifts?",

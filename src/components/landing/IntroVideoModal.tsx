@@ -61,7 +61,7 @@ export function IntroVideoModal({ open, onClose }: IntroVideoModalProps) {
             </div>
             <div className="aspect-video w-full">
               <iframe
-                title="VeeraCare introduction"
+                title="VeeraFM introduction"
                 src={introVideoEmbedUrl}
                 className="h-full w-full"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

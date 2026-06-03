@@ -7,15 +7,15 @@ import { Reveal } from "@/components/motion/Reveal";
 import { RemoteImage } from "@/components/media/RemoteImage";
 
 export const metadata: Metadata = {
-  title: "Contract Staffing | Managed Onsite Workforce Supply | VeeraCare",
+  title: "Contract Staffing | Managed Onsite Workforce Supply | VeeraFM",
   description:
-    "VeeraCare contract staffing provides managed onsite workforce supply—hire, train, and deploy technicians, construction manpower, janitorial teams, porters, and maintenance staff with clear supervision, coverage continuity, and compliance-ready standards.",
+    "VeeraFM contract staffing provides managed onsite workforce supply—hire, train, and deploy technicians, construction manpower, janitorial teams, porters, and maintenance staff with clear supervision, coverage continuity, and compliance-ready standards.",
   openGraph: {
     title: "Contract Staffing — Managed Onsite Workforce Supply",
     description:
       "Hire, train, and deploy managed onsite teams with reliable coverage and supervision for hospitals, clinics, startups, and construction sites.",
     type: "website",
-    siteName: "VeeraCare",
+    siteName: "VeeraFM",
     images: [
       {
         url: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80",
@@ -66,7 +66,7 @@ export default function ContractStaffingPage() {
                     We handle employment details
                   </h2>
                   <p className="mt-3 text-base leading-relaxed text-neutral-700">
-                    From sourcing and verification to onboarding and attendance tracking, VeeraCare
+                    From sourcing and verification to onboarding and attendance tracking, VeeraFM
                     manages the employment responsibilities. This keeps your operation staffed
                     without adding hiring overhead to your internal team.
                   </p>

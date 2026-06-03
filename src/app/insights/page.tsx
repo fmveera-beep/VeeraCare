@@ -7,16 +7,18 @@ import { InsightsArticleCard } from "@/components/insights/InsightsArticleCard";
 import { loadPublishedInsightPosts } from "@/lib/insights/cms";
 import { Reveal } from "@/components/motion/Reveal";
 
+import { SEO_SITE_NAME, seoPageTitle } from "@/lib/seo/brand";
+
 export const metadata: Metadata = {
-  title: "Insights | Staffing & Facilities Management for Growing Companies | VeeraCare",
+  title: seoPageTitle("Insights — Staffing & Facilities Management"),
   description:
-    "VeeraCare Insights shares corporate guidance on strategic staffing, facilities management for startups, and building a culture of reliability across HR and workspace operations.",
+    "VeeraFM Insights shares corporate guidance on strategic staffing, facilities management for startups, and building a culture of reliability across HR and workspace operations.",
   openGraph: {
-    title: "VeeraCare Insights — Staffing & Facilities Perspectives",
+    title: "VeeraFM Insights — Staffing & Facilities Perspectives",
     description:
       "Expert perspectives on workforce strategy, lean facilities management, and operational reliability for startups and growing companies.",
     type: "website",
-    siteName: "VeeraCare",
+    siteName: SEO_SITE_NAME,
     images: [
       {
         url: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80",

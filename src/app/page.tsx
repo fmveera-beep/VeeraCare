@@ -17,16 +17,17 @@ import { Footer } from "@/components/landing/Footer";
 import { HomeHashScroll } from "@/components/landing/HomeHashScroll";
 import { CTAForm } from "@/components/cta/CTAForm";
 
+import { SEO_DEFAULT_DESCRIPTION, SEO_SITE_NAME, seoPageTitle } from "@/lib/seo/brand";
+
 export const metadata: Metadata = {
-  title: "Reliable Staffing & Care Management Solutions | VeeraCare",
-  description:
-    "VeeraCare provides reliable staffing and onsite workforce solutions through direct hire and managed supply—covering housemaids, skilled technicians, construction crews, event staff, and security personnel for facilities that must stay clean, compliant, and fully operational.",
+  title: seoPageTitle("Reliable Staffing & Facilities Management"),
+  description: SEO_DEFAULT_DESCRIPTION,
   openGraph: {
-    title: "Reliable Staffing & Care Management Solutions",
+    title: "Reliable Staffing & Facilities Management",
     description:
       "Direct hire and managed staffing for housemaids, technicians, construction, event, and security personnel—built for facilities that must stay clean, compliant, and fully operational.",
     type: "website",
-    siteName: "VeeraCare",
+    siteName: SEO_SITE_NAME,
     images: [
       {
         url: "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=1200&q=80",

@@ -12,6 +12,7 @@ import { ServicesPageHashScroll } from "@/components/services/ServicesPageHashSc
 import { prisma } from "@/lib/prisma";
 import { seedServices, toServiceCardDetails } from "@/lib/cms/seed";
 import { serviceSlug } from "@/lib/cms/serviceSectionAnchors";
+import { SEO_SITE_NAME, seoPageTitle } from "@/lib/seo/brand";
 
 /** DB-backed page — must not run Prisma at build time (e.g. Vercel without DATABASE_URL during `next build`). */
 export const dynamic = "force-dynamic";
@@ -285,15 +286,15 @@ const sectionMeta: Record<
 };
 
 export const metadata: Metadata = {
-  title: "Services | Domestic, Facility & Manual Labor Staffing | VeeraCare",
+  title: seoPageTitle("Services — Domestic, Facility & Manual Labor Staffing"),
   description:
-    "Explore VeeraCare domestic care, cleaning & facilities, construction labor, hospitality, security, and corporate support staffing—managed, onsite roles with clear standards.",
+    "Explore VeeraFM domestic care, cleaning & facilities, construction labor, hospitality, security, and corporate support staffing—managed, onsite roles with clear standards.",
   openGraph: {
-    title: "VeeraCare Services — Comprehensive Onsite Staffing",
+    title: "VeeraFM Services — Comprehensive Onsite Staffing",
     description:
       "Domestic, facility, construction, hospitality, security, and corporate support roles—reliable onsite staffing.",
     type: "website",
-    siteName: "VeeraCare",
+    siteName: SEO_SITE_NAME,
     images: [
       {
         url: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=80",

@@ -47,7 +47,7 @@ const controlBase =
 export function CTAForm({
   className,
   id = "contact",
-  title = "Contact VeeraCare",
+  title = "Contact VeeraFM",
   subtitle = "Need dependable staff or are you a worker looking for work with us? Choose who you are below and fill in your details. We’ll route your inquiry to the right team.",
   imageSrc = "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=1400&q=82",
   imageAlt = "Skilled onsite technician at work",
@@ -153,7 +153,7 @@ export function CTAForm({
                     <FieldLabel htmlFor="cta-inquiry-type">You are</FieldLabel>
                     <p className="text-xs leading-relaxed text-neutral-600">
                       So we ask for the right details: hiring managed staff, or looking for work with
-                      VeeraCare.
+                      VeeraFM.
                     </p>
                     <div className="grid gap-3 sm:grid-cols-2">
                       <button

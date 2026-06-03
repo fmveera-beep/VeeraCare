@@ -24,14 +24,14 @@ export const insightPosts: InsightPost[] = [
     excerpt:
       "Growth exposes every gap in your people plan. Learn how disciplined staffing partnerships help startups scale headcount without sacrificing quality, compliance, or culture.",
     metaDescription:
-      "VeeraCare explains why strategic staffing is a growth lever for startups—covering workforce planning, compliance, supervision, and reliable onsite coverage as you scale.",
+      "VeeraFM explains why strategic staffing is a growth lever for startups—covering workforce planning, compliance, supervision, and reliable onsite coverage as you scale.",
     publishedAt: "2026-03-15",
     readTimeMinutes: 7,
     category: "Workforce Strategy",
     heroImage:
       "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=2000&q=82",
     heroImageAlt: "Professional team collaborating in a modern office",
-    author: "VeeraCare Insights",
+    author: "VeeraFM Insights",
     sections: [
       {
         paragraphs: [
@@ -76,7 +76,7 @@ export const insightPosts: InsightPost[] = [
     heroImage:
       "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=2000&q=82",
     heroImageAlt: "Modern corporate office workspace with clean lines",
-    author: "VeeraCare Insights",
+    author: "VeeraFM Insights",
     sections: [
       {
         paragraphs: [
@@ -121,7 +121,7 @@ export const insightPosts: InsightPost[] = [
     heroImage:
       "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=2000&q=82",
     heroImageAlt: "HR professionals meeting in a bright corporate setting",
-    author: "VeeraCare Insights",
+    author: "VeeraFM Insights",
     sections: [
       {
         paragraphs: [
