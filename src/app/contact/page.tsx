@@ -8,7 +8,7 @@ import { seoPageTitle } from "@/lib/seo/brand";
 export const metadata: Metadata = {
   title: seoPageTitle("Contact"),
   description:
-    "Contact VeeraFM for managed staffing, facilities coverage, and workforce inquiries across the UAE.",
+    "Contact VeeraFM for facilities management and staffing—managed onsite teams, workforce inquiries, and employer support across the UAE.",
 };
 
 export default function ContactPage() {

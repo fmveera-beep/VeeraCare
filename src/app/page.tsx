@@ -17,11 +17,11 @@ import { Footer } from "@/components/landing/Footer";
 import { HomeHashScroll } from "@/components/landing/HomeHashScroll";
 import { CTAForm } from "@/components/cta/CTAForm";
 
-import { SEO_DEFAULT_DESCRIPTION, SEO_SITE_NAME, seoPageTitle } from "@/lib/seo/brand";
+import { SEO_HOME_DESCRIPTION, SEO_SITE_NAME, seoPageTitle } from "@/lib/seo/brand";
 
 export const metadata: Metadata = {
   title: seoPageTitle("Reliable Staffing & Facilities Management"),
-  description: SEO_DEFAULT_DESCRIPTION,
+  description: SEO_HOME_DESCRIPTION,
   openGraph: {
     title: "Reliable Staffing & Facilities Management",
     description:

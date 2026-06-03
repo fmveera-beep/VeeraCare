@@ -52,7 +52,7 @@ export function Navbar() {
         <Link
           href="/"
           className="flex shrink-0 items-center py-1 transition-all duration-300 hover:opacity-90 motion-safe:hover:scale-[1.02] motion-safe:active:scale-[0.99]"
-          aria-label="Veera Care — home"
+          aria-label="VeeraFM — home"
         >
           <VeeraLogo variant="nav" tone="dark" />
         </Link>

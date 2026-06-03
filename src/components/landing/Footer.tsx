@@ -205,7 +205,7 @@ export function Footer() {
           <Link
             href="/"
             className="inline-flex w-fit items-center rounded-md border border-white/80 px-4 py-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand hover:shadow-[0_0_28px_-4px_rgba(64,88,176,0.45)] motion-reduce:hover:translate-y-0"
-            aria-label="Veera Care — home"
+            aria-label="VeeraFM — home"
           >
             <VeeraLogo variant="nav" tone="light" />
           </Link>

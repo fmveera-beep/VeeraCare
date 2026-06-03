@@ -2,7 +2,8 @@
 
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import veeraLogoPng from "@/assets/veera-logo-transparent.png";
+import veeraLogoPrimary from "@/assets/veera-logo-primary-transparent.png";
+import veeraLogoWhite from "@/assets/veera-logo-white-transparent.png";
 
 type VeeraLogoProps = {
   className?: string;
@@ -12,9 +13,9 @@ type VeeraLogoProps = {
   tone?: "dark" | "light";
 };
 
-/** Large horizontal lockup — same visual weight on mobile and desktop. */
+/** Header navbar — matches prior lockup visual scale on white header. */
 const navSize =
-  "h-12 w-[min(calc(100vw-10.5rem),320px)] sm:h-[52px] sm:w-[min(calc(100vw-11rem),360px)] md:h-14 md:w-[min(100%,420px)] lg:w-[440px]";
+  "h-14 w-[min(calc(100vw-2rem),360px)] sm:h-16 sm:w-[400px] md:h-[4.5rem] md:w-[460px] lg:w-[480px]";
 
 const lockupSize =
   "h-14 w-[min(calc(100vw-2rem),360px)] sm:h-16 sm:w-[400px] md:h-[4.5rem] md:w-[460px]";
@@ -38,6 +39,7 @@ export function VeeraLogo({
       : navSize;
 
   const lightOnDark = tone === "light";
+  const src = lightOnDark ? veeraLogoWhite : veeraLogoPrimary;
 
   return (
     <span
@@ -46,23 +48,20 @@ export function VeeraLogo({
         sizeClass,
         className
       )}
-      aria-label="Veera Care Facilities Management LLC"
+      aria-label="VeeraFM — Facilities Management LLC"
     >
       <Image
-        src={veeraLogoPng}
-        alt="Veera Care Facilities Management LLC"
+        src={src}
+        alt="VeeraFM — Facilities Management LLC"
         fill
-        priority={showLockup}
-        className={cn(
-          "object-contain object-left",
-          lightOnDark && "brightness-0 invert"
-        )}
+        priority={showLockup || variant === "nav"}
+        className="object-contain object-left"
         sizes={
           showLockup
             ? "(max-width: 768px) 90vw, 440px"
             : showCompact
               ? "(max-width: 400px) 85vw, 280px"
-              : "(max-width: 768px) 90vw, 440px"
+              : "(max-width: 768px) 90vw, 480px"
         }
       />
     </span>
