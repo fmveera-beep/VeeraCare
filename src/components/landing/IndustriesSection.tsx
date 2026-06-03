@@ -267,7 +267,7 @@ export function IndustriesSection() {
 
         <div className="relative mt-10 md:mt-14">
           <div className="relative hidden min-h-[26rem] overflow-hidden py-3 lg:block">
-            <AnimatePresence initial={false}>
+            <AnimatePresence initial={false} mode="wait">
               <motion.div
                 key={carouselIndex}
                 role="group"
@@ -288,7 +288,7 @@ export function IndustriesSection() {
           </div>
 
           <div className="lg:hidden">
-            <AnimatePresence initial={false}>
+            <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={activeIndustry.key}
                 initial={{ opacity: 0, x: 24 }}
