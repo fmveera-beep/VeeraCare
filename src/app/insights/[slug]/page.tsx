@@ -13,6 +13,7 @@ import {
   loadInsightPostBySlug,
 } from "@/lib/insights/cms";
 import { SEO_SITE_NAME, seoPageTitle } from "@/lib/seo/brand";
+import { seoCanonical } from "@/lib/seo/canonical";
 
 type PageProps = {
   params: { slug: string };
@@ -30,12 +31,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const post = await loadInsightPostBySlug(slug);
   if (!post) {
     return {
+      ...seoCanonical(`/insights/${slug}`),
       title: seoPageTitle("Article not found"),
       description: "The requested VeeraFM Insights article could not be found.",
     };
   }
 
   return {
+    ...seoCanonical(`/insights/${slug}`),
     title: seoPageTitle(post.title),
     description: post.metaDescription,
     openGraph: {

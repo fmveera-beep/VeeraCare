@@ -13,6 +13,7 @@ import { prisma } from "@/lib/prisma";
 import { seedServices, toServiceCardDetails } from "@/lib/cms/seed";
 import { serviceSlug } from "@/lib/cms/serviceSectionAnchors";
 import { SEO_SITE_NAME, seoPageTitle } from "@/lib/seo/brand";
+import { seoCanonical } from "@/lib/seo/canonical";
 
 /** DB-backed page — must not run Prisma at build time (e.g. Vercel without DATABASE_URL during `next build`). */
 export const dynamic = "force-dynamic";
@@ -286,6 +287,7 @@ const sectionMeta: Record<
 };
 
 export const metadata: Metadata = {
+  ...seoCanonical("/services"),
   title: seoPageTitle("Services — Domestic, Facility & Manual Labor Staffing"),
   description:
     "Explore VeeraFM domestic care, cleaning & facilities, construction labor, hospitality, security, and corporate support staffing—managed, onsite roles with clear standards.",

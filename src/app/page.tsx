@@ -18,8 +18,10 @@ import { HomeHashScroll } from "@/components/landing/HomeHashScroll";
 import { CTAForm } from "@/components/cta/CTAForm";
 
 import { SEO_HOME_DESCRIPTION, SEO_SITE_NAME, seoPageTitle } from "@/lib/seo/brand";
+import { seoCanonical } from "@/lib/seo/canonical";
 
 export const metadata: Metadata = {
+  ...seoCanonical("/"),
   title: seoPageTitle("Reliable Staffing & Facilities Management"),
   description: SEO_HOME_DESCRIPTION,
   openGraph: {

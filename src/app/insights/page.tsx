@@ -8,8 +8,10 @@ import { loadPublishedInsightPosts } from "@/lib/insights/cms";
 import { Reveal } from "@/components/motion/Reveal";
 
 import { SEO_SITE_NAME, seoPageTitle } from "@/lib/seo/brand";
+import { seoCanonical } from "@/lib/seo/canonical";
 
 export const metadata: Metadata = {
+  ...seoCanonical("/insights"),
   title: seoPageTitle("Insights — Staffing & Facilities Management"),
   description:
     "VeeraFM Insights shares corporate guidance on strategic staffing, facilities management for startups, and building a culture of reliability across HR and workspace operations.",

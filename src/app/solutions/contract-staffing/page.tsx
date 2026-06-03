@@ -6,8 +6,11 @@ import { CTAForm } from "@/components/cta/CTAForm";
 import { Reveal } from "@/components/motion/Reveal";
 import { RemoteImage } from "@/components/media/RemoteImage";
 
+import { seoCanonical } from "@/lib/seo/canonical";
+
 export const metadata: Metadata = {
-  title: "Contract Staffing | Managed Onsite Workforce Supply | VeeraFM",
+  ...seoCanonical("/solutions/contract-staffing"),
+  title: "Contract Staffing",
   description:
     "VeeraFM contract staffing provides managed onsite workforce supply—hire, train, and deploy technicians, construction manpower, janitorial teams, porters, and maintenance staff with clear supervision, coverage continuity, and compliance-ready standards.",
   openGraph: {

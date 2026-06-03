@@ -6,8 +6,11 @@ import { CTAForm } from "@/components/cta/CTAForm";
 import { Reveal } from "@/components/motion/Reveal";
 import { RemoteImage } from "@/components/media/RemoteImage";
 
+import { seoCanonical } from "@/lib/seo/canonical";
+
 export const metadata: Metadata = {
-  title: "Direct Hire | Skilled Onsite Talent Recruitment | VeeraFM",
+  ...seoCanonical("/solutions/direct-hire"),
+  title: "Direct Hire",
   description:
     "VeeraFM direct hire delivers structured screening and reliable matching for skilled onsite roles—technicians, maintenance, janitorial teams, porters, and construction manpower—so hospitals, clinics, startups, and worksites can hire with confidence and reduce churn.",
   openGraph: {
