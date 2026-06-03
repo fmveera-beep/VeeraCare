@@ -5,7 +5,7 @@ import { contactPhoneDisplay, whatsAppChatUrl } from "@/config/site";
 import { cn } from "@/lib/utils";
 
 const DEFAULT_MESSAGE =
-  "Hello VeeraCare, I would like to inquire about your staffing services.";
+  "Hello VeeraFM, I would like to inquire about your staffing services.";
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -40,7 +40,7 @@ export function WhatsAppFloatingButton() {
         "motion-safe:active:scale-95",
         "md:bottom-6 md:right-6 md:h-[3.75rem] md:w-[3.75rem]"
       )}
-      aria-label={`Chat with VeeraCare on WhatsApp (${contactPhoneDisplay})`}
+      aria-label={`Chat with VeeraFM on WhatsApp (${contactPhoneDisplay})`}
       title={`WhatsApp ${contactPhoneDisplay}`}
     >
       <WhatsAppIcon className="h-7 w-7 md:h-8 md:w-8" />

@@ -42,19 +42,20 @@ export function Navbar() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.35, delay: 0.05 }}
       className={cn(
-        "sticky top-0 z-50 border-b transition-[background-color,box-shadow,backdrop-filter] duration-300",
+        "sticky top-0 z-50 w-full max-w-[100vw] overflow-x-hidden border-b transition-[background-color,box-shadow,backdrop-filter] duration-300",
         scrolled
           ? "border-neutral-200/70 bg-white/90 shadow-md shadow-neutral-900/[0.06] backdrop-blur-md supports-[backdrop-filter]:bg-white/75"
           : "border-neutral-200 bg-white"
       )}
     >
-      <nav className="relative flex min-h-[88px] w-full items-center gap-3 py-2 pl-3 pr-3 sm:gap-4 sm:pl-4 sm:pr-4 md:min-h-[100px] md:gap-6 md:pl-5 md:pr-8 lg:pl-6">
+      <nav className="relative flex min-h-[4.5rem] w-full min-w-0 max-w-full items-center gap-2 py-2 pl-3 pr-3 sm:min-h-[5rem] sm:gap-3 sm:pl-4 sm:pr-4 md:min-h-[100px] md:gap-6 md:pl-5 md:pr-8 lg:pl-6">
         <Link
           href="/"
-          className="flex shrink-0 items-center py-1 transition-all duration-300 hover:opacity-90 motion-safe:hover:scale-[1.02] motion-safe:active:scale-[0.99]"
+          className="flex min-w-0 max-w-[calc(100%-7.25rem)] flex-1 items-center py-1 transition-all duration-300 hover:opacity-90 motion-safe:hover:scale-[1.02] motion-safe:active:scale-[0.99] lg:max-w-none lg:flex-none"
           aria-label="VeeraFM — home"
         >
-          <VeeraLogo variant="nav" tone="dark" />
+          <VeeraLogo variant="compact" tone="dark" className="lg:hidden" />
+          <VeeraLogo variant="nav" tone="dark" className="hidden lg:block" />
         </Link>
 
         <div className="hidden flex-1 items-center justify-center gap-6 xl:gap-7 lg:flex">

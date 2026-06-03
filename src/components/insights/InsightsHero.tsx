@@ -14,9 +14,9 @@ export function InsightsHero() {
       <div className="relative mx-auto max-w-[1320px] px-4 py-16 md:px-8 md:py-24">
         <Reveal blur>
           <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-brand-pale">
-            VeeraCare Insights
+            VeeraFM Insights
           </p>
-          <h1 className="mt-4 max-w-3xl text-[clamp(2rem,4.2vw,3.25rem)] font-bold uppercase leading-[1.06] tracking-tight">
+          <h1 className="mt-4 max-w-3xl break-words text-[clamp(1.65rem,6vw,3.25rem)] font-bold uppercase leading-[1.06] tracking-tight">
             Corporate perspectives on staffing &amp; facilities
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-relaxed text-white/75 md:text-lg">

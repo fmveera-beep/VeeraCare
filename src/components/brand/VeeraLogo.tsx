@@ -13,16 +13,16 @@ type VeeraLogoProps = {
   tone?: "dark" | "light";
 };
 
-/** Header navbar — matches prior lockup visual scale on white header. */
+/** Desktop header lockup — wide; use `compact` on mobile in Navbar/Footer. */
 const navSize =
-  "h-14 w-[min(calc(100vw-2rem),360px)] sm:h-16 sm:w-[400px] md:h-[4.5rem] md:w-[460px] lg:w-[480px]";
+  "h-12 w-[min(100%,28rem)] sm:h-14 sm:w-[min(100%,32rem)] md:h-[4.5rem] md:w-[460px] lg:w-[480px]";
 
 const lockupSize =
   "h-14 w-[min(calc(100vw-2rem),360px)] sm:h-16 sm:w-[400px] md:h-[4.5rem] md:w-[460px]";
 
 /** Fits admin cards and tight headers without overflowing parent */
 const compactSize =
-  "h-9 w-full max-w-[240px] sm:h-10 sm:max-w-[260px] md:h-11 md:max-w-[280px]";
+  "h-10 w-full max-w-[10.5rem] sm:h-11 sm:max-w-[12rem] md:h-12 md:max-w-[14rem]";
 
 export function VeeraLogo({
   className,

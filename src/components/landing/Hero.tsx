@@ -35,7 +35,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.52, delay: 0.06, ease }}
-            className="mt-6 text-[clamp(2rem,4vw,3rem)] font-bold uppercase leading-[1.05] tracking-tight"
+            className="mt-6 break-words text-[clamp(1.75rem,6vw,3rem)] font-bold uppercase leading-[1.05] tracking-tight"
           >
             <span className="text-brand">Staffing every skill</span>
             <br />

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { WhatsAppFloatingButton } from "@/components/contact/WhatsAppFloatingButton";
 import { getSiteUrl } from "@/lib/seo/siteUrl";
@@ -10,6 +10,11 @@ const inter = Inter({
   variable: "--font-sans",
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
@@ -51,8 +56,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} font-sans antialiased`}>
+    <html lang="en" className="w-full overflow-x-hidden">
+      <body
+        className={`${inter.variable} w-full min-w-0 overflow-x-hidden font-sans antialiased`}
+      >
         {children}
         <WhatsAppFloatingButton />
       </body>

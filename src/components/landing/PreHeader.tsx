@@ -20,7 +20,7 @@ export function PreHeader() {
   return (
     <div className="border-b border-white/10 bg-neutral-950 text-[12px] text-white/85">
       <div className="mx-auto flex max-w-[1320px] flex-wrap items-center justify-between gap-3 px-4 py-2.5 md:px-8">
-        <p className="font-medium tracking-wide">
+        <p className="min-w-0 font-medium tracking-wide break-words">
           <span className="text-white">Work with VeeraFM</span>
           <span className="mx-2 text-white/35">·</span>
           <a
