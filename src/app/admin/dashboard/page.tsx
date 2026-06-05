@@ -8,7 +8,7 @@ export default function AdminDashboardHomePage() {
           Dashboard Home
         </p>
         <h1 className="mt-2 text-2xl font-bold tracking-tight">
-          Welcome to VeeraCare CMS
+          Welcome to VeeraFM CMS
         </h1>
         <p className="mt-2 max-w-2xl text-sm text-neutral-300">
           Use the sidebar to review form leads and manage Services and Industries.

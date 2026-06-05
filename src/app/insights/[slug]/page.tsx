@@ -130,7 +130,7 @@ export default async function InsightArticlePage({ params }: PageProps) {
         <section className="border-t border-neutral-200 bg-[#f6f8ff] py-12 md:py-16">
           <div className="mx-auto max-w-[1320px] px-4 text-center md:px-8">
             <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand">
-              VeeraCare
+              VeeraFM
             </p>
             <p className="mt-3 text-lg font-bold text-neutral-950">
               Need dependable staffing or facilities coverage?

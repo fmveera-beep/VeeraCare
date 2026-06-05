@@ -56,7 +56,7 @@ export function DEISection() {
             </h2>
             <div className="mt-6 space-y-5 text-base leading-relaxed text-neutral-700 md:text-lg">
               <p>
-                Respect matters for skilled technicians and janitorial crews alike. VeeraCare
+                Respect matters for skilled technicians and janitorial crews alike. VeeraFM
                 applies consistent sourcing standards and safety orientation so every worker is
                 supported, prepared, and valued on site.
               </p>

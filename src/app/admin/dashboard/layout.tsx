@@ -43,7 +43,7 @@ export default async function AdminDashboardLayout({
             className="group block rounded-2xl border border-white/10 bg-white/5 px-4 py-4 transition hover:bg-white/7"
           >
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-neutral-400">
-              VeeraCare
+              VeeraFM
             </p>
             <p className="mt-1 text-lg font-bold tracking-tight text-white">
               CMS Dashboard
@@ -79,7 +79,7 @@ export default async function AdminDashboardLayout({
             <div className="flex items-center justify-between gap-3 px-5 py-4 md:px-10">
               <div className="min-w-0">
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-neutral-400 md:hidden">
-                  VeeraCare CMS
+                  VeeraFM CMS
                 </p>
                 <p className="truncate text-sm font-semibold text-neutral-200">
                   Manage content without touching code

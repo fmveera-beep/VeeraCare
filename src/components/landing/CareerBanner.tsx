@@ -32,7 +32,7 @@ export function CareerBanner() {
               Meaningful work at every skill level
             </h2>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-white/92 md:text-lg">
-              Join VeeraCare for placements across skilled onsite roles: technicians, construction
+              Join VeeraFM for placements across skilled onsite roles: technicians, construction
               crews, janitorial teams, porters, and maintenance assignments—with transparent pay
               practices, safety expectations, and steady schedules where routes allow.
             </p>

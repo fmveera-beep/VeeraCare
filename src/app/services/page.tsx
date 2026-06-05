@@ -359,7 +359,7 @@ export default async function ServicesPage() {
                 Services
               </h1>
               <p className="mx-auto mt-5 max-w-3xl text-center text-base leading-relaxed text-neutral-700 md:text-lg">
-                VeeraCare supplies managed onsite staffing across domestic households, facilities,
+                VeeraFM supplies managed onsite staffing across domestic households, facilities,
                 worksites, venues, and workplaces—comprehensive coverage with supervision you can
                 trust.
               </p>

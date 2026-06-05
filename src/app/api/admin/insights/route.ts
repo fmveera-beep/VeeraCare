@@ -32,7 +32,7 @@ function parseBody(input: {
   const metaDescription = String(input.metaDescription ?? "").trim();
   const category = String(input.category ?? "").trim();
   const heroImage = String(input.heroImage ?? "").trim();
-  const author = String(input.author ?? "VeeraCare Insights").trim();
+  const author = String(input.author ?? "VeeraFM Insights").trim();
   const publishedAt = input.publishedAt
     ? new Date(input.publishedAt)
     : new Date();
@@ -61,7 +61,7 @@ function parseBody(input: {
       category,
       heroImage,
       heroImageAlt: input.heroImageAlt?.trim() || null,
-      author: author || "VeeraCare Insights",
+      author: author || "VeeraFM Insights",
       sections: sections as object,
       published,
       order,

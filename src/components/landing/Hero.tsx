@@ -48,7 +48,7 @@ export function Hero() {
             transition={{ duration: 0.52, delay: 0.12, ease }}
             className="mt-6 max-w-xl text-base leading-relaxed text-neutral-700 md:text-lg"
           >
-            VeeraCare connects employers with highly skilled technical labor and essential onsite
+            VeeraFM connects employers with highly skilled technical labor and essential onsite
             talent including specialized technicians, construction crews, janitors, porters, and
             maintenance staff so your facilities stay compliant, clean, and fully operational.
           </motion.p>

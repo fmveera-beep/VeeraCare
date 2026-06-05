@@ -127,7 +127,7 @@ model CmsInsight {
   category        String
   heroImage       String
   heroImageAlt    String?
-  author          String   @default("VeeraCare Insights")
+  author          String   @default("VeeraFM Insights")
   sections        Json
   published       Boolean  @default(true)
   order           Int      @default(0)

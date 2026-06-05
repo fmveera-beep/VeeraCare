@@ -23,7 +23,7 @@ const staticColumns: { title: string; links: FooterLink[] }[] = [
   {
     title: "Quick links",
     links: [
-      { href: "/#about", label: "About VeeraCare" },
+      { href: "/#about", label: "About VeeraFM" },
       { href: "/#industries", label: "Industries" },
       { href: "/#services", label: "Solutions overview" },
       { href: "/#reviews", label: "Customer reviews" },
@@ -134,7 +134,7 @@ export function Footer() {
             </p>
             <h3 className="text-xl font-bold uppercase tracking-wide">Stay updated</h3>
             <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/70">
-              Updates on labor trends, facilities compliance, wage benchmarks, and new VeeraCare
+              Updates on labor trends, facilities compliance, wage benchmarks, and new VeeraFM
               programs—for HR, operations, and facilities leaders.
             </p>
             <form

@@ -46,8 +46,8 @@ export async function sendCtaRequestEmail({
   const inquiryLabel = isWorker ? "Worker — available for work" : "Employer — needs staff";
 
   const subject = isWorker
-    ? `VeeraCare worker inquiry: ${request.serviceNeeded} — ${request.name}`
-    : `VeeraCare staffing request: ${request.serviceNeeded} — ${request.name}`;
+    ? `VeeraFM worker inquiry: ${request.serviceNeeded} — ${request.name}`
+    : `VeeraFM staffing request: ${request.serviceNeeded} — ${request.name}`;
 
   const lines = [
     `Request ID: ${requestId}`,

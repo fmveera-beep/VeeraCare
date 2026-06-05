@@ -50,7 +50,7 @@ export const insightPosts: InsightPost[] = [
         heading: "The enterprise habits startups should adopt early",
         paragraphs: [
           "You do not need enterprise bureaucracy to run a reliable workforce. You do need enterprise habits: role clarity, documented expectations, measurable service levels, and escalation paths that work when volume spikes.",
-          "VeeraCare deploys managed onsite teams with supervision and checklists aligned to your environment—whether that is a lean office, a clinical-adjacent facility, or a hybrid operations floor. The goal is not more people; it is the right people, deployed with consistency.",
+          "VeeraFM deploys managed onsite teams with supervision and checklists aligned to your environment—whether that is a lean office, a clinical-adjacent facility, or a hybrid operations floor. The goal is not more people; it is the right people, deployed with consistency.",
         ],
       },
       {
@@ -95,7 +95,7 @@ export const insightPosts: InsightPost[] = [
         heading: "Efficiency is standardization—not shortcuts",
         paragraphs: [
           "Professional facilities programs run on standards: zone cleaning maps, approved chemicals, PPE rules, equipment checks, and sign-off logs. Startups benefit from adopting a lightweight version of those standards early, especially if you host clients, handle inventory, or operate near clinical or corporate compliance requirements.",
-          "VeeraCare aligns FM teams to your footprint—daily janitorial, deep cleans, porter coverage, and swing-shift support—without requiring you to recruit and manage each role independently.",
+          "VeeraFM aligns FM teams to your footprint—daily janitorial, deep cleans, porter coverage, and swing-shift support—without requiring you to recruit and manage each role independently.",
         ],
       },
       {
@@ -140,7 +140,7 @@ export const insightPosts: InsightPost[] = [
         heading: "What HR should expect from workforce partners",
         paragraphs: [
           "HR should not need to micromanage janitorial attendance or porter schedules. Instead, expect transparent reporting: coverage plans, replacement protocols, incident notes, and named supervisors. Expect vetting and role fit that respect your environment—corporate, clinical-adjacent, industrial, or hybrid.",
-          "VeeraCare’s managed staffing model is designed for that intersection: HR sets people policy; operations receives dependable onsite execution with escalation paths HR can trust.",
+          "VeeraFM’s managed staffing model is designed for that intersection: HR sets people policy; operations receives dependable onsite execution with escalation paths HR can trust.",
         ],
       },
       {

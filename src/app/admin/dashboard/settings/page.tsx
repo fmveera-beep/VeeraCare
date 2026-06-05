@@ -39,7 +39,7 @@ function safeParseSettings(raw: string | null): CmsSettings | null {
 export default function AdminSettingsPage() {
   const [settings, setSettings] = useState<CmsSettings>({
     updatedAt: nowIso(),
-    ownerNotifyEmail: "owner@veeracare.com",
+    ownerNotifyEmail: "admin@veerafm.com",
     notes: "",
   });
   const [ready, setReady] = useState(false);
@@ -124,7 +124,7 @@ export default function AdminSettingsPage() {
       localStorage.removeItem(SETTINGS_KEY);
       setSettings({
         updatedAt: nowIso(),
-        ownerNotifyEmail: "owner@veeracare.com",
+        ownerNotifyEmail: "admin@veerafm.com",
         notes: "",
       });
       refreshCounts();
@@ -180,7 +180,7 @@ export default function AdminSettingsPage() {
                   }))
                 }
                 className="mt-2 w-full rounded-2xl border border-white/10 bg-neutral-950/55 px-4 py-3 text-sm text-neutral-100 outline-none transition focus:border-white/20 focus:bg-neutral-950/80"
-                placeholder="owner@veeracare.com"
+                placeholder="admin@veerafm.com"
               />
             </label>
 

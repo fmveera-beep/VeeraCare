@@ -220,7 +220,7 @@ export function AdminLoginClient({
 
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-neutral-400">
-              VeeraCare CMS
+              VeeraFM CMS
             </p>
             <h1 className="mt-2 text-3xl font-bold tracking-tight">
               {step === "email" ? "Admin sign-in" : "Enter login code"}
