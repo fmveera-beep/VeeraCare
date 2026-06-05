@@ -153,6 +153,7 @@ model CmsJob {
   heroImageAlt    String?
   sections        Json
   requirements    Json
+  benefits        Json?
   published       Boolean  @default(true)
   publishedAt     DateTime
   order           Int      @default(0)
@@ -164,4 +165,22 @@ model CmsJob {
   @@index([order])
   @@index([category])
   @@index([location])
+}
+
+model JobApplication {
+  id         String   @id @default(cuid())
+  jobSlug    String
+  jobTitle   String
+  name       String
+  email      String
+  phone      String
+  message    String?
+  cvUrl      String?
+  cvFileName String?
+  sourcePath String?
+  createdAt  DateTime @default(now())
+
+  @@index([jobSlug])
+  @@index([createdAt])
+  @@index([email])
 }

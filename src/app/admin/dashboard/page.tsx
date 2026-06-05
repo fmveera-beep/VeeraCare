@@ -66,6 +66,16 @@ export default function AdminDashboardHomePage() {
             Add and publish job openings on the /careers portal.
           </p>
         </Link>
+
+        <Link
+          href="/admin/dashboard/job-applications"
+          className="rounded-2xl border border-white/10 bg-neutral-900/40 p-6 transition hover:bg-neutral-900/60"
+        >
+          <h2 className="text-lg font-bold tracking-tight">Job Applications</h2>
+          <p className="mt-2 text-sm text-neutral-300">
+            Review careers form submissions and download uploaded CVs.
+          </p>
+        </Link>
       </div>
     </div>
   );

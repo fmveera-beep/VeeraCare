@@ -11,6 +11,7 @@ const nav = [
   { href: "/admin/dashboard/industries", label: "Manage Industries" },
   { href: "/admin/dashboard/insights", label: "Manage Insights" },
   { href: "/admin/dashboard/jobs", label: "Manage Jobs" },
+  { href: "/admin/dashboard/job-applications", label: "Job Applications" },
   { href: "/admin/dashboard/settings", label: "Settings" },
 ] as const;
 

@@ -15,6 +15,7 @@ export type CmsJobRecord = {
   heroImageAlt: string | null;
   sections: JobSection[];
   requirements: string[];
+  benefits: string[];
   published: boolean;
   publishedAt: string;
   order: number;
@@ -46,6 +47,10 @@ function parseRequirements(raw: unknown): string[] {
   return raw.filter((r): r is string => typeof r === "string" && r.trim().length > 0);
 }
 
+function parseBenefits(raw: unknown): string[] {
+  return parseRequirements(raw);
+}
+
 export function rowToJobPost(row: {
   slug: string;
   title: string;
@@ -59,6 +64,7 @@ export function rowToJobPost(row: {
   heroImageAlt: string | null;
   sections: unknown;
   requirements: unknown;
+  benefits?: unknown;
   publishedAt: Date;
 }): JobPost {
   return {
@@ -74,6 +80,7 @@ export function rowToJobPost(row: {
     heroImageAlt: row.heroImageAlt ?? row.title,
     sections: parseSections(row.sections),
     requirements: parseRequirements(row.requirements),
+    benefits: parseBenefits(row.benefits),
     publishedAt: row.publishedAt.toISOString().slice(0, 10),
   };
 }
@@ -92,6 +99,7 @@ export function rowToCmsJobRecord(row: {
   heroImageAlt: string | null;
   sections: unknown;
   requirements: unknown;
+  benefits?: unknown;
   published: boolean;
   publishedAt: Date;
   order: number;
@@ -112,6 +120,7 @@ export function rowToCmsJobRecord(row: {
     heroImageAlt: row.heroImageAlt,
     sections: parseSections(row.sections),
     requirements: parseRequirements(row.requirements),
+    benefits: parseBenefits(row.benefits),
     published: row.published,
     publishedAt: row.publishedAt.toISOString(),
     order: row.order,
@@ -134,6 +143,7 @@ export function seedJobCreateData() {
     heroImageAlt: p.heroImageAlt,
     sections: p.sections as object,
     requirements: p.requirements as object,
+    benefits: p.benefits as object,
     published: true,
     publishedAt: new Date(p.publishedAt),
     order: index,

@@ -16,6 +16,7 @@ export type JobPost = {
   heroImageAlt: string | null;
   sections: JobSection[];
   requirements: string[];
+  benefits: string[];
   publishedAt: string;
 };
 
@@ -52,6 +53,42 @@ const defaultHero =
 
 export const jobPosts: JobPost[] = [
   {
+    slug: "security-supervisor-masafi",
+    title: "Security Supervisor",
+    excerpt:
+      "Lead a team of security guards at Masafi sites. Oversee daily operations, ensure safety protocols are followed, and coordinate with client management.",
+    metaDescription:
+      "Security Supervisor role in Masafi with VeeraFM. Lead guard teams, enforce safety protocols, and earn AED 4,000/month with benefits.",
+    category: "Security",
+    location: "Masafi",
+    employmentType: "Full-time",
+    salaryRange: "AED 4,000",
+    heroImage: defaultHero,
+    heroImageAlt: "Security supervisor on duty",
+    publishedAt: "2026-06-01",
+    requirements: [
+      "Minimum 3 years security experience",
+      "Valid SIRA certificate preferred",
+      "Strong leadership and communication skills",
+      "Ability to work rotating shifts",
+      "Clean background check required",
+    ],
+    benefits: [
+      "Competitive salary AED 4,000",
+      "Accommodation provided",
+      "Medical insurance",
+      "30 days annual leave",
+      "Air ticket allowance",
+    ],
+    sections: [
+      {
+        paragraphs: [
+          "As Security Supervisor you will manage a team of guards across assigned Masafi locations. You are responsible for shift briefings, incident reporting, and ensuring all post orders and client SOPs are followed.",
+        ],
+      },
+    ],
+  },
+  {
     slug: "sira-security-guard-dubai",
     title: "SIRA Security Guard",
     excerpt:
@@ -71,6 +108,7 @@ export const jobPosts: JobPost[] = [
       "Good communication in English; Hindi/Urdu a plus",
       "Physically fit for standing and patrol duties",
     ],
+    benefits: [],
     sections: [
       {
         paragraphs: [
@@ -104,6 +142,7 @@ export const jobPosts: JobPost[] = [
       "Experience in mall, warehouse, or tower security",
       "Professional appearance and punctual attendance",
     ],
+    benefits: [],
     sections: [
       {
         paragraphs: [
@@ -127,9 +166,18 @@ export const jobPosts: JobPost[] = [
     heroImageAlt: "Security supervisor briefing team",
     publishedAt: "2026-04-20",
     requirements: [
-      "3+ years security experience with 1+ year in a supervisory role",
-      "SIRA or equivalent UAE security credentials",
-      "Ability to prepare shift reports and manage replacements",
+      "Minimum 3 years security experience",
+      "Valid SIRA certificate preferred",
+      "Strong leadership and communication skills",
+      "Ability to work rotating shifts",
+      "Clean background check required",
+    ],
+    benefits: [
+      "Competitive salary AED 4,000",
+      "Accommodation provided",
+      "Medical insurance",
+      "30 days annual leave",
+      "Air ticket allowance",
     ],
     sections: [
       {
@@ -159,6 +207,7 @@ export const jobPosts: JobPost[] = [
       "Attention to detail and ability to follow checklist standards",
       "Available for morning or evening shifts as rostered",
     ],
+    benefits: [],
     sections: [
       {
         paragraphs: [
@@ -187,6 +236,7 @@ export const jobPosts: JobPost[] = [
       "Ability to use basic cleaning equipment safely",
       "Reliable attendance and teamwork",
     ],
+    benefits: [],
     sections: [
       {
         paragraphs: [
@@ -216,6 +266,7 @@ export const jobPosts: JobPost[] = [
       "Familiarity with Abu Dhabi routes",
       "Basic English communication",
     ],
+    benefits: [],
     sections: [
       {
         paragraphs: [

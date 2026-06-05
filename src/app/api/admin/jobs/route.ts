@@ -17,6 +17,7 @@ function parseBody(input: {
   heroImageAlt?: string | null;
   sections?: unknown;
   requirements?: unknown;
+  benefits?: unknown;
   published?: boolean;
   publishedAt?: string;
   order?: number;
@@ -38,6 +39,7 @@ function parseBody(input: {
   const published = input.published !== false;
   const sections = Array.isArray(input.sections) ? input.sections : [];
   const requirements = Array.isArray(input.requirements) ? input.requirements : [];
+  const benefits = Array.isArray(input.benefits) ? input.benefits : [];
 
   if (!slug || !title || !excerpt || !metaDescription || !category || !location) {
     return { error: "Missing required fields" as const };
@@ -60,6 +62,7 @@ function parseBody(input: {
       heroImageAlt: input.heroImageAlt?.trim() || null,
       sections: sections as object,
       requirements: requirements as object,
+      benefits: benefits as object,
       published,
       publishedAt,
       order,

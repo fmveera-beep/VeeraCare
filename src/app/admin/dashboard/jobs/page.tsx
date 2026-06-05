@@ -25,6 +25,7 @@ type CmsJob = {
   heroImageAlt: string | null;
   sections: JobSection[];
   requirements: string[];
+  benefits: string[];
   published: boolean;
   publishedAt: string;
   order: number;
@@ -47,6 +48,12 @@ const defaultSectionsJson = JSON.stringify(
 
 const defaultRequirementsJson = JSON.stringify(
   ["List key requirements, one per line in this array."],
+  null,
+  2
+);
+
+const defaultBenefitsJson = JSON.stringify(
+  ["List benefits shown in the apply modal, one per line in this array."],
   null,
   2
 );
@@ -131,6 +138,7 @@ export default function AdminManageJobsPage() {
     heroImageAlt: string;
     sectionsJson: string;
     requirementsJson: string;
+    benefitsJson: string;
     published: boolean;
     publishedAt: string;
     order: string;
@@ -147,6 +155,7 @@ export default function AdminManageJobsPage() {
     heroImageAlt: "",
     sectionsJson: defaultSectionsJson,
     requirementsJson: defaultRequirementsJson,
+    benefitsJson: defaultBenefitsJson,
     published: true,
     publishedAt: new Date().toISOString().slice(0, 10),
     order: "0",
@@ -228,6 +237,7 @@ export default function AdminManageJobsPage() {
       heroImageAlt: "",
       sectionsJson: defaultSectionsJson,
       requirementsJson: defaultRequirementsJson,
+      benefitsJson: defaultBenefitsJson,
       published: true,
       publishedAt: new Date().toISOString().slice(0, 10),
       order: String(items.length),
@@ -252,6 +262,7 @@ export default function AdminManageJobsPage() {
       heroImageAlt: item.heroImageAlt ?? "",
       sectionsJson: JSON.stringify(item.sections, null, 2),
       requirementsJson: JSON.stringify(item.requirements, null, 2),
+      benefitsJson: JSON.stringify(item.benefits ?? [], null, 2),
       published: item.published,
       publishedAt: item.publishedAt.slice(0, 10),
       order: String(item.order),
@@ -272,6 +283,7 @@ export default function AdminManageJobsPage() {
     setFormError(null);
     let sections: JobSection[];
     let requirements: string[];
+    let benefits: string[];
     try {
       const parsedSections = JSON.parse(form.sectionsJson) as unknown;
       if (!Array.isArray(parsedSections)) throw new Error("sections");
@@ -280,9 +292,13 @@ export default function AdminManageJobsPage() {
       const parsedReqs = JSON.parse(form.requirementsJson) as unknown;
       if (!Array.isArray(parsedReqs)) throw new Error("requirements");
       requirements = parsedReqs.filter((r): r is string => typeof r === "string");
+
+      const parsedBenefits = JSON.parse(form.benefitsJson) as unknown;
+      if (!Array.isArray(parsedBenefits)) throw new Error("benefits");
+      benefits = parsedBenefits.filter((r): r is string => typeof r === "string");
     } catch {
       setFormError(
-        "Sections must be a JSON array of { heading?, paragraphs[] }. Requirements must be a JSON string array."
+        "Sections must be a JSON array of { heading?, paragraphs[] }. Requirements and benefits must be JSON string arrays."
       );
       return;
     }
@@ -300,6 +316,7 @@ export default function AdminManageJobsPage() {
       heroImageAlt: form.heroImageAlt.trim() || null,
       sections,
       requirements,
+      benefits,
       published: form.published,
       publishedAt: form.publishedAt,
       order: Number(form.order) || 0,
@@ -682,6 +699,16 @@ export default function AdminManageJobsPage() {
               className={cn(fieldClass, "min-h-[120px] font-mono text-xs")}
               value={form.requirementsJson}
               onChange={(e) => setForm((f) => ({ ...f, requirementsJson: e.target.value }))}
+            />
+          </label>
+          <label className="block md:col-span-2">
+            <span className="text-xs font-semibold uppercase tracking-wide text-neutral-400">
+              Benefits (JSON array of strings, shown in apply modal)
+            </span>
+            <textarea
+              className={cn(fieldClass, "min-h-[100px] font-mono text-xs")}
+              value={form.benefitsJson}
+              onChange={(e) => setForm((f) => ({ ...f, benefitsJson: e.target.value }))}
             />
           </label>
           <label className="block md:col-span-2">

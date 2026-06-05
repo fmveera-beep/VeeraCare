@@ -8,6 +8,7 @@ import { Footer } from "@/components/landing/Footer";
 import { InsightsArticleProse } from "@/components/insights/InsightsArticleProse";
 import { RemoteImage } from "@/components/media/RemoteImage";
 import { Reveal } from "@/components/motion/Reveal";
+import { JobApplySection } from "@/components/jobs/JobApplySection";
 import { loadAllPublishedJobSlugs, loadJobBySlug } from "@/lib/jobs/cms";
 import { SEO_SITE_NAME, seoPageTitle } from "@/lib/seo/brand";
 import { seoCanonical } from "@/lib/seo/canonical";
@@ -158,19 +159,7 @@ export default async function JobDetailPage({ params }: PageProps) {
           </div>
         </article>
 
-        <section className="border-t border-neutral-200 bg-[#f6f8ff] py-12 md:py-16">
-          <div className="mx-auto max-w-[1320px] px-4 text-center md:px-8">
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center rounded-[4px] bg-brand px-6 py-3 text-[11px] font-bold uppercase tracking-[0.22em] text-white transition-colors hover:bg-brand-navy"
-            >
-              Apply now
-            </Link>
-            <p className="mt-4 text-lg font-bold text-neutral-950">
-              Interested in this role? Send your details to our careers team.
-            </p>
-          </div>
-        </section>
+        <JobApplySection job={job} />
 
         <Footer />
       </main>
