@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { loadJobBySlug } from "@/lib/jobs/cms";
+import { sendJobApplicationEmail } from "@/lib/email/jobApplication";
 import { saveJobCv } from "@/lib/uploads/jobCv";
 import { jobApplicationSchema } from "@/lib/validations/jobApplication";
 
@@ -55,7 +56,26 @@ export async function POST(req: Request) {
       },
     });
 
-    return NextResponse.json({ ok: true, id: application.id });
+    const mail = await sendJobApplicationEmail({
+      applicationId: application.id,
+      jobTitle: job.title,
+      jobSlug: job.slug,
+      name: parsed.data.name,
+      email: parsed.data.email,
+      phone: parsed.data.phone,
+      message: parsed.data.message?.trim() || null,
+      cvUrl,
+      cvFileName,
+      sourcePath: parsed.data.sourcePath?.trim() || null,
+    });
+
+    return NextResponse.json({
+      ok: true,
+      id: application.id,
+      emailSent: mail.status === "sent",
+      emailSkipped: mail.status === "skipped",
+      ...(mail.status === "failed" ? { emailError: mail.error } : {}),
+    });
   } catch (e) {
     console.error("[job-applications POST]", e);
     const msg = e instanceof Error ? e.message : "Could not submit application.";
