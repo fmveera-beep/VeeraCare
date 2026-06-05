@@ -61,7 +61,7 @@ export function Navbar() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.35, delay: 0.05 }}
       className={cn(
-        "sticky top-0 z-50 w-full max-w-[100vw] overflow-x-hidden border-b pt-[env(safe-area-inset-top,0px)] transition-[background-color,box-shadow,backdrop-filter] duration-300",
+        "sticky top-0 z-50 w-full max-w-[100vw] border-b pt-[env(safe-area-inset-top,0px)] transition-[background-color,box-shadow,backdrop-filter] duration-300",
         scrolled
           ? "border-neutral-200/70 bg-white/90 shadow-md shadow-neutral-900/[0.06] backdrop-blur-md supports-[backdrop-filter]:bg-white/75"
           : "border-neutral-200 bg-white"

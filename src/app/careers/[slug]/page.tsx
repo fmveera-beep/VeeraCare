@@ -9,7 +9,6 @@ import { InsightsArticleProse } from "@/components/insights/InsightsArticleProse
 import { RemoteImage } from "@/components/media/RemoteImage";
 import { Reveal } from "@/components/motion/Reveal";
 import { loadAllPublishedJobSlugs, loadJobBySlug } from "@/lib/jobs/cms";
-import { careersEmail } from "@/config/site";
 import { SEO_SITE_NAME, seoPageTitle } from "@/lib/seo/brand";
 import { seoCanonical } from "@/lib/seo/canonical";
 
@@ -57,14 +56,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         : {}),
     },
   };
-}
-
-function applyMailto(title: string) {
-  const subject = encodeURIComponent(`Application: ${title}`);
-  const body = encodeURIComponent(
-    `Hello VeeraFM,\n\nI would like to apply for the ${title} position.\n\nName:\nPhone:\nEmail:\n\nBrief experience:\n`
-  );
-  return `mailto:${careersEmail}?subject=${subject}&body=${body}`;
 }
 
 export default async function JobDetailPage({ params }: PageProps) {
@@ -169,26 +160,15 @@ export default async function JobDetailPage({ params }: PageProps) {
 
         <section className="border-t border-neutral-200 bg-[#f6f8ff] py-12 md:py-16">
           <div className="mx-auto max-w-[1320px] px-4 text-center md:px-8">
-            <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand">
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center rounded-[4px] bg-brand px-6 py-3 text-[11px] font-bold uppercase tracking-[0.22em] text-white transition-colors hover:bg-brand-navy"
+            >
               Apply now
-            </p>
-            <p className="mt-3 text-lg font-bold text-neutral-950">
+            </Link>
+            <p className="mt-4 text-lg font-bold text-neutral-950">
               Interested in this role? Send your details to our careers team.
             </p>
-            <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <a
-                href={applyMailto(job.title)}
-                className="inline-flex items-center justify-center rounded-[4px] bg-brand px-6 py-3 text-[11px] font-bold uppercase tracking-[0.18em] text-white transition-colors hover:bg-brand-navy"
-              >
-                Apply via email
-              </a>
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-center rounded-[4px] border border-brand/30 bg-white px-6 py-3 text-[11px] font-bold uppercase tracking-[0.18em] text-brand transition-colors hover:bg-brand/5"
-              >
-                Contact us
-              </Link>
-            </div>
           </div>
         </section>
 

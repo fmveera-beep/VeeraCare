@@ -56,9 +56,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="w-full overflow-x-hidden">
+    <html lang="en" className="w-full">
       <body
-        className={`${inter.variable} w-full min-w-0 overflow-x-hidden font-sans antialiased`}
+        className={`${inter.variable} w-full min-w-0 font-sans antialiased`}
       >
         {children}
         <WhatsAppFloatingButton />

@@ -13,7 +13,6 @@ const social = [
   ["Facebook", IconFacebook, socialUrls.facebook],
   ["Instagram", IconInstagram, socialUrls.instagram],
   ["LinkedIn", IconLinkedin, socialUrls.linkedin],
-  ["YouTube", IconYoutube, socialUrls.youtube],
 ] as const;
 
 export function PreHeader() {
