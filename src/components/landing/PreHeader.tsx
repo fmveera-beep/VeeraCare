@@ -18,19 +18,19 @@ const social = [
 
 export function PreHeader() {
   return (
-    <div className="border-b border-white/10 bg-neutral-950 text-[12px] text-white/85">
-      <div className="mx-auto flex max-w-[1320px] flex-wrap items-center justify-between gap-3 px-4 py-2.5 md:px-8">
-        <p className="min-w-0 font-medium tracking-wide break-words">
+    <div className="border-b border-white/10 bg-neutral-950 text-[11px] text-white/85 sm:text-[12px]">
+      <div className="mx-auto flex max-w-[1320px] flex-col gap-2 px-3 py-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-3 sm:px-4 sm:py-2.5 md:px-8">
+        <p className="min-w-0 font-medium leading-snug tracking-wide break-words">
           <span className="text-white">Work with VeeraFM</span>
-          <span className="mx-2 text-white/35">·</span>
+          <span className="mx-1.5 hidden text-white/35 sm:inline">·</span>
           <a
             href={`mailto:${careersEmail}`}
-            className="text-white/90 underline-offset-4 transition-colors hover:text-brand hover:underline"
+            className="mt-0.5 block text-white/90 underline-offset-4 transition-colors hover:text-brand hover:underline sm:mt-0 sm:inline"
           >
             {careersEmail}
           </a>
         </p>
-        <div className="flex items-center gap-1">
+        <div className="flex shrink-0 items-center gap-0.5 self-end sm:gap-1 sm:self-auto">
           {social.map(([label, Icon, url]) => (
             <Link
               key={label}

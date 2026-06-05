@@ -22,14 +22,20 @@
 }
 
 html {
-  scroll-padding-top: 5rem;
+  scroll-padding-top: 4rem;
   width: 100%;
   overflow-x: hidden;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   html {
-    scroll-padding-top: 5.5rem;
+    scroll-padding-top: 4.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  html {
+    scroll-padding-top: 5.75rem;
   }
 }
 

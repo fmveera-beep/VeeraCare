@@ -138,3 +138,30 @@ model CmsInsight {
   @@index([publishedAt])
   @@index([order])
 }
+
+model CmsJob {
+  id              String   @id @default(cuid())
+  slug            String   @unique
+  title           String
+  excerpt         String
+  metaDescription String
+  category        String
+  location        String
+  employmentType  String   @default("Full-time")
+  salaryRange     String?
+  heroImage       String?
+  heroImageAlt    String?
+  sections        Json
+  requirements    Json
+  published       Boolean  @default(true)
+  publishedAt     DateTime
+  order           Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([published])
+  @@index([publishedAt])
+  @@index([order])
+  @@index([category])
+  @@index([location])
+}

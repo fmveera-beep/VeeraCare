@@ -30,5 +30,8 @@ yarn-error.log*
 # vercel
 .vercel
 
+# locally uploaded job images (production uses Vercel Blob)
+/public/uploads
+
 # typescript
 *.tsbuildinfo

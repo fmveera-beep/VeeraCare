@@ -37,14 +37,12 @@ export function CareerBanner() {
               practices, safety expectations, and steady schedules where routes allow.
             </p>
             <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center">
-              <ExploreOpeningsButton />
+              <ExploreOpeningsButton href="/careers" />
               <a
-                href="https://veerahr.com/job-portal"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/careers"
                 className="group inline-flex items-center gap-2.5 border border-white/40 bg-transparent px-6 py-3 text-[11px] font-bold uppercase tracking-[0.2em] text-white shadow-md transition-all duration-300 ease-out hover:border-white/70 hover:bg-white/10 hover:shadow-xl hover:shadow-black/15 motion-safe:hover:-translate-y-0.5"
               >
-                Visit job portal
+                Browse all jobs
                 <span className="flex h-8 w-8 items-center justify-center bg-white/15 transition-all duration-300 group-hover:bg-white/25 group-hover:shadow-md">
                   <ArrowUpRight
                     className="h-4 w-4 text-white transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"

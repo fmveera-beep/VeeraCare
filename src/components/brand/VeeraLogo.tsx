@@ -22,7 +22,7 @@ const lockupSize =
 
 /** Fits admin cards and tight headers without overflowing parent */
 const compactSize =
-  "h-10 w-full max-w-[10.5rem] sm:h-11 sm:max-w-[12rem] md:h-12 md:max-w-[14rem]";
+  "h-9 w-full max-w-[9.5rem] sm:h-10 sm:max-w-[11.5rem] md:h-11 md:max-w-[13rem]";
 
 export function VeeraLogo({
   className,

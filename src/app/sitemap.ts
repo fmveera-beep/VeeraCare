@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getSiteUrl } from "@/lib/seo/siteUrl";
 import { insightPosts } from "@/lib/insights/posts";
+import { jobPosts } from "@/lib/jobs/posts";
 
 const STATIC_PATHS: {
   path: string;
@@ -11,6 +12,7 @@ const STATIC_PATHS: {
   { path: "/services", priority: 0.9, changeFrequency: "weekly" },
   { path: "/contact", priority: 0.8, changeFrequency: "monthly" },
   { path: "/insights", priority: 0.8, changeFrequency: "weekly" },
+  { path: "/careers", priority: 0.85, changeFrequency: "weekly" },
   { path: "/solutions/contract-staffing", priority: 0.7, changeFrequency: "monthly" },
   { path: "/solutions/direct-hire", priority: 0.7, changeFrequency: "monthly" },
 ];
@@ -45,5 +47,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticEntries, ...articleEntries];
+  const jobEntries: MetadataRoute.Sitemap = jobPosts.map((job) => ({
+    url: `${base}/careers/${job.slug}`,
+    lastModified: safeLastModified(job.publishedAt),
+    changeFrequency: "weekly",
+    priority: 0.65,
+  }));
+
+  return [...staticEntries, ...articleEntries, ...jobEntries];
 }

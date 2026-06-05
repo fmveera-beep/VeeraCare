@@ -77,7 +77,7 @@ export function LearnMoreBrand({
 
 /** Career banner — white button */
 export function ExploreOpeningsButton({
-  href = "#contact",
+  href = "/careers",
   className,
 }: {
   href?: string;

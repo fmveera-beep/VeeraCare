@@ -56,6 +56,16 @@ export default function AdminDashboardHomePage() {
             Publish and edit blog articles on /insights and the homepage preview.
           </p>
         </Link>
+
+        <Link
+          href="/admin/dashboard/jobs"
+          className="rounded-2xl border border-white/10 bg-neutral-900/40 p-6 transition hover:bg-neutral-900/60"
+        >
+          <h2 className="text-lg font-bold tracking-tight">Manage Jobs</h2>
+          <p className="mt-2 text-sm text-neutral-300">
+            Add and publish job openings on the /careers portal.
+          </p>
+        </Link>
       </div>
     </div>
   );
