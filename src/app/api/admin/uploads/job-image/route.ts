@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
-import { assertAdmin } from "@/app/api/admin/_auth";
+import { assertJobsWrite } from "@/app/api/admin/_auth";
 import { saveJobImage } from "@/lib/uploads/jobImage";
 
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
-  if (!(await assertAdmin())) {
+  if (!(await assertJobsWrite())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

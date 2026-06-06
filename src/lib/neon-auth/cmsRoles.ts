@@ -68,11 +68,11 @@ export function roleLabel(role: CmsRole): string {
 export function roleDescription(role: CmsRole): string {
   switch (role) {
     case "admin":
-      return "Full CMS access — manage all content, users, and settings.";
+      return "Full access — all CMS sections, user management, and settings.";
     case "hr":
-      return "View job openings and careers applications (no editing).";
+      return "Careers — manage jobs (add, edit, delete, reset); view applications and download CVs.";
     case "leads":
-      return "View contact form leads only (no editing).";
+      return "Leads — view and delete contact form submissions.";
   }
 }
 
@@ -111,6 +111,14 @@ export function canAccessJobs(role: CmsRole): boolean {
 
 export function canWriteCms(role: CmsRole): boolean {
   return role === "admin";
+}
+
+export function canWriteJobs(role: CmsRole): boolean {
+  return role === "admin" || role === "hr";
+}
+
+export function canDeleteLeads(role: CmsRole): boolean {
+  return role === "admin" || role === "leads";
 }
 
 export function sidebarNavForRole(role: CmsRole) {

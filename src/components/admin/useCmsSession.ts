@@ -8,6 +8,8 @@ type CmsMe = {
   role: CmsRole;
   email: string;
   canWrite: boolean;
+  canWriteJobs: boolean;
+  canDeleteLeads: boolean;
 };
 
 const adminFetch: RequestInit = { credentials: "include", cache: "no-store" };
@@ -16,6 +18,8 @@ export function useCmsSession() {
   const [ready, setReady] = useState(false);
   const [role, setRole] = useState<CmsRole | null>(null);
   const [canWrite, setCanWrite] = useState(false);
+  const [canWriteJobs, setCanWriteJobs] = useState(false);
+  const [canDeleteLeads, setCanDeleteLeads] = useState(false);
   const [email, setEmail] = useState<string | null>(null);
 
   useEffect(() => {
@@ -28,6 +32,8 @@ export function useCmsSession() {
         if (data?.ok) {
           setRole(data.role);
           setCanWrite(data.canWrite);
+          setCanWriteJobs(data.canWriteJobs);
+          setCanDeleteLeads(data.canDeleteLeads);
           setEmail(data.email);
         }
       })
@@ -37,8 +43,12 @@ export function useCmsSession() {
   return {
     ready,
     role,
-    /** True only after session loaded and user is admin. */
-    canWrite: ready && canWrite,
     email,
+    /** Full CMS admin (all sections). */
+    canWrite: ready && canWrite,
+    /** Admin or HR — manage jobs. */
+    canWriteJobs: ready && canWriteJobs,
+    /** Admin or Leads — delete lead submissions. */
+    canDeleteLeads: ready && canDeleteLeads,
   };
 }

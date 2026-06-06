@@ -71,7 +71,7 @@ function ModalShell({
   );
 }
 
-export function AdminLeadsPageClient({ canWrite }: { canWrite: boolean }) {
+export function AdminLeadsPageClient({ canDelete }: { canDelete: boolean }) {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [ready, setReady] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -129,7 +129,7 @@ export function AdminLeadsPageClient({ canWrite }: { canWrite: boolean }) {
   }
 
   function remove(id: string) {
-    if (!canWrite) return;
+    if (!canDelete) return;
     if (!confirm("Delete this lead permanently?")) return;
     (async () => {
       const res = await fetch(`/api/admin/leads?id=${encodeURIComponent(id)}`, {
@@ -161,11 +161,6 @@ export function AdminLeadsPageClient({ canWrite }: { canWrite: boolean }) {
             <p className="mt-2 max-w-2xl text-sm text-neutral-300">
               Every hiring or worker inquiry from the site contact form is saved here
               (same data as the notification email). Newest first.
-              {!canWrite ? (
-                <span className="mt-2 block text-amber-200/90">
-                  View-only access — you can review leads but not delete them.
-                </span>
-              ) : null}
             </p>
           </div>
           <Button
@@ -220,7 +215,7 @@ export function AdminLeadsPageClient({ canWrite }: { canWrite: boolean }) {
                 <th className="px-5 py-3">Email</th>
                 <th className="px-5 py-3">Phone</th>
                 <th className="px-5 py-3">Service</th>
-                <th className="px-5 py-3 text-right">{canWrite ? "Actions" : "View"}</th>
+                <th className="px-5 py-3 text-right">{canDelete ? "Actions" : "View"}</th>
               </tr>
             </thead>
             <tbody>
@@ -269,7 +264,7 @@ export function AdminLeadsPageClient({ canWrite }: { canWrite: boolean }) {
                       >
                         View
                       </Button>
-                      {canWrite ? (
+                      {canDelete ? (
                         <Button
                           type="button"
                           variant="outline"

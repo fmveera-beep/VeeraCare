@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { assertAdmin, assertCmsAccess } from "@/app/api/admin/_auth";
+import { assertCmsAccess, assertJobsWrite } from "@/app/api/admin/_auth";
 import { canAccessJobs } from "@/lib/neon-auth/cmsRoles";
 import { rowToCmsJobRecord, seedJobCreateData } from "@/lib/jobs/cms";
 
@@ -97,7 +97,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  if (!(await assertAdmin()))
+  if (!(await assertJobsWrite()))
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { searchParams } = new URL(req.url);
@@ -127,7 +127,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PUT(req: NextRequest) {
-  if (!(await assertAdmin()))
+  if (!(await assertJobsWrite()))
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await req.json();
@@ -153,7 +153,7 @@ export async function PUT(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  if (!(await assertAdmin()))
+  if (!(await assertJobsWrite()))
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { searchParams } = new URL(req.url);

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import type { AdminMeReason } from "@/lib/neon-auth/adminMeReason";
-import { canWriteCms } from "@/lib/neon-auth/cmsRoles";
+import { canDeleteLeads, canWriteCms, canWriteJobs } from "@/lib/neon-auth/cmsRoles";
 import { resolveCmsRole } from "@/lib/cms/users";
 import { getNeonSessionEmail } from "@/lib/neon-auth/readNeonSessionEmail";
 import { tryGetNeonAuth } from "@/lib/neon-auth/server";
@@ -39,5 +39,7 @@ export async function GET() {
     role,
     email,
     canWrite: canWriteCms(role),
+    canWriteJobs: canWriteJobs(role),
+    canDeleteLeads: canDeleteLeads(role),
   });
 }

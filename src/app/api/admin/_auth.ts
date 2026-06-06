@@ -1,4 +1,5 @@
 import type { CmsRole } from "@/lib/neon-auth/cmsRoles";
+import { canDeleteLeads, canWriteJobs } from "@/lib/neon-auth/cmsRoles";
 import { resolveCmsRole } from "@/lib/cms/users";
 import { getNeonSessionEmail } from "@/lib/neon-auth/readNeonSessionEmail";
 import { tryGetNeonAuth } from "@/lib/neon-auth/server";
@@ -26,9 +27,23 @@ export async function assertCmsAccess(): Promise<CmsAuthSession | null> {
   return getCmsAuthSession();
 }
 
-/** Full CMS admin only (read + write). */
+/** Full CMS admin only (all sections). */
 export async function assertAdmin(): Promise<CmsAuthSession | null> {
   const session = await getCmsAuthSession();
   if (!session || session.role !== "admin") return null;
+  return session;
+}
+
+/** Admin or HR — create, edit, delete jobs. */
+export async function assertJobsWrite(): Promise<CmsAuthSession | null> {
+  const session = await getCmsAuthSession();
+  if (!session || !canWriteJobs(session.role)) return null;
+  return session;
+}
+
+/** Admin or Leads — delete lead submissions. */
+export async function assertLeadsDelete(): Promise<CmsAuthSession | null> {
+  const session = await getCmsAuthSession();
+  if (!session || !canDeleteLeads(session.role)) return null;
   return session;
 }

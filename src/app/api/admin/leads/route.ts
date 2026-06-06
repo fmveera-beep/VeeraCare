@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { assertAdmin, assertCmsAccess } from "@/app/api/admin/_auth";
+import { assertCmsAccess, assertLeadsDelete } from "@/app/api/admin/_auth";
 import { canAccessLeads } from "@/lib/neon-auth/cmsRoles";
 import {
   inquiryTypeLabel,
@@ -45,12 +45,8 @@ export async function GET() {
 }
 
 export async function DELETE(req: NextRequest) {
-  const session = await assertAdmin();
-  if (!session) {
-    return NextResponse.json(
-      { error: "Only admins can delete leads." },
-      { status: 403 }
-    );
+  if (!(await assertLeadsDelete())) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
 
   const id = new URL(req.url).searchParams.get("id")?.trim();
