@@ -14,8 +14,8 @@ const adminFetch: RequestInit = { credentials: "include", cache: "no-store" };
 
 export function useCmsSession() {
   const [ready, setReady] = useState(false);
-  const [role, setRole] = useState<CmsRole>("admin");
-  const [canWrite, setCanWrite] = useState(true);
+  const [role, setRole] = useState<CmsRole | null>(null);
+  const [canWrite, setCanWrite] = useState(false);
   const [email, setEmail] = useState<string | null>(null);
 
   useEffect(() => {
@@ -34,5 +34,11 @@ export function useCmsSession() {
       .finally(() => setReady(true));
   }, []);
 
-  return { ready, role, canWrite, email };
+  return {
+    ready,
+    role,
+    /** True only after session loaded and user is admin. */
+    canWrite: ready && canWrite,
+    email,
+  };
 }

@@ -45,8 +45,13 @@ export async function GET() {
 }
 
 export async function DELETE(req: NextRequest) {
-  if (!(await assertAdmin()))
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const session = await assertAdmin();
+  if (!session) {
+    return NextResponse.json(
+      { error: "Only admins can delete leads." },
+      { status: 403 }
+    );
+  }
 
   const id = new URL(req.url).searchParams.get("id")?.trim();
   if (!id) {

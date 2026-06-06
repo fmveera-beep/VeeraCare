@@ -117,7 +117,7 @@ const fieldClass =
   "mt-1.5 w-full rounded-xl border border-white/15 bg-neutral-900/80 px-3 py-2.5 text-sm text-white placeholder:text-neutral-500 focus:border-brand/50 focus:outline-none focus:ring-1 focus:ring-brand/40";
 
 export default function AdminManageJobsPage() {
-  const { canWrite } = useCmsSession();
+  const { canWrite, ready: sessionReady } = useCmsSession();
   const [items, setItems] = useState<CmsJob[]>([]);
   const [ready, setReady] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -196,6 +196,7 @@ export default function AdminManageJobsPage() {
   );
 
   async function uploadJobImage(file: File) {
+    if (!canWrite) return;
     setUploadError(null);
     setUploadingImage(true);
     try {
@@ -223,6 +224,7 @@ export default function AdminManageJobsPage() {
   }
 
   function openAdd() {
+    if (!canWrite) return;
     setEditingId(null);
     setFormError(null);
     setUploadError(null);
@@ -248,6 +250,7 @@ export default function AdminManageJobsPage() {
   }
 
   function openEdit(item: CmsJob) {
+    if (!canWrite) return;
     setEditingId(item.id);
     setFormError(null);
     setUploadError(null);
@@ -273,6 +276,7 @@ export default function AdminManageJobsPage() {
   }
 
   async function remove(id: string) {
+    if (!canWrite) return;
     const res = await fetch(`/api/admin/jobs?id=${encodeURIComponent(id)}`, {
       ...adminFetch,
       method: "DELETE",
@@ -282,6 +286,7 @@ export default function AdminManageJobsPage() {
   }
 
   async function upsert() {
+    if (!canWrite) return;
     setFormError(null);
     let sections: JobSection[];
     let requirements: string[];
@@ -361,7 +366,7 @@ export default function AdminManageJobsPage() {
               Published on <span className="text-white">/careers</span>. Total:{" "}
               <span className="font-semibold text-white">{ready ? stats.total : "—"}</span> (
               {stats.published} live)
-              {!canWrite ? (
+              {!canWrite && sessionReady ? (
                 <span className="mt-2 block text-amber-200/90">
                   View-only access — contact an admin to add or edit jobs.
                 </span>
