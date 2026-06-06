@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import type { CmsRole } from "@/lib/neon-auth/cmsRoles";
-import { canAccessDashboardPath, getCmsRole } from "@/lib/neon-auth/cmsRoles";
+import { canAccessDashboardPath } from "@/lib/neon-auth/cmsRoles";
+import { resolveCmsRole } from "@/lib/cms/users";
 import { getNeonSessionEmail } from "@/lib/neon-auth/readNeonSessionEmail";
 import { tryGetNeonAuth } from "@/lib/neon-auth/server";
 
@@ -13,7 +14,7 @@ export async function getCmsSession(): Promise<
   const { email } = await getNeonSessionEmail(auth);
   if (!email) return null;
 
-  const role = getCmsRole(email);
+  const role = await resolveCmsRole(email);
   if (!role) return null;
 
   return { email, role };

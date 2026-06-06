@@ -1,5 +1,5 @@
 import type { CmsRole } from "@/lib/neon-auth/cmsRoles";
-import { getCmsRole } from "@/lib/neon-auth/cmsRoles";
+import { resolveCmsRole } from "@/lib/cms/users";
 import { getNeonSessionEmail } from "@/lib/neon-auth/readNeonSessionEmail";
 import { tryGetNeonAuth } from "@/lib/neon-auth/server";
 
@@ -15,13 +15,13 @@ export async function getCmsAuthSession(): Promise<CmsAuthSession | null> {
   const { email } = await getNeonSessionEmail(auth);
   if (!email) return null;
 
-  const role = getCmsRole(email);
+  const role = await resolveCmsRole(email);
   if (!role) return null;
 
   return { email, role };
 }
 
-/** Any signed-in CMS user (admin or HR). */
+/** Any signed-in CMS user. */
 export async function assertCmsAccess(): Promise<CmsAuthSession | null> {
   return getCmsAuthSession();
 }

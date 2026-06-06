@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 import type { AdminMeReason } from "@/lib/neon-auth/adminMeReason";
-import { getCmsRole, isAllowedCmsEmail } from "@/lib/neon-auth/cmsRoles";
+import { canWriteCms } from "@/lib/neon-auth/cmsRoles";
+import { resolveCmsRole } from "@/lib/cms/users";
 import { getNeonSessionEmail } from "@/lib/neon-auth/readNeonSessionEmail";
 import { tryGetNeonAuth } from "@/lib/neon-auth/server";
 
@@ -24,19 +26,18 @@ export async function GET() {
     );
   }
 
-  if (!isAllowedCmsEmail(email)) {
+  const role = await resolveCmsRole(email);
+  if (!role) {
     return NextResponse.json(
       { ok: false as const, reason: "not_allowlisted" as AdminMeReason },
       { status: 403 }
     );
   }
 
-  const role = getCmsRole(email)!;
-
   return NextResponse.json({
     ok: true as const,
     role,
     email,
-    canWrite: role === "admin",
+    canWrite: canWriteCms(role),
   });
 }

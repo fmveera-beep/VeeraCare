@@ -167,6 +167,22 @@ model CmsJob {
   @@index([location])
 }
 
+enum CmsUserRole {
+  ADMIN
+  HR
+  LEADS
+}
+
+model CmsUser {
+  id        String      @id @default(cuid())
+  email     String      @unique
+  role      CmsUserRole
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@index([role])
+}
+
 model JobApplication {
   id         String   @id @default(cuid())
   jobSlug    String

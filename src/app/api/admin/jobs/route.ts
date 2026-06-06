@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { assertAdmin, assertCmsAccess } from "@/app/api/admin/_auth";
+import { canAccessJobs } from "@/lib/neon-auth/cmsRoles";
 import { rowToCmsJobRecord, seedJobCreateData } from "@/lib/jobs/cms";
 
 function parseBody(input: {
@@ -77,7 +78,8 @@ async function ensureSeeded() {
 }
 
 export async function GET() {
-  if (!(await assertCmsAccess()))
+  const session = await assertCmsAccess();
+  if (!session || !canAccessJobs(session.role))
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   try {
     await ensureSeeded();

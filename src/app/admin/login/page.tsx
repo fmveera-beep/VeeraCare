@@ -1,12 +1,12 @@
 import { Suspense } from "react";
-import { parseAllowedLoginEmailList } from "@/lib/neon-auth/cmsRoles";
+import { listAllowedLoginEmails } from "@/lib/cms/users";
 import { tryGetNeonAuth } from "@/lib/neon-auth/server";
 import { AdminLoginClient } from "./AdminLoginClient";
 
 export const dynamic = "force-dynamic";
 
-export default function AdminLoginPage() {
-  const allowedEmails = parseAllowedLoginEmailList();
+export default async function AdminLoginPage() {
+  const allowedEmails = await listAllowedLoginEmails();
   const authConfigured = Boolean(tryGetNeonAuth());
 
   return (
@@ -22,4 +22,3 @@ export default function AdminLoginPage() {
     </Suspense>
   );
 }
-

@@ -152,7 +152,7 @@ export function AdminLoginClient({
 
         const msg =
           body.reason === "not_allowlisted"
-            ? "Your Neon account signed in, but this email is not authorized. Add it to ADMIN_EMAIL (full access) or HR_EMAIL (jobs & applications view-only) in your environment."
+            ? "Your Neon account signed in, but this email is not authorized. Ask an admin to add you under Manage Users in the CMS."
             : body.reason === "auth_config"
               ? "Neon Auth is not configured on the server."
               : body.reason === "no_session" || me!.status === 401

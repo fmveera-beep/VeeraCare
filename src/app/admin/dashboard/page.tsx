@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getCmsSession } from "@/lib/neon-auth/requireCmsPage";
-import { dashboardCardsForRole } from "@/lib/neon-auth/cmsRoles";
+import { dashboardCardsForRole, roleDescription } from "@/lib/neon-auth/cmsRoles";
 
 export default async function AdminDashboardHomePage() {
   const session = await getCmsSession();
@@ -19,7 +19,7 @@ export default async function AdminDashboardHomePage() {
         <p className="mt-2 max-w-2xl text-sm text-neutral-300">
           {role === "admin"
             ? "Use the sidebar to review form leads and manage Services and Industries. Content is saved to your database and reflected on the public site."
-            : "You have view-only access to job openings and careers applications. Contact an admin if you need changes published."}
+            : roleDescription(role)}
         </p>
       </div>
 

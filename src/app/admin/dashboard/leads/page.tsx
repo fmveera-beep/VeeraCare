@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useCmsSession } from "@/components/admin/useCmsSession";
 import { cn } from "@/lib/utils";
 
 type Lead = {
@@ -72,6 +73,7 @@ function ModalShell({
 }
 
 export default function AdminLeadsPage() {
+  const { canWrite } = useCmsSession();
   const [leads, setLeads] = useState<Lead[]>([]);
   const [ready, setReady] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -160,6 +162,11 @@ export default function AdminLeadsPage() {
             <p className="mt-2 max-w-2xl text-sm text-neutral-300">
               Every hiring or worker inquiry from the site contact form is saved here
               (same data as the notification email). Newest first.
+              {!canWrite ? (
+                <span className="mt-2 block text-amber-200/90">
+                  View-only access — you can review leads but not delete them.
+                </span>
+              ) : null}
             </p>
           </div>
           <Button
@@ -263,14 +270,16 @@ export default function AdminLeadsPage() {
                       >
                         View
                       </Button>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        className="rounded-2xl border-red-500/25 bg-transparent text-red-200 hover:bg-red-500/10"
-                        onClick={() => remove(lead.id)}
-                      >
-                        Delete
-                      </Button>
+                      {canWrite ? (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="rounded-2xl border-red-500/25 bg-transparent text-red-200 hover:bg-red-500/10"
+                          onClick={() => remove(lead.id)}
+                        >
+                          Delete
+                        </Button>
+                      ) : null}
                     </div>
                   </td>
                 </tr>

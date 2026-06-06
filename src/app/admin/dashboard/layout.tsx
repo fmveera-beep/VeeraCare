@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { AdminLogoutButton } from "@/components/admin/AdminLogoutButton";
 import { AdminSidebarNav } from "@/components/admin/AdminSidebarNav";
 import { getCmsSession } from "@/lib/neon-auth/requireCmsPage";
+import { roleDescription, roleLabel as cmsRoleLabel } from "@/lib/neon-auth/cmsRoles";
 import { tryGetNeonAuth } from "@/lib/neon-auth/server";
 
 export const dynamic = "force-dynamic";
@@ -21,7 +22,11 @@ export default async function AdminDashboardLayout({
 
   if (!session) redirect("/admin/login");
 
-  const roleLabel = session.role === "admin" ? "Admin" : "HR (view only)";
+  const sessionLabel = cmsRoleLabel(session.role);
+  const sessionHint =
+    session.role === "admin"
+      ? "Manage content without touching code"
+      : roleDescription(session.role);
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-neutral-950 text-neutral-100">
@@ -45,7 +50,7 @@ export default async function AdminDashboardLayout({
               CMS Dashboard
             </p>
             <p className="mt-1 text-xs text-neutral-300">
-              Neon Auth • {roleLabel}
+              Neon Auth • {sessionLabel}
             </p>
           </Link>
 
@@ -59,7 +64,7 @@ export default async function AdminDashboardLayout({
                 Session
               </p>
               <p className="mt-1 truncate text-sm text-neutral-200">{session.email}</p>
-              <p className="mt-1 text-xs text-neutral-400">{roleLabel}</p>
+              <p className="mt-1 text-xs text-neutral-400">{sessionLabel}</p>
             </div>
           </div>
         </aside>
@@ -77,12 +82,10 @@ export default async function AdminDashboardLayout({
                   VeeraFM CMS
                 </p>
                 <p className="truncate text-sm font-semibold text-neutral-200">
-                  {session.role === "admin"
-                    ? "Manage content without touching code"
-                    : "Careers portal — jobs & applications"}
+                  {sessionHint}
                 </p>
                 <p className="mt-0.5 hidden text-xs text-neutral-400 md:block">
-                  {roleLabel} • {session.email}
+                  {sessionLabel} • {session.email}
                 </p>
               </div>
 
