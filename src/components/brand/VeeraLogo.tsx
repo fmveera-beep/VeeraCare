@@ -15,7 +15,7 @@ type VeeraLogoProps = {
 
 /** Desktop header lockup — wide; use `compact` on mobile in Navbar/Footer. */
 const navSize =
-  "h-12 w-[min(100%,28rem)] sm:h-14 sm:w-[min(100%,32rem)] md:h-[4.5rem] md:w-[460px] lg:w-[480px]";
+  "h-9 w-[min(100%,16rem)] sm:h-10 sm:w-[min(100%,18rem)] md:h-11 md:w-[220px] lg:h-12 lg:w-[240px]";
 
 const lockupSize =
   "h-14 w-[min(calc(100vw-2rem),360px)] sm:h-16 sm:w-[400px] md:h-[4.5rem] md:w-[460px]";
@@ -61,7 +61,7 @@ export function VeeraLogo({
             ? "(max-width: 768px) 90vw, 440px"
             : showCompact
               ? "(max-width: 400px) 85vw, 280px"
-              : "(max-width: 768px) 90vw, 480px"
+              : "(max-width: 768px) 90vw, 240px"
         }
       />
     </span>

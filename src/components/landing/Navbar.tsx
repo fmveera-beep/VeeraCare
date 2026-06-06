@@ -67,7 +67,7 @@ export function Navbar() {
           : "border-neutral-200 bg-white"
       )}
     >
-      <nav className="relative flex min-h-[3.75rem] w-full min-w-0 max-w-full items-center gap-2 px-3 py-2 sm:min-h-[4rem] sm:px-4 lg:grid lg:min-h-[5.5rem] lg:grid-cols-[1fr_auto_1fr] lg:items-center lg:gap-4 lg:px-8 xl:min-h-[6.25rem]">
+      <nav className="relative flex min-h-[3.75rem] w-full min-w-0 max-w-full items-center gap-2 px-3 py-2 sm:min-h-[4rem] sm:px-4 lg:grid lg:min-h-[4.25rem] lg:grid-cols-[1fr_auto_1fr] lg:items-center lg:gap-4 lg:px-8 xl:min-h-[4.5rem]">
         <Link
           href="/"
           className="flex min-w-0 max-w-[calc(100%-2.75rem)] flex-1 items-center py-0.5 transition-all duration-300 hover:opacity-90 motion-safe:hover:scale-[1.02] motion-safe:active:scale-[0.99] sm:max-w-[calc(100%-3rem)] lg:max-w-none lg:flex-none lg:justify-self-start"
