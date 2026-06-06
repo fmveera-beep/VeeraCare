@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useCmsSession } from "@/components/admin/useCmsSession";
 import { cn } from "@/lib/utils";
 
 type JobApplication = {
@@ -71,6 +72,7 @@ function ModalShell({
 }
 
 export default function AdminJobApplicationsPage() {
+  const { canWrite } = useCmsSession();
   const [items, setItems] = useState<JobApplication[]>([]);
   const [ready, setReady] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -136,6 +138,11 @@ export default function AdminJobApplicationsPage() {
           Applications from the careers apply form. Total:{" "}
           <span className="font-semibold text-white">{ready ? stats.total : "—"}</span> (
           {stats.withCv} with CV)
+          {!canWrite ? (
+            <span className="mt-2 block text-amber-200/90">
+              View-only access — you can review applications but not delete them.
+            </span>
+          ) : null}
         </p>
       </div>
 
@@ -209,13 +216,15 @@ export default function AdminJobApplicationsPage() {
                         >
                           View
                         </button>
-                        <button
-                          type="button"
-                          className="text-xs font-semibold text-red-300 hover:underline"
-                          onClick={() => remove(item.id)}
-                        >
-                          Delete
-                        </button>
+                        {canWrite ? (
+                          <button
+                            type="button"
+                            className="text-xs font-semibold text-red-300 hover:underline"
+                            onClick={() => remove(item.id)}
+                          >
+                            Delete
+                          </button>
+                        ) : null}
                       </div>
                     </td>
                   </tr>

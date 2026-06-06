@@ -4,8 +4,7 @@ import { redirect } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { AdminLogoutButton } from "@/components/admin/AdminLogoutButton";
 import { AdminSidebarNav } from "@/components/admin/AdminSidebarNav";
-import { isAllowedAdminEmail } from "@/lib/neon-auth/adminEmails";
-import { getNeonSessionEmail } from "@/lib/neon-auth/readNeonSessionEmail";
+import { getCmsSession } from "@/lib/neon-auth/requireCmsPage";
 import { tryGetNeonAuth } from "@/lib/neon-auth/server";
 
 export const dynamic = "force-dynamic";
@@ -18,14 +17,11 @@ export default async function AdminDashboardLayout({
   const auth = tryGetNeonAuth();
   if (!auth) redirect("/admin/login?error=auth_config");
 
-  const { email, error } = await getNeonSessionEmail(auth);
+  const session = await getCmsSession();
 
-  if (error || !email) redirect("/admin/login");
+  if (!session) redirect("/admin/login");
 
-  if (!isAllowedAdminEmail(email)) {
-    await auth.signOut();
-    redirect("/admin/login?error=forbidden");
-  }
+  const roleLabel = session.role === "admin" ? "Admin" : "HR (view only)";
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-neutral-950 text-neutral-100">
@@ -49,12 +45,12 @@ export default async function AdminDashboardLayout({
               CMS Dashboard
             </p>
             <p className="mt-1 text-xs text-neutral-300">
-              Neon Auth • Email OTP
+              Neon Auth • {roleLabel}
             </p>
           </Link>
 
           <div className="mt-5">
-            <AdminSidebarNav />
+            <AdminSidebarNav role={session.role} />
           </div>
 
           <div className="mt-auto pt-6">
@@ -62,9 +58,8 @@ export default async function AdminDashboardLayout({
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400">
                 Session
               </p>
-              <p className="mt-1 text-sm text-neutral-200">
-                Signed in with managed Neon Auth (session cookies).
-              </p>
+              <p className="mt-1 truncate text-sm text-neutral-200">{session.email}</p>
+              <p className="mt-1 text-xs text-neutral-400">{roleLabel}</p>
             </div>
           </div>
         </aside>
@@ -82,10 +77,12 @@ export default async function AdminDashboardLayout({
                   VeeraFM CMS
                 </p>
                 <p className="truncate text-sm font-semibold text-neutral-200">
-                  Manage content without touching code
+                  {session.role === "admin"
+                    ? "Manage content without touching code"
+                    : "Careers portal — jobs & applications"}
                 </p>
                 <p className="mt-0.5 hidden text-xs text-neutral-400 md:block">
-                  Services • Industries • Settings
+                  {roleLabel} • {session.email}
                 </p>
               </div>
 

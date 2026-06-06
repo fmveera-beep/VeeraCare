@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { assertAdmin } from "@/app/api/admin/_auth";
+import { assertAdmin, assertCmsAccess } from "@/app/api/admin/_auth";
 import { rowToCmsJobRecord, seedJobCreateData } from "@/lib/jobs/cms";
 
 function parseBody(input: {
@@ -77,7 +77,7 @@ async function ensureSeeded() {
 }
 
 export async function GET() {
-  if (!(await assertAdmin()))
+  if (!(await assertCmsAccess()))
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   try {
     await ensureSeeded();

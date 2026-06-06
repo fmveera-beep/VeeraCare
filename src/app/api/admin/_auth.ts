@@ -1,13 +1,34 @@
-import { isAllowedAdminEmail } from "@/lib/neon-auth/adminEmails";
+import type { CmsRole } from "@/lib/neon-auth/cmsRoles";
+import { getCmsRole } from "@/lib/neon-auth/cmsRoles";
 import { getNeonSessionEmail } from "@/lib/neon-auth/readNeonSessionEmail";
 import { tryGetNeonAuth } from "@/lib/neon-auth/server";
 
-export async function assertAdmin(): Promise<boolean> {
+export type CmsAuthSession = {
+  email: string;
+  role: CmsRole;
+};
+
+export async function getCmsAuthSession(): Promise<CmsAuthSession | null> {
   const auth = tryGetNeonAuth();
-  if (!auth) return false;
+  if (!auth) return null;
 
   const { email } = await getNeonSessionEmail(auth);
-  if (!email) return false;
+  if (!email) return null;
 
-  return isAllowedAdminEmail(email);
+  const role = getCmsRole(email);
+  if (!role) return null;
+
+  return { email, role };
+}
+
+/** Any signed-in CMS user (admin or HR). */
+export async function assertCmsAccess(): Promise<CmsAuthSession | null> {
+  return getCmsAuthSession();
+}
+
+/** Full CMS admin only (read + write). */
+export async function assertAdmin(): Promise<CmsAuthSession | null> {
+  const session = await getCmsAuthSession();
+  if (!session || session.role !== "admin") return null;
+  return session;
 }

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { assertAdmin } from "@/app/api/admin/_auth";
+import { assertAdmin, assertCmsAccess } from "@/app/api/admin/_auth";
 
 function serialize(row: {
   id: string;
@@ -32,7 +32,7 @@ function serialize(row: {
 }
 
 export async function GET() {
-  if (!(await assertAdmin()))
+  if (!(await assertCmsAccess()))
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   try {

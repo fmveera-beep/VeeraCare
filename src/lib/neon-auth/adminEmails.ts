@@ -10,10 +10,8 @@ function splitEmails(csv: string): string[] {
 }
 
 /**
- * Comma-separated CMS admins maintained in source. Always merged with
- * `process.env.ADMIN_EMAIL` (so Vercel/local env can add more without redeploy).
- *
- * Edit this string when you want repo-controlled allowlist changes.
+ * Comma-separated full CMS admins. Merged with `process.env.ADMIN_EMAIL`.
+ * HR users use HR_EMAIL / SOURCE_HR_EMAILS instead (see cmsRoles.ts).
  */
 export const SOURCE_ADMIN_EMAILS =
   "admin@veerafm.com, razeev2727@gmail.com";

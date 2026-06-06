@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useCmsSession } from "@/components/admin/useCmsSession";
 import { cn } from "@/lib/utils";
 import type { JobSection } from "@/lib/jobs/posts";
 import {
@@ -116,6 +117,7 @@ const fieldClass =
   "mt-1.5 w-full rounded-xl border border-white/15 bg-neutral-900/80 px-3 py-2.5 text-sm text-white placeholder:text-neutral-500 focus:border-brand/50 focus:outline-none focus:ring-1 focus:ring-brand/40";
 
 export default function AdminManageJobsPage() {
+  const { canWrite } = useCmsSession();
   const [items, setItems] = useState<CmsJob[]>([]);
   const [ready, setReady] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -359,8 +361,14 @@ export default function AdminManageJobsPage() {
               Published on <span className="text-white">/careers</span>. Total:{" "}
               <span className="font-semibold text-white">{ready ? stats.total : "—"}</span> (
               {stats.published} live)
+              {!canWrite ? (
+                <span className="mt-2 block text-amber-200/90">
+                  View-only access — contact an admin to add or edit jobs.
+                </span>
+              ) : null}
             </p>
           </div>
+          {canWrite ? (
           <div className="flex flex-wrap items-center gap-2">
             <Button
               type="button"
@@ -379,6 +387,7 @@ export default function AdminManageJobsPage() {
               Add job
             </Button>
           </div>
+          ) : null}
         </div>
       </div>
 
@@ -399,7 +408,11 @@ export default function AdminManageJobsPage() {
                 <th className="px-5 py-3 font-semibold">Salary</th>
                 <th className="px-5 py-3 font-semibold">Image</th>
                 <th className="px-5 py-3 font-semibold">Status</th>
-                <th className="px-5 py-3 font-semibold">Actions</th>
+                {canWrite ? (
+                  <th className="px-5 py-3 font-semibold">Actions</th>
+                ) : (
+                  <th className="px-5 py-3 font-semibold">Link</th>
+                )}
               </tr>
             </thead>
             <tbody>
@@ -449,21 +462,27 @@ export default function AdminManageJobsPage() {
                           >
                             View
                           </Link>
+                        ) : canWrite ? null : (
+                          <span className="text-xs text-neutral-500">Draft</span>
+                        )}
+                        {canWrite ? (
+                          <>
+                            <button
+                              type="button"
+                              className="text-xs font-semibold text-white hover:underline"
+                              onClick={() => openEdit(item)}
+                            >
+                              Edit
+                            </button>
+                            <button
+                              type="button"
+                              className="text-xs font-semibold text-red-300 hover:underline"
+                              onClick={() => remove(item.id)}
+                            >
+                              Delete
+                            </button>
+                          </>
                         ) : null}
-                        <button
-                          type="button"
-                          className="text-xs font-semibold text-white hover:underline"
-                          onClick={() => openEdit(item)}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          type="button"
-                          className="text-xs font-semibold text-red-300 hover:underline"
-                          onClick={() => remove(item.id)}
-                        >
-                          Delete
-                        </button>
                       </div>
                     </td>
                   </tr>
@@ -474,6 +493,7 @@ export default function AdminManageJobsPage() {
         </div>
       </div>
 
+      {canWrite ? (
       <ModalShell
         open={modalOpen}
         title={editingId ? "Edit job" : "Add job"}
@@ -743,6 +763,7 @@ export default function AdminManageJobsPage() {
           </Button>
         </div>
       </ModalShell>
+      ) : null}
     </div>
   );
 }

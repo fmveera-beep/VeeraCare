@@ -3,20 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import type { CmsRole } from "@/lib/neon-auth/cmsRoles";
+import { sidebarNavForRole } from "@/lib/neon-auth/cmsRoles";
 
-const nav = [
-  { href: "/admin/dashboard", label: "Dashboard Home" },
-  { href: "/admin/dashboard/leads", label: "Leads" },
-  { href: "/admin/dashboard/services", label: "Manage Services" },
-  { href: "/admin/dashboard/industries", label: "Manage Industries" },
-  { href: "/admin/dashboard/insights", label: "Manage Insights" },
-  { href: "/admin/dashboard/jobs", label: "Manage Jobs" },
-  { href: "/admin/dashboard/job-applications", label: "Job Applications" },
-  { href: "/admin/dashboard/settings", label: "Settings" },
-] as const;
-
-export function AdminSidebarNav() {
+export function AdminSidebarNav({ role }: { role: CmsRole }) {
   const pathname = usePathname();
+  const nav = sidebarNavForRole(role);
 
   return (
     <nav className="space-y-1.5">
@@ -55,4 +47,3 @@ export function AdminSidebarNav() {
     </nav>
   );
 }
-

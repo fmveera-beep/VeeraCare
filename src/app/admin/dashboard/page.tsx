@@ -1,6 +1,12 @@
 import Link from "next/link";
+import { getCmsSession } from "@/lib/neon-auth/requireCmsPage";
+import { dashboardCardsForRole } from "@/lib/neon-auth/cmsRoles";
 
-export default function AdminDashboardHomePage() {
+export default async function AdminDashboardHomePage() {
+  const session = await getCmsSession();
+  const role = session?.role ?? "admin";
+  const cards = dashboardCardsForRole(role);
+
   return (
     <div className="space-y-6">
       <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
@@ -11,73 +17,24 @@ export default function AdminDashboardHomePage() {
           Welcome to VeeraFM CMS
         </h1>
         <p className="mt-2 max-w-2xl text-sm text-neutral-300">
-          Use the sidebar to review form leads and manage Services and Industries.
-          Content is saved to your database and reflected on the public site.
+          {role === "admin"
+            ? "Use the sidebar to review form leads and manage Services and Industries. Content is saved to your database and reflected on the public site."
+            : "You have view-only access to job openings and careers applications. Contact an admin if you need changes published."}
         </p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Link
-          href="/admin/dashboard/leads"
-          className="rounded-2xl border border-white/10 bg-neutral-900/40 p-6 transition hover:bg-neutral-900/60"
-        >
-          <h2 className="text-lg font-bold tracking-tight">Leads</h2>
-          <p className="mt-2 text-sm text-neutral-300">
-            View hiring and worker inquiries from the contact form.
-          </p>
-        </Link>
-
-        <Link
-          href="/admin/dashboard/services"
-          className="rounded-2xl border border-white/10 bg-neutral-900/40 p-6 transition hover:bg-neutral-900/60"
-        >
-          <h2 className="text-lg font-bold tracking-tight">Manage Services</h2>
-          <p className="mt-2 text-sm text-neutral-300">
-            Add, edit, or remove service cards shown on the website.
-          </p>
-        </Link>
-
-        <Link
-          href="/admin/dashboard/industries"
-          className="rounded-2xl border border-white/10 bg-neutral-900/40 p-6 transition hover:bg-neutral-900/60"
-        >
-          <h2 className="text-lg font-bold tracking-tight">Manage Industries</h2>
-          <p className="mt-2 text-sm text-neutral-300">
-            Update industry categories used across the homepage.
-          </p>
-        </Link>
-
-        <Link
-          href="/admin/dashboard/insights"
-          className="rounded-2xl border border-white/10 bg-neutral-900/40 p-6 transition hover:bg-neutral-900/60"
-        >
-          <h2 className="text-lg font-bold tracking-tight">Manage Insights</h2>
-          <p className="mt-2 text-sm text-neutral-300">
-            Publish and edit blog articles on /insights and the homepage preview.
-          </p>
-        </Link>
-
-        <Link
-          href="/admin/dashboard/jobs"
-          className="rounded-2xl border border-white/10 bg-neutral-900/40 p-6 transition hover:bg-neutral-900/60"
-        >
-          <h2 className="text-lg font-bold tracking-tight">Manage Jobs</h2>
-          <p className="mt-2 text-sm text-neutral-300">
-            Add and publish job openings on the /careers portal.
-          </p>
-        </Link>
-
-        <Link
-          href="/admin/dashboard/job-applications"
-          className="rounded-2xl border border-white/10 bg-neutral-900/40 p-6 transition hover:bg-neutral-900/60"
-        >
-          <h2 className="text-lg font-bold tracking-tight">Job Applications</h2>
-          <p className="mt-2 text-sm text-neutral-300">
-            Review careers form submissions and download uploaded CVs.
-          </p>
-        </Link>
+        {cards.map((card) => (
+          <Link
+            key={card.href}
+            href={card.href}
+            className="rounded-2xl border border-white/10 bg-neutral-900/40 p-6 transition hover:bg-neutral-900/60"
+          >
+            <h2 className="text-lg font-bold tracking-tight">{card.title}</h2>
+            <p className="mt-2 text-sm text-neutral-300">{card.description}</p>
+          </Link>
+        ))}
       </div>
     </div>
   );
 }
-
