@@ -1,10 +1,7 @@
 import type { CTARequestInput } from "@/lib/validations/cta";
-import {
-  createSmtpTransporter,
-  envTrim,
-  getSmtpFrom,
-  isSmtpConfigured,
-} from "@/lib/email/smtp";
+import { escapeHtml } from "@/lib/email/escapeHtml";
+import { envTrim } from "@/lib/email/smtp";
+import { isEmailDeliveryConfigured, sendEmail } from "@/lib/email/send";
 
 /** Company owner / ops inbox: all CTA leads (hiring + worker) go here. */
 function getOwnerInbox() {
@@ -16,7 +13,7 @@ function getOwnerInbox() {
 }
 
 function isEmailConfigured() {
-  return Boolean(isSmtpConfigured() && getOwnerInbox());
+  return Boolean(isEmailDeliveryConfigured() && getOwnerInbox());
 }
 
 export type SendCtaEmailResult =
@@ -37,10 +34,7 @@ export async function sendCtaRequestEmail({
     return { status: "skipped", reason: "not_configured" };
   }
 
-  const from = getSmtpFrom();
   const to = getOwnerInbox()!;
-
-  const transporter = createSmtpTransporter();
 
   const isWorker = request.inquiryType === "WORKER";
   const inquiryLabel = isWorker ? "Worker — available for work" : "Employer — needs staff";
@@ -112,8 +106,7 @@ export async function sendCtaRequestEmail({
   `;
 
   try {
-    await transporter.sendMail({
-      from,
+    await sendEmail({
       to,
       subject,
       text,
@@ -122,17 +115,8 @@ export async function sendCtaRequestEmail({
     });
     return { status: "sent" };
   } catch (e) {
-    const msg = e instanceof Error ? e.message : "SMTP send failed";
+    const msg = e instanceof Error ? e.message : "Email send failed";
     console.error("[sendCtaRequestEmail]", e);
     return { status: "failed", error: msg };
   }
-}
-
-function escapeHtml(input: string) {
-  return input
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
 }

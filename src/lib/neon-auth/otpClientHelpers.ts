@@ -19,7 +19,7 @@ export function describeEmailOtpSendFailure(res: {
   if (d && typeof d.success === "boolean" && d.success === false) {
     return (
       "Neon Auth did not send the code. In Neon Console → Branch → Auth: enable sign-in with email and Email OTP. " +
-      "If mail still never arrives, add Custom SMTP (your Gmail app password works there too)—see Neon Auth production checklist."
+      "For production, configure the send.otp webhook (Microsoft Graph) via npm run neon:auth-webhook after deploy."
     );
   }
 

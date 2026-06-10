@@ -34,3 +34,7 @@ export const socialUrls = {
 export const introVideoEmbedUrl =
   process.env.NEXT_PUBLIC_INTRO_VIDEO_EMBED ??
   "https://www.youtube-nocookie.com/embed/M7lc1UVf-VE";
+
+/** Company profile PDF or document (navbar link opens in a new tab). */
+export const companyProfileUrl =
+  process.env.NEXT_PUBLIC_COMPANY_PROFILE_URL?.trim() ?? "";

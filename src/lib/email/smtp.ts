@@ -5,11 +5,12 @@ export function envTrim(name: string) {
 }
 
 export function isSmtpConfigured(): boolean {
+  const pass = envTrim("SMTP_PASS") || envTrim("RESEND_API_KEY");
   return Boolean(
     envTrim("SMTP_HOST") &&
       envTrim("SMTP_PORT") &&
       envTrim("SMTP_USER") &&
-      envTrim("SMTP_PASS") &&
+      pass &&
       envTrim("SMTP_FROM")
   );
 }
@@ -18,7 +19,7 @@ export function createSmtpTransporter() {
   const host = envTrim("SMTP_HOST")!;
   const port = Number(envTrim("SMTP_PORT")!);
   const user = envTrim("SMTP_USER")!;
-  const pass = envTrim("SMTP_PASS")!;
+  const pass = envTrim("SMTP_PASS") || envTrim("RESEND_API_KEY") || "";
   return nodemailer.createTransport({
     host,
     port,

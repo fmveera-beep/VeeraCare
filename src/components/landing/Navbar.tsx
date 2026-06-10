@@ -6,27 +6,62 @@ import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { VeeraLogo } from "@/components/brand/VeeraLogo";
 import { GetAccessSolid } from "@/components/landing/PromoCtas";
+import { companyProfileUrl } from "@/config/site";
 import { cn } from "@/lib/utils";
 
-const leftLinks = [
+type NavItem = {
+  label: string;
+  href: string;
+  external?: boolean;
+};
+
+const leftLinks: NavItem[] = [
   { href: "/", label: "Home" },
   { href: "/#about", label: "About Us" },
   { href: "/services", label: "Services" },
-  { href: "/insights", label: "Insights" },
   { href: "/careers", label: "Careers" },
   { href: "/#industries", label: "Industries" },
-  { href: "/#faq", label: "FAQs" },
+  ...(companyProfileUrl
+    ? [{ href: companyProfileUrl, label: "Company Profile", external: true }]
+    : []),
 ];
 
-const rightLinks = [
-  { href: "/#reviews", label: "Reviews" },
-  { href: "/contact", label: "Contact" },
-];
+const rightLinks: NavItem[] = [{ href: "/contact", label: "Contact" }];
 
 const desktopNavLink =
   "relative py-1 text-[13px] font-semibold uppercase tracking-wide text-black transition-colors duration-200 after:pointer-events-none after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-brand after:transition-transform after:duration-200 after:ease-out hover:text-brand hover:after:scale-x-100 motion-safe:hover:-translate-y-px";
 
 const mobileNavLinks = [...leftLinks, ...rightLinks];
+
+function NavLink({
+  item,
+  className,
+  onNavigate,
+}: {
+  item: NavItem;
+  className: string;
+  onNavigate?: () => void;
+}) {
+  if (item.external) {
+    return (
+      <a
+        href={item.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={className}
+        onClick={onNavigate}
+      >
+        {item.label}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={item.href} className={className} onClick={onNavigate}>
+      {item.label}
+    </Link>
+  );
+}
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
@@ -80,14 +115,10 @@ export function Navbar() {
 
         <div className="hidden items-center justify-center gap-4 xl:gap-7 lg:flex">
           {leftLinks.map((l) => (
-            <Link key={l.href} href={l.href} className={desktopNavLink}>
-              {l.label}
-            </Link>
+            <NavLink key={l.href + l.label} item={l} className={desktopNavLink} />
           ))}
           {rightLinks.map((l) => (
-            <Link key={l.href} href={l.href} className={desktopNavLink}>
-              {l.label}
-            </Link>
+            <NavLink key={l.href + l.label} item={l} className={desktopNavLink} />
           ))}
         </div>
 
@@ -133,16 +164,14 @@ export function Navbar() {
               <div className="max-h-[min(72vh,28rem)] overflow-y-auto overscroll-y-contain px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:px-4 sm:py-4">
                 <div className="flex flex-col gap-0.5">
                   {mobileNavLinks.map((l) => (
-                    <Link
+                    <NavLink
                       key={l.href + l.label}
-                      href={l.href}
+                      item={l}
                       className={cn(
                         "rounded-[4px] px-3 py-3.5 text-[13px] font-semibold uppercase tracking-wide transition-all duration-200 hover:bg-brand/8 hover:text-brand active:bg-brand/10 motion-safe:active:scale-[0.99]"
                       )}
-                      onClick={() => setOpen(false)}
-                    >
-                      {l.label}
-                    </Link>
+                      onNavigate={() => setOpen(false)}
+                    />
                   ))}
                 </div>
                 <div className="sticky bottom-0 mt-3 border-t border-neutral-100 bg-white pt-3">

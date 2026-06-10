@@ -1,9 +1,6 @@
-import {
-  createSmtpTransporter,
-  envTrim,
-  getSmtpFrom,
-  isSmtpConfigured,
-} from "@/lib/email/smtp";
+import { escapeHtml } from "@/lib/email/escapeHtml";
+import { envTrim } from "@/lib/email/smtp";
+import { isEmailDeliveryConfigured, sendEmail } from "@/lib/email/send";
 
 function getOwnerInbox() {
   return (
@@ -14,7 +11,7 @@ function getOwnerInbox() {
 }
 
 function isEmailConfigured() {
-  return Boolean(isSmtpConfigured() && getOwnerInbox());
+  return Boolean(isEmailDeliveryConfigured() && getOwnerInbox());
 }
 
 export type SendJobApplicationEmailResult =
@@ -49,9 +46,7 @@ export async function sendJobApplicationEmail({
     return { status: "skipped", reason: "not_configured" };
   }
 
-  const from = getSmtpFrom();
   const to = getOwnerInbox()!;
-  const transporter = createSmtpTransporter();
 
   const subject = `VeeraFM job application: ${jobTitle} — ${name}`;
 
@@ -112,8 +107,7 @@ export async function sendJobApplicationEmail({
   `;
 
   try {
-    await transporter.sendMail({
-      from,
+    await sendEmail({
       to,
       subject,
       text,
@@ -122,17 +116,8 @@ export async function sendJobApplicationEmail({
     });
     return { status: "sent" };
   } catch (e) {
-    const msg = e instanceof Error ? e.message : "SMTP send failed";
+    const msg = e instanceof Error ? e.message : "Email send failed";
     console.error("[sendJobApplicationEmail]", e);
     return { status: "failed", error: msg };
   }
-}
-
-function escapeHtml(input: string) {
-  return input
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
 }

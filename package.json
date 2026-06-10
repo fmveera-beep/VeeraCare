@@ -12,7 +12,16 @@
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "neon:auth-webhook": "node scripts/configure-neon-auth-webhook.mjs",
+    "neon:auth-smtp": "node scripts/configure-neon-auth-smtp.mjs --provider resend",
+    "neon:auth-smtp:test": "node scripts/configure-neon-auth-smtp.mjs --provider resend --test admin@veerafm.com",
+    "neon:auth-smtp:resend": "node scripts/configure-neon-auth-smtp.mjs --provider resend --test admin@veerafm.com",
+    "neon:auth-smtp:m365": "node scripts/configure-neon-auth-smtp.mjs --provider m365 --test admin@veerafm.com",
+    "neon:auth-smtp:gmail": "node scripts/configure-neon-auth-smtp.mjs --provider gmail --test admin@veerafm.com",
+    "test:smtp:resend": "node scripts/test-smtp.mjs resend admin@veerafm.com",
+    "test:smtp:m365": "node scripts/test-smtp.mjs m365 admin@veerafm.com",
+    "test:smtp:gmail": "node scripts/test-smtp.mjs gmail admin@veerafm.com"
   },
   "dependencies": {
     "@neondatabase/auth": "^0.4.0-beta",
