@@ -37,4 +37,5 @@ export const introVideoEmbedUrl =
 
 /** Company profile PDF or document (navbar link opens in a new tab). */
 export const companyProfileUrl =
-  process.env.NEXT_PUBLIC_COMPANY_PROFILE_URL?.trim() ?? "";
+  process.env.NEXT_PUBLIC_COMPANY_PROFILE_URL?.trim() ||
+  "/VeeraFM.pdf";
