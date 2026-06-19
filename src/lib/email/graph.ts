@@ -10,11 +10,15 @@ type TokenCache = {
 
 let tokenCache: TokenCache | null = null;
 
+function graphEnv(primary: string, fallback: string) {
+  return envTrim(primary) || envTrim(fallback);
+}
+
 export function isGraphConfigured(): boolean {
   return Boolean(
-    envTrim("AZURE_TENANT_ID") &&
-      envTrim("AZURE_CLIENT_ID") &&
-      envTrim("AZURE_CLIENT_SECRET") &&
+    graphEnv("AZURE_TENANT_ID", "GRAPH_TENANT_ID") &&
+      graphEnv("AZURE_CLIENT_ID", "GRAPH_CLIENT_ID") &&
+      graphEnv("AZURE_CLIENT_SECRET", "GRAPH_CLIENT_SECRET") &&
       getGraphSenderEmail()
   );
 }
@@ -47,9 +51,9 @@ async function getGraphAccessToken(): Promise<string> {
     return tokenCache.accessToken;
   }
 
-  const tenantId = envTrim("AZURE_TENANT_ID")!;
-  const clientId = envTrim("AZURE_CLIENT_ID")!;
-  const clientSecret = envTrim("AZURE_CLIENT_SECRET")!;
+  const tenantId = graphEnv("AZURE_TENANT_ID", "GRAPH_TENANT_ID")!;
+  const clientId = graphEnv("AZURE_CLIENT_ID", "GRAPH_CLIENT_ID")!;
+  const clientSecret = graphEnv("AZURE_CLIENT_SECRET", "GRAPH_CLIENT_SECRET")!;
 
   const body = new URLSearchParams({
     client_id: clientId,

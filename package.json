@@ -19,7 +19,7 @@
     "neon:auth-smtp:resend": "node scripts/configure-neon-auth-smtp.mjs --provider resend --test admin@veerafm.com",
     "neon:auth-smtp:m365": "node scripts/configure-neon-auth-smtp.mjs --provider m365 --test admin@veerafm.com",
     "neon:auth-smtp:gmail": "node scripts/configure-neon-auth-smtp.mjs --provider gmail --test admin@veerafm.com",
-    "test:smtp:resend": "node scripts/test-smtp.mjs resend admin@veerafm.com",
+    "test:graph": "node scripts/test-graph.mjs admin@veerafm.com",
     "test:smtp:m365": "node scripts/test-smtp.mjs m365 admin@veerafm.com",
     "test:smtp:gmail": "node scripts/test-smtp.mjs gmail admin@veerafm.com"
   },
