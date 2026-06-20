@@ -48,8 +48,13 @@ export async function POST(req: Request) {
       id: created.id,
       saved: true,
       emailSent: mail.status === "sent",
+      confirmationSent:
+        mail.status === "sent" ? mail.confirmationSent : false,
       emailSkipped: mail.status === "skipped",
       ...(mail.status === "failed" ? { emailError: mail.error } : {}),
+      ...(mail.status === "sent" && !mail.confirmationSent
+        ? { confirmationError: mail.confirmationError }
+        : {}),
     });
   } catch (err) {
     console.error("[cta-request]", err);

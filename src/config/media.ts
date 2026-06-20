@@ -50,9 +50,9 @@ export const landingImages = {
     "https://images.unsplash.com/photo-1523413651479-597eb2da0ad6?auto=format&fit=crop&w=800&q=85"
   ),
   trustAvatars: [
-    "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=120&q=80",
-    "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=120&q=80",
-    "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=120&q=80",
+    "/images/team/team-1.png",
+    "/images/team/team-2.png",
+    "/images/team/team-3.png",
   ] as const,
   /** Services grid — bottom photos */
   services: [
@@ -64,13 +64,8 @@ export const landingImages = {
     "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80",
   ] as const,
   reviews: [
-    envSrc(
-      "NEXT_PUBLIC_REVIEW_AVATAR_1",
-      "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=200&q=80"
-    ),
-    envSrc(
-      "NEXT_PUBLIC_REVIEW_AVATAR_2",
-      "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=200&q=80"
-    ),
+    envSrc("NEXT_PUBLIC_REVIEW_AVATAR_1", "/images/team/team-1.png"),
+    envSrc("NEXT_PUBLIC_REVIEW_AVATAR_2", "/images/team/team-2.png"),
+    envSrc("NEXT_PUBLIC_REVIEW_AVATAR_3", "/images/team/team-3.png"),
   ] as const,
 };

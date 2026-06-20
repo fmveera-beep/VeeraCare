@@ -25,7 +25,7 @@ const reviews = [
       "One partner for facilities and field teams routing, coverage, and documented standards we can defend in audits.",
     name: "Head of Workplace",
     org: "Facilities services firm",
-    avatar: landingImages.trustAvatars[2],
+    avatar: landingImages.reviews[2],
   },
 ] as const;
 

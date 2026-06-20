@@ -73,8 +73,13 @@ export async function POST(req: Request) {
       ok: true,
       id: application.id,
       emailSent: mail.status === "sent",
+      confirmationSent:
+        mail.status === "sent" ? mail.confirmationSent : false,
       emailSkipped: mail.status === "skipped",
       ...(mail.status === "failed" ? { emailError: mail.error } : {}),
+      ...(mail.status === "sent" && !mail.confirmationSent
+        ? { confirmationError: mail.confirmationError }
+        : {}),
     });
   } catch (e) {
     console.error("[job-applications POST]", e);
