@@ -17,15 +17,15 @@ import { Footer } from "@/components/landing/Footer";
 import { HomeHashScroll } from "@/components/landing/HomeHashScroll";
 import { CTAForm } from "@/components/cta/CTAForm";
 
-import { SEO_HOME_DESCRIPTION, SEO_SITE_NAME, seoPageTitle } from "@/lib/seo/brand";
+import { SEO_HOME_DESCRIPTION, SEO_HOME_TITLE, SEO_SITE_NAME } from "@/lib/seo/brand";
 import { seoCanonical } from "@/lib/seo/canonical";
 
 export const metadata: Metadata = {
   ...seoCanonical("/"),
-  title: seoPageTitle("Reliable Staffing & Facilities Management"),
+  title: { absolute: SEO_HOME_TITLE },
   description: SEO_HOME_DESCRIPTION,
   openGraph: {
-    title: "Reliable Staffing & Facilities Management",
+    title: SEO_HOME_TITLE,
     description:
       "Direct hire and managed staffing for housemaids, technicians, construction, event, and security personnel—built for facilities that must stay clean, compliant, and fully operational.",
     type: "website",

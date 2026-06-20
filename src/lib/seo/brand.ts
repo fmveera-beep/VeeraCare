@@ -1,6 +1,9 @@
 /** Brand name used in `<title>`, Open Graph, and meta descriptions for search indexing. */
 export const SEO_SITE_NAME = "VeeraFM";
 
+/** Homepage `<title>` and Open Graph title for search results. */
+export const SEO_HOME_TITLE = "VeeraFM-Reliable Staffing & Facilities Management";
+
 /** Use as `title` in page metadata — root layout template appends `| VeeraFM`. */
 export function seoPageTitle(pageTitle: string): string {
   return pageTitle;
