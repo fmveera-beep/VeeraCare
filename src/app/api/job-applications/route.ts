@@ -13,7 +13,8 @@ export async function POST(req: Request) {
     const formData = await req.formData();
 
     const recaptcha = await verifyRecaptchaToken(
-      String(formData.get("recaptchaToken") ?? "") || null
+      String(formData.get("recaptchaToken") ?? "") || null,
+      req
     );
     if (!recaptcha.ok) {
       return NextResponse.json({ error: recaptcha.error }, { status: 400 });

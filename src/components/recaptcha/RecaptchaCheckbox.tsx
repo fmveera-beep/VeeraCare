@@ -17,6 +17,9 @@ declare global {
         options: {
           sitekey: string;
           theme?: "light" | "dark";
+          callback?: (token: string) => void;
+          "expired-callback"?: () => void;
+          "error-callback"?: () => void;
         }
       ) => number;
       reset: (widgetId?: number) => void;
@@ -81,13 +84,16 @@ export const RecaptchaCheckbox = forwardRef<
 >(function RecaptchaCheckbox({ theme = "light", className }, ref) {
   const containerRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<number | null>(null);
+  const tokenRef = useRef<string | null>(null);
 
   useImperativeHandle(ref, () => ({
     getToken: () => {
-      if (!recaptchaEnabled || widgetIdRef.current === null) return null;
+      if (tokenRef.current) return tokenRef.current;
+      if (widgetIdRef.current === null) return null;
       return window.grecaptcha?.getResponse(widgetIdRef.current) || null;
     },
     reset: () => {
+      tokenRef.current = null;
       if (widgetIdRef.current !== null) {
         window.grecaptcha?.reset(widgetIdRef.current);
       }
@@ -106,11 +112,21 @@ export const RecaptchaCheckbox = forwardRef<
       widgetIdRef.current = window.grecaptcha!.render(containerRef.current, {
         sitekey: recaptchaSiteKey,
         theme,
+        callback: (token) => {
+          tokenRef.current = token;
+        },
+        "expired-callback": () => {
+          tokenRef.current = null;
+        },
+        "error-callback": () => {
+          tokenRef.current = null;
+        },
       });
     });
 
     return () => {
       cancelled = true;
+      tokenRef.current = null;
       widgetIdRef.current = null;
     };
   }, [theme]);

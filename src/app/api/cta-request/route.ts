@@ -16,7 +16,8 @@ export async function POST(req: Request) {
     const json = await req.json();
 
     const recaptcha = await verifyRecaptchaToken(
-      typeof json.recaptchaToken === "string" ? json.recaptchaToken : null
+      typeof json.recaptchaToken === "string" ? json.recaptchaToken : null,
+      req
     );
     if (!recaptcha.ok) {
       return NextResponse.json({ error: recaptcha.error }, { status: 400 });
