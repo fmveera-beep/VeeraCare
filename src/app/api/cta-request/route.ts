@@ -4,6 +4,7 @@ import { ctaRequestSchema } from "@/lib/validations/cta";
 import { sendCtaRequestEmail } from "@/lib/email/cta";
 import type { CTARequestInput } from "@/lib/validations/cta";
 import { formServiceToDb } from "@/lib/cms/staffRequestLabels";
+import { verifyRecaptchaToken } from "@/lib/recaptcha/verify";
 
 function toDbServiceNeeded(service: CTARequestInput["serviceNeeded"]) {
   return formServiceToDb[service];
@@ -13,6 +14,14 @@ export async function POST(req: Request) {
   try {
     const sourcePath = req.headers.get("x-pathname") ?? undefined;
     const json = await req.json();
+
+    const recaptcha = await verifyRecaptchaToken(
+      typeof json.recaptchaToken === "string" ? json.recaptchaToken : null
+    );
+    if (!recaptcha.ok) {
+      return NextResponse.json({ error: recaptcha.error }, { status: 400 });
+    }
+
     const parsed = ctaRequestSchema.safeParse(json);
     if (!parsed.success) {
       return NextResponse.json(

@@ -1,9 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { JobPost } from "@/lib/jobs/posts";
+import {
+  RecaptchaCheckbox,
+  type RecaptchaCheckboxRef,
+} from "@/components/recaptcha/RecaptchaCheckbox";
+import { recaptchaEnabled } from "@/lib/recaptcha/config";
 
 type JobApplyModalProps = {
   job: JobPost;
@@ -34,6 +39,7 @@ export function JobApplyModal({ job, open, onClose }: JobApplyModalProps) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const recaptchaRef = useRef<RecaptchaCheckboxRef>(null);
 
   useEffect(() => {
     if (!open) return;
@@ -68,6 +74,13 @@ export function JobApplyModal({ job, open, onClose }: JobApplyModalProps) {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+
+    const recaptchaToken = recaptchaRef.current?.getToken();
+    if (recaptchaEnabled && !recaptchaToken) {
+      setError("Please complete the captcha.");
+      return;
+    }
+
     setSubmitting(true);
 
     try {
@@ -78,6 +91,7 @@ export function JobApplyModal({ job, open, onClose }: JobApplyModalProps) {
       body.append("phone", phone.trim());
       body.append("message", message.trim());
       body.append("sourcePath", `/careers/${job.slug}`);
+      if (recaptchaToken) body.append("recaptchaToken", recaptchaToken);
       if (cvFile) body.append("cv", cvFile);
 
       const res = await fetch("/api/job-applications", {
@@ -93,6 +107,7 @@ export function JobApplyModal({ job, open, onClose }: JobApplyModalProps) {
       setSuccess(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not submit application.");
+      recaptchaRef.current?.reset();
     } finally {
       setSubmitting(false);
     }
@@ -251,6 +266,8 @@ export function JobApplyModal({ job, open, onClose }: JobApplyModalProps) {
                     ) : null}
                   </div>
                 </div>
+
+                <RecaptchaCheckbox ref={recaptchaRef} className="mt-4 flex justify-center" />
 
                 {error ? (
                   <p className="mt-4 text-sm text-red-600" role="alert">

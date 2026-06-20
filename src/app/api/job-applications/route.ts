@@ -4,12 +4,21 @@ import { loadJobBySlug } from "@/lib/jobs/cms";
 import { sendJobApplicationEmail } from "@/lib/email/jobApplication";
 import { saveJobCv } from "@/lib/uploads/jobCv";
 import { jobApplicationSchema } from "@/lib/validations/jobApplication";
+import { verifyRecaptchaToken } from "@/lib/recaptcha/verify";
 
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
   try {
     const formData = await req.formData();
+
+    const recaptcha = await verifyRecaptchaToken(
+      String(formData.get("recaptchaToken") ?? "") || null
+    );
+    if (!recaptcha.ok) {
+      return NextResponse.json({ error: recaptcha.error }, { status: 400 });
+    }
+
     const raw = {
       jobSlug: String(formData.get("jobSlug") ?? ""),
       name: String(formData.get("name") ?? ""),

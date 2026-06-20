@@ -1,12 +1,17 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Reveal } from "@/components/motion/Reveal";
 import { RemoteImage } from "@/components/media/RemoteImage";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  RecaptchaCheckbox,
+  type RecaptchaCheckboxRef,
+} from "@/components/recaptcha/RecaptchaCheckbox";
+import { recaptchaEnabled } from "@/lib/recaptcha/config";
 import {
   serviceNeededGroups,
   serviceNeededOptions,
@@ -70,17 +75,29 @@ export function CTAForm({
     "idle" | "submitting" | "success" | "error"
   >("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const recaptchaRef = useRef<RecaptchaCheckboxRef>(null);
 
   const hiring = data.inquiryType === "HIRING";
 
   async function submit() {
     setStatus("submitting");
     setErrorMsg(null);
+
+    const recaptchaToken = recaptchaRef.current?.getToken();
+    if (recaptchaEnabled && !recaptchaToken) {
+      setStatus("error");
+      setErrorMsg("Please complete the captcha.");
+      return;
+    }
+
     try {
       const res = await fetch("/api/cta-request", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          ...(recaptchaToken ? { recaptchaToken } : {}),
+        }),
       });
       if (!res.ok) {
         const json = (await res.json().catch(() => null)) as
@@ -90,9 +107,11 @@ export function CTAForm({
       }
       setStatus("success");
       setData(initial);
+      recaptchaRef.current?.reset();
     } catch (e) {
       setStatus("error");
       setErrorMsg(e instanceof Error ? e.message : "Something went wrong.");
+      recaptchaRef.current?.reset();
     }
   }
 
@@ -317,6 +336,8 @@ export function CTAForm({
                       required
                     />
                   </div>
+
+                  <RecaptchaCheckbox ref={recaptchaRef} className="flex justify-center md:justify-start" />
 
                   <div className="grid gap-3">
                     <Button
