@@ -15,7 +15,8 @@ import { Button } from "@/components/ui/button";
 import { contactPhoneDisplay, contactPhoneE164, socialUrls } from "@/config/site";
 import { seedServices } from "@/lib/cms/seed";
 import { serviceDetailHref } from "@/lib/cms/serviceSectionAnchors";
-import { smoothScrollToHash } from "@/components/landing/PromoCtas";
+import { smoothScrollToHash, handleSamePageHomeClick } from "@/components/landing/PromoCtas";
+import { usePathname } from "next/navigation";
 
 type FooterLink = { href: string; label: string };
 
@@ -48,7 +49,7 @@ function FooterNavLink({ href, label }: FooterLink) {
   return (
     <Link
       href={href}
-      scroll={href.startsWith("/services")}
+      scroll={!homeHash}
       onClick={
         homeHash
           ? (e) => {
@@ -77,6 +78,7 @@ const footerSocial = [
 ] as const;
 
 export function Footer() {
+  const pathname = usePathname();
   const [newsletterThanks, setNewsletterThanks] = useState(false);
   const [serviceLinks, setServiceLinks] = useState<FooterLink[]>(fallbackServiceLinks);
 
@@ -207,6 +209,7 @@ export function Footer() {
             href="/"
             className="inline-flex w-fit items-center rounded-md border border-white/80 px-4 py-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand hover:shadow-[0_0_28px_-4px_rgba(64,88,176,0.45)] motion-reduce:hover:translate-y-0"
             aria-label="VeeraFM — home"
+            onClick={(e) => handleSamePageHomeClick(e, pathname)}
           >
             <VeeraLogo variant="compact" tone="light" className="max-w-[11rem] lg:hidden" />
             <VeeraLogo variant="nav" tone="light" className="hidden lg:block" />

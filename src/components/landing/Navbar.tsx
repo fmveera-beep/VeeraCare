@@ -1,11 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { VeeraLogo } from "@/components/brand/VeeraLogo";
-import { GetAccessSolid } from "@/components/landing/PromoCtas";
+import {
+  GetAccessSolid,
+  handleSamePageHashClick,
+  handleSamePageHomeClick,
+} from "@/components/landing/PromoCtas";
 import { companyProfileUrl } from "@/config/site";
 import { cn } from "@/lib/utils";
 
@@ -36,10 +41,12 @@ const mobileNavLinks = [...leftLinks, ...rightLinks];
 function NavLink({
   item,
   className,
+  pathname,
   onNavigate,
 }: {
   item: NavItem;
   className: string;
+  pathname: string;
   onNavigate?: () => void;
 }) {
   if (item.external) {
@@ -56,14 +63,29 @@ function NavLink({
     );
   }
 
+  const onClick = (e: MouseEvent<HTMLAnchorElement>) => {
+    onNavigate?.();
+    if (item.href === "/") {
+      handleSamePageHomeClick(e, pathname);
+      return;
+    }
+    handleSamePageHashClick(e, item.href, pathname);
+  };
+
   return (
-    <Link href={item.href} className={className} onClick={onNavigate}>
+    <Link
+      href={item.href}
+      scroll={!item.href.startsWith("/#")}
+      className={className}
+      onClick={onClick}
+    >
       {item.label}
     </Link>
   );
 }
 
 export function Navbar() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -107,7 +129,10 @@ export function Navbar() {
           href="/"
           className="flex min-w-0 max-w-[calc(100%-2.75rem)] flex-1 items-center py-0.5 transition-all duration-300 hover:opacity-90 motion-safe:hover:scale-[1.02] motion-safe:active:scale-[0.99] sm:max-w-[calc(100%-3rem)] lg:max-w-none lg:flex-none lg:justify-self-start"
           aria-label="VeeraFM — home"
-          onClick={() => setOpen(false)}
+          onClick={(e) => {
+            setOpen(false);
+            handleSamePageHomeClick(e, pathname);
+          }}
         >
           <VeeraLogo variant="compact" tone="dark" className="lg:hidden" />
           <VeeraLogo variant="nav" tone="dark" className="hidden lg:block" />
@@ -115,10 +140,20 @@ export function Navbar() {
 
         <div className="hidden items-center justify-center gap-4 xl:gap-7 lg:flex">
           {leftLinks.map((l) => (
-            <NavLink key={l.href + l.label} item={l} className={desktopNavLink} />
+            <NavLink
+              key={l.href + l.label}
+              item={l}
+              pathname={pathname}
+              className={desktopNavLink}
+            />
           ))}
           {rightLinks.map((l) => (
-            <NavLink key={l.href + l.label} item={l} className={desktopNavLink} />
+            <NavLink
+              key={l.href + l.label}
+              item={l}
+              pathname={pathname}
+              className={desktopNavLink}
+            />
           ))}
         </div>
 
@@ -167,6 +202,7 @@ export function Navbar() {
                     <NavLink
                       key={l.href + l.label}
                       item={l}
+                      pathname={pathname}
                       className={cn(
                         "rounded-[4px] px-3 py-3.5 text-[13px] font-semibold uppercase tracking-wide transition-all duration-200 hover:bg-brand/8 hover:text-brand active:bg-brand/10 motion-safe:active:scale-[0.99]"
                       )}

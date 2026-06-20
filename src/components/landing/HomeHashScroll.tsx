@@ -19,7 +19,11 @@ export function HomeHashScroll() {
   useEffect(() => {
     if (pathname !== "/") return;
 
-    const run = () => window.requestAnimationFrame(scrollToCurrentHash);
+    const run = () => {
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(scrollToCurrentHash);
+      });
+    };
     run();
     window.addEventListener("hashchange", run);
     return () => window.removeEventListener("hashchange", run);

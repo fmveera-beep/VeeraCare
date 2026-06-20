@@ -20,6 +20,32 @@ export function smoothScrollToHash(href: string, e: MouseEvent<HTMLAnchorElement
   window.history.pushState(null, "", href);
 }
 
+export function smoothScrollToTop() {
+  const instant = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  window.scrollTo({ top: 0, behavior: instant ? "auto" : "smooth" });
+  if (window.location.pathname === "/" && window.location.hash) {
+    window.history.pushState(null, "", "/");
+  }
+}
+
+export function handleSamePageHomeClick(
+  e: MouseEvent<HTMLAnchorElement>,
+  pathname: string
+) {
+  if (pathname !== "/") return;
+  e.preventDefault();
+  smoothScrollToTop();
+}
+
+export function handleSamePageHashClick(
+  e: MouseEvent<HTMLAnchorElement>,
+  href: string,
+  pathname: string
+) {
+  if (pathname !== "/" || !href.startsWith("/#")) return;
+  smoothScrollToHash(href.slice(1), e);
+}
+
 /** Navbar / hero — primary CTA to the contact / request flow */
 export function GetAccessSolid({
   href = "/contact",
