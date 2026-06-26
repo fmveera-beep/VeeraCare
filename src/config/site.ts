@@ -33,7 +33,7 @@ export const socialUrls = {
 
 export const introVideoEmbedUrl =
   process.env.NEXT_PUBLIC_INTRO_VIDEO_EMBED ??
-  "https://www.youtube-nocookie.com/embed/M7lc1UVf-VE";
+  "https://www.youtube-nocookie.com/embed/Y3zZ0ZFp4Gw";
 
 /** Company profile PDF or document (navbar link opens in a new tab). */
 export const companyProfileUrl =
